@@ -6,1321 +6,1082 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Моя Жизнь">
-    <meta name="theme-color" content="#1a1a2e">
+    <meta name="theme-color" content="#0a0a1a">
     <title>Моя Жизнь</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
         * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-
         :root {
-            --bg-primary: #0f0f23;
-            --bg-secondary: #1a1a2e;
-            --bg-card: #16213e;
-            --bg-card-hover: #1a2744;
-            --text-primary: #eee;
-            --text-secondary: #8892b0;
-            --text-muted: #5a6380;
-            --accent: #e94560;
-            --accent-light: #ff6b81;
-            --success: #00d2d3;
-            --warning: #feca57;
-            --info: #54a0ff;
-            --purple: #a855f7;
-            --orange: #f97316;
-            --border: rgba(255,255,255,0.06);
+            --bg: #0a0a1a;
+            --bg2: #111128;
+            --card: #161638;
+            --card-hover: #1c1c48;
+            --text: #e8e8f0;
+            --text2: #8888aa;
+            --muted: #555577;
+            --accent: #ff3366;
+            --accent2: #ff6699;
+            --green: #00e676;
+            --yellow: #ffd740;
+            --blue: #448aff;
+            --purple: #b388ff;
+            --orange: #ff9100;
+            --cyan: #18ffff;
+            --border: rgba(255,255,255,0.05);
             --safe-bottom: env(safe-area-inset-bottom, 0px);
         }
-
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg); color: var(--text);
             min-height: 100vh; min-height: 100dvh;
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden; -webkit-font-smoothing: antialiased;
         }
-
         .app {
             max-width: 480px; margin: 0 auto;
             min-height: 100vh; min-height: 100dvh;
-            position: relative;
-            padding-bottom: calc(68px + var(--safe-bottom));
+            padding-bottom: calc(66px + var(--safe-bottom));
         }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
+        @keyframes glow { 0%,100%{box-shadow:0 0 20px rgba(255,51,102,0.2)} 50%{box-shadow:0 0 40px rgba(255,51,102,0.4)} }
+        @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+        @keyframes confettiFall { 0%{transform:translateY(-100vh) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(720deg);opacity:0} }
+        @keyframes xpGain { 0%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:0;transform:translateY(-40px) scale(1.5)} }
+        @keyframes levelUp { 0%{transform:scale(0.5);opacity:0} 50%{transform:scale(1.2)} 100%{transform:scale(1);opacity:1} }
+        @keyframes breathe { 0%,100%{opacity:0.6} 50%{opacity:1} }
+        @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+        @keyframes ripple { to{transform:scale(2);opacity:0} }
+
+        .page { display:none; padding:6px 18px 18px; animation: fadeUp 0.35s ease; }
+        .page.active { display:block; }
 
         /* ===== HEADER ===== */
         .app-header {
-            padding: 16px 20px 8px;
-            padding-top: calc(16px + env(safe-area-inset-top, 0px));
+            padding: 12px 18px 8px;
+            padding-top: calc(12px + env(safe-area-inset-top, 0px));
             position: sticky; top: 0; z-index: 100;
-            background: rgba(15,15,35,0.92);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-            display: flex; justify-content: space-between; align-items: center;
+            background: rgba(10,10,26,0.92);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+            border-bottom: 1px solid var(--border);
         }
-
-        .header-left h1 {
-            font-size: 24px; font-weight: 800;
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+        .header-row { display: flex; justify-content: space-between; align-items: center; }
+        .header-row h1 {
+            font-size: 22px; font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
-        .header-left .date { font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
-
-        .header-actions { display: flex; gap: 8px; }
+        .header-date { font-size: 11px; color: var(--text2); margin-top: 1px; }
         .header-btn {
-            width: 38px; height: 38px; border-radius: 12px;
-            border: 1px solid var(--border); background: var(--bg-card);
-            color: var(--text-secondary); font-size: 18px;
+            width: 36px; height: 36px; border-radius: 10px;
+            border: 1px solid var(--border); background: var(--card);
+            color: var(--text2); font-size: 16px;
             display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s;
+            cursor: pointer; transition: all 0.15s;
         }
-        .header-btn:active { transform: scale(0.92); background: var(--bg-card-hover); }
+        .header-btn:active { transform: scale(0.9); }
 
-        /* ===== PAGES ===== */
-        .page { display:none; padding:8px 20px 20px; animation: fadeIn 0.3s ease; }
-        .page.active { display:block; }
-        @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-
-        /* ===== SECTION TITLE ===== */
-        .section-title {
-            font-size: 16px; font-weight: 600; margin: 18px 0 10px;
-            display: flex; align-items: center; gap: 7px;
+        /* ===== XP BAR ===== */
+        .xp-bar-container {
+            margin-top: 8px; display: flex; align-items: center; gap: 8px;
         }
-        .section-title .icon { font-size: 18px; }
-        .section-title .see-all {
-            margin-left: auto; font-size: 12px; color: var(--accent);
-            font-weight: 500; cursor: pointer;
+        .xp-level {
+            background: linear-gradient(135deg, var(--accent), var(--orange));
+            color: white; font-size: 11px; font-weight: 800;
+            padding: 3px 8px; border-radius: 6px; white-space: nowrap;
+            min-width: 42px; text-align: center;
         }
-
-        /* ===== CARDS ===== */
-        .card {
-            background: var(--bg-card); border-radius: 14px; padding: 14px;
-            margin-bottom: 10px; border: 1px solid var(--border);
-            transition: all 0.15s; cursor: pointer;
+        .xp-bar {
+            flex: 1; height: 6px; background: var(--card);
+            border-radius: 3px; overflow: hidden;
         }
-        .card:active { transform: scale(0.98); background: var(--bg-card-hover); }
-        .card-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-        .card-subtitle { font-size: 12px; color: var(--text-secondary); line-height: 1.4; }
-
-        /* ===== ADD BUTTON ===== */
-        .add-btn {
-            width: 100%; padding: 12px; border-radius: 12px;
-            border: 2px dashed rgba(233,69,96,0.25); background: transparent;
-            color: var(--accent); font-size: 13px; font-weight: 500;
-            cursor: pointer; font-family: inherit;
-            display: flex; align-items: center; justify-content: center; gap: 6px;
-            transition: all 0.2s;
+        .xp-bar-fill {
+            height: 100%; border-radius: 3px;
+            background: linear-gradient(90deg, var(--accent), var(--orange));
+            transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+            position: relative;
         }
-        .add-btn:active { background: rgba(233,69,96,0.08); transform: scale(0.98); }
+        .xp-bar-fill::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        .xp-text { font-size: 10px; color: var(--muted); white-space: nowrap; }
 
         /* ===== BOTTOM NAV ===== */
         .bottom-nav {
             position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
             width: 100%; max-width: 480px;
-            background: rgba(15,15,35,0.95);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(10,10,26,0.95);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
             border-top: 1px solid var(--border);
             display: flex; justify-content: space-around;
-            padding: 6px 0; padding-bottom: calc(6px + var(--safe-bottom));
+            padding: 5px 0; padding-bottom: calc(5px + var(--safe-bottom));
             z-index: 1000;
         }
         .nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 2px;
-            padding: 5px 8px; border: none; background: none;
-            color: var(--text-muted); font-size: 9px; font-family: inherit;
-            cursor: pointer; border-radius: 8px; transition: all 0.2s;
-            min-width: 54px;
+            display: flex; flex-direction: column; align-items: center; gap: 1px;
+            padding: 4px 6px; border: none; background: none;
+            color: var(--muted); font-size: 9px; font-family: inherit;
+            cursor: pointer; border-radius: 8px; transition: all 0.2s; min-width: 50px;
         }
-        .nav-item .nav-icon { font-size: 20px; line-height: 1; }
+        .nav-icon { font-size: 20px; line-height: 1; transition: transform 0.2s; }
         .nav-item.active { color: var(--accent); }
-        .nav-item.active .nav-icon { transform: scale(1.1); }
+        .nav-item.active .nav-icon { transform: scale(1.15); }
 
-        /* ===== MODAL ===== */
-        .modal-overlay {
-            display: none; position: fixed; inset: 0;
-            background: rgba(0,0,0,0.6); z-index: 2000;
-            justify-content: center; align-items: flex-end;
-            animation: fadeOverlay 0.2s ease;
+        /* ===== SECTION TITLE ===== */
+        .stitle {
+            font-size: 15px; font-weight: 700; margin: 16px 0 8px;
+            display: flex; align-items: center; gap: 6px;
         }
-        .modal-overlay.active { display: flex; }
-        @keyframes fadeOverlay { from{opacity:0} to{opacity:1} }
+        .stitle .see-all { margin-left:auto; font-size:11px; color:var(--accent); font-weight:500; cursor:pointer; }
 
-        .modal {
-            background: var(--bg-secondary); border-radius: 20px 20px 0 0;
-            padding: 16px; padding-bottom: calc(16px + var(--safe-bottom));
-            width: 100%; max-width: 480px; max-height: 88vh;
-            overflow-y: auto; animation: slideUp 0.3s ease;
-        }
-        @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-
-        .modal-handle { width: 36px; height: 4px; background: var(--text-muted); border-radius: 2px; margin: 0 auto 14px; }
-        .modal h2 { font-size: 18px; font-weight: 600; margin-bottom: 14px; }
-
-        .form-group { margin-bottom: 12px; }
-        .form-group label { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 5px; font-weight: 500; }
-        .form-group input, .form-group textarea, .form-group select {
-            width: 100%; padding: 11px 12px; border-radius: 10px;
-            border: 1px solid var(--border); background: var(--bg-primary);
-            color: var(--text-primary); font-size: 14px; font-family: inherit;
-            outline: none; transition: border-color 0.2s;
-        }
-        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: var(--accent); }
-        .form-group textarea { min-height: 70px; resize: vertical; }
-
-        .modal-actions { display: flex; gap: 8px; margin-top: 14px; }
-        .btn {
-            flex: 1; padding: 12px; border-radius: 10px; border: none;
-            font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer;
-            transition: all 0.15s;
-        }
-        .btn:active { transform: scale(0.97); }
-        .btn-primary { background: var(--accent); color: white; }
-        .btn-secondary { background: var(--bg-card); color: var(--text-secondary); }
-        .btn-danger { background: rgba(233,69,96,0.12); color: var(--accent); }
-        .btn-success { background: rgba(0,210,211,0.15); color: var(--success); }
-
-        /* ===== STATS GRID ===== */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-        .stat-card {
-            background: var(--bg-card); border-radius: 12px; padding: 12px;
-            border: 1px solid var(--border); text-align: center;
-        }
-        .stat-value { font-size: 24px; font-weight: 700; }
-        .stat-label { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
-
-        /* ===== CATEGORY TAGS ===== */
-        .category-tag { display: inline-block; padding: 3px 8px; border-radius: 6px; font-size: 10px; font-weight: 600; }
-        .cat-health { background: rgba(0,210,211,0.12); color: var(--success); }
-        .cat-finance { background: rgba(254,202,87,0.12); color: var(--warning); }
-        .cat-relationship { background: rgba(233,69,96,0.12); color: var(--accent); }
-        .cat-career { background: rgba(84,160,255,0.12); color: var(--info); }
-        .cat-growth { background: rgba(168,85,247,0.12); color: var(--purple); }
-        .cat-other { background: rgba(255,255,255,0.06); color: var(--text-secondary); }
-
-        /* ===== QUOTE WIDGET ===== */
-        .quote-widget {
-            background: linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 100%);
-            border-radius: 16px; padding: 18px; margin-bottom: 12px;
-            border: 1px solid rgba(168,85,247,0.15);
+        /* ===== CARD ===== */
+        .card {
+            background: var(--card); border-radius: 14px; padding: 14px;
+            margin-bottom: 8px; border: 1px solid var(--border);
+            transition: all 0.15s; cursor: pointer;
             position: relative; overflow: hidden;
         }
-        .quote-widget::before {
-            content: '💡'; position: absolute; top: -10px; right: -5px;
-            font-size: 60px; opacity: 0.08;
+        .card:active { transform: scale(0.98); background: var(--card-hover); }
+        .card::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at var(--ripple-x,50%) var(--ripple-y,50%), rgba(255,255,255,0.08), transparent 60%);
+            opacity: 0; transition: opacity 0.3s;
         }
-        .quote-text {
-            font-size: 14px; font-weight: 500; line-height: 1.5;
-            font-style: italic; position: relative;
+        .card:active::after { opacity: 1; }
+        .card-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
+        .card-sub { font-size: 12px; color: var(--text2); line-height: 1.4; }
+
+        /* ===== ADD BTN ===== */
+        .add-btn {
+            width: 100%; padding: 11px; border-radius: 12px;
+            border: 2px dashed rgba(255,51,102,0.2); background: transparent;
+            color: var(--accent); font-size: 13px; font-weight: 500;
+            cursor: pointer; font-family: inherit;
+            display: flex; align-items: center; justify-content: center; gap: 5px;
+            transition: all 0.2s;
         }
-        .quote-author {
-            font-size: 11px; color: var(--purple); margin-top: 8px;
-            font-weight: 600; font-style: normal;
+        .add-btn:active { background: rgba(255,51,102,0.06); transform: scale(0.98); }
+
+        /* ===== QUOTE WIDGET ===== */
+        .quote-w {
+            background: linear-gradient(135deg, #1a0a2e 0%, #2d1048 50%, #1a0a2e 100%);
+            border-radius: 16px; padding: 16px; margin-bottom: 10px;
+            border: 1px solid rgba(179,136,255,0.15);
+            position: relative; overflow: hidden;
         }
-        .quote-refresh {
-            position: absolute; top: 12px; right: 12px;
-            background: rgba(255,255,255,0.08); border: none; border-radius: 8px;
-            width: 28px; height: 28px; cursor: pointer; font-size: 14px;
-            display: flex; align-items: center; justify-content: center;
+        .quote-w::before {
+            content: ''; position: absolute; top:-50%; right:-30%;
+            width: 200px; height: 200px;
+            background: radial-gradient(circle, rgba(179,136,255,0.1), transparent);
+            pointer-events: none;
         }
+        .quote-w .qt { font-size: 13px; font-weight: 500; line-height: 1.5; font-style: italic; position:relative; }
+        .quote-w .qa { font-size: 11px; color: var(--purple); margin-top: 6px; font-weight: 600; }
+        .quote-w .qr {
+            position:absolute; top:10px; right:10px;
+            background: rgba(255,255,255,0.06); border:none; border-radius:8px;
+            width:28px; height:28px; cursor:pointer; font-size:14px;
+            display:flex; align-items:center; justify-content:center; color:var(--text2);
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px; }
+        .stat-card {
+            background: var(--card); border-radius: 12px; padding: 10px;
+            border: 1px solid var(--border); text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .stat-val { font-size: 22px; font-weight: 800; }
+        .stat-lbl { font-size: 9px; color: var(--muted); margin-top: 1px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        /* ===== CATEGORY TAGS ===== */
+        .ctag { display:inline-block; padding:2px 7px; border-radius:5px; font-size:9px; font-weight:700; letter-spacing:0.3px; }
+        .ct-health { background:rgba(0,230,118,0.12); color:var(--green); }
+        .ct-finance { background:rgba(255,215,64,0.12); color:var(--yellow); }
+        .ct-relationship { background:rgba(255,51,102,0.12); color:var(--accent); }
+        .ct-career { background:rgba(68,138,255,0.12); color:var(--blue); }
+        .ct-growth { background:rgba(179,136,255,0.12); color:var(--purple); }
+        .ct-other { background:rgba(255,255,255,0.06); color:var(--text2); }
+
+        /* ===== GOAL PROGRESS ===== */
+        .gprog { width:100%; height:5px; background:var(--bg); border-radius:3px; margin-top:8px; overflow:hidden; }
+        .gprog-bar { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width 0.6s ease; }
+        .gmeta { display:flex; justify-content:space-between; margin-top:3px; font-size:10px; color:var(--muted); }
 
         /* ===== HABIT ITEMS ===== */
         .habit-item {
-            display: flex; align-items: center; gap: 10px;
-            padding: 12px; background: var(--bg-card); border-radius: 12px;
-            border: 1px solid var(--border); margin-bottom: 6px;
+            display:flex; align-items:center; gap:10px;
+            padding:11px; background:var(--card); border-radius:12px;
+            border:1px solid var(--border); margin-bottom:5px;
+            transition: all 0.15s;
         }
-        .habit-check {
-            width: 26px; height: 26px; border-radius: 50%;
-            border: 2px solid var(--text-muted);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s; flex-shrink: 0; font-size: 12px;
+        .habit-item:active { transform: scale(0.98); }
+        .hcheck {
+            width:28px; height:28px; border-radius:50%;
+            border:2px solid var(--muted);
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer; transition:all 0.25s; flex-shrink:0; font-size:13px;
         }
-        .habit-check.done { background: var(--success); border-color: var(--success); color: var(--bg-primary); }
-        .habit-name { flex: 1; font-size: 13px; font-weight: 500; }
-        .habit-streak { font-size: 10px; color: var(--warning); font-weight: 600; }
-
-        /* ===== GOAL PROGRESS ===== */
-        .goal-progress { width: 100%; height: 5px; background: var(--bg-primary); border-radius: 3px; margin-top: 8px; overflow: hidden; }
-        .goal-progress-bar { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--accent-light)); transition: width 0.5s ease; }
-        .goal-meta { display: flex; justify-content: space-between; margin-top: 4px; font-size: 11px; color: var(--text-muted); }
+        .hcheck.done {
+            background:var(--green); border-color:var(--green); color:var(--bg);
+            animation: pulse 0.3s ease;
+        }
+        .hname { flex:1; font-size:13px; font-weight:500; }
+        .hstreak { font-size:10px; color:var(--yellow); font-weight:700; }
+        .hxp { font-size:9px; color:var(--cyan); font-weight:600; }
 
         /* ===== AFFIRMATION ===== */
-        .affirmation-card {
-            background: linear-gradient(135deg, #1a1a3e, #2a1a3e);
-            border-radius: 14px; padding: 16px; margin-bottom: 8px;
-            border: 1px solid rgba(168,85,247,0.15); position: relative; overflow: hidden;
+        .aff-card {
+            background: linear-gradient(135deg, #16082e, #240e42);
+            border-radius: 14px; padding: 14px; margin-bottom: 6px;
+            border: 1px solid rgba(179,136,255,0.12);
+            position: relative; overflow: hidden;
         }
-        .affirmation-card::before {
-            content: ''; position: absolute; top: -50%; right: -50%; width: 100%; height: 100%;
-            background: radial-gradient(circle, rgba(168,85,247,0.08), transparent); pointer-events: none;
+        .aff-card::before {
+            content:''; position:absolute; top:-50%; right:-50%; width:100%; height:100%;
+            background:radial-gradient(circle,rgba(179,136,255,0.06),transparent); pointer-events:none;
         }
-        .affirmation-text { font-size: 14px; font-weight: 500; line-height: 1.5; position: relative; padding-left: 14px; }
-        .affirmation-text::before { content: '\201C'; font-size: 30px; color: var(--purple); position: absolute; top: -8px; left: -2px; opacity: 0.5; }
-        .affirmation-actions { display: flex; gap: 6px; margin-top: 10px; position: relative; }
-        .affirmation-actions button {
-            padding: 5px 10px; border-radius: 6px; border: none;
-            font-size: 11px; font-family: inherit; cursor: pointer;
-            background: rgba(255,255,255,0.06); color: var(--text-secondary); transition: all 0.2s;
+        .aff-text { font-size:13px; font-weight:500; line-height:1.5; position:relative; padding-left:12px; }
+        .aff-text::before { content:'\201C'; font-size:28px; color:var(--purple); position:absolute; top:-6px; left:-2px; opacity:0.4; }
+        .aff-actions { display:flex; gap:5px; margin-top:8px; position:relative; }
+        .aff-actions button {
+            padding:4px 9px; border-radius:6px; border:none;
+            font-size:10px; font-family:inherit; cursor:pointer;
+            background:rgba(255,255,255,0.05); color:var(--text2);
         }
 
         /* ===== ROUTINE ===== */
-        .routine-item {
-            display: flex; align-items: center; gap: 10px;
-            padding: 10px 12px; background: var(--bg-card); border-radius: 12px;
-            margin-bottom: 6px; border: 1px solid var(--border);
+        .rut-item {
+            display:flex; align-items:center; gap:10px;
+            padding:10px 12px; background:var(--card); border-radius:12px;
+            margin-bottom:5px; border:1px solid var(--border);
         }
-        .routine-time { font-size: 12px; font-weight: 600; color: var(--accent); min-width: 46px; }
-        .routine-desc { flex: 1; font-size: 13px; }
-        .routine-toggle {
-            width: 42px; height: 24px; border-radius: 12px;
-            background: var(--text-muted); position: relative;
-            cursor: pointer; transition: background 0.2s; flex-shrink: 0;
+        .rut-time { font-size:12px; font-weight:700; min-width:44px; }
+        .rut-time.morning { color: var(--yellow); }
+        .rut-time.day { color: var(--orange); }
+        .rut-time.evening { color: var(--purple); }
+        .rut-time.night { color: var(--blue); }
+        .rut-desc { flex:1; font-size:13px; }
+        .rut-toggle {
+            width:40px; height:24px; border-radius:12px;
+            background:var(--muted); position:relative;
+            cursor:pointer; transition:background 0.2s; flex-shrink:0;
         }
-        .routine-toggle.on { background: var(--success); }
-        .routine-toggle::after {
-            content: ''; position: absolute; width: 20px; height: 20px;
-            border-radius: 50%; background: white; top: 2px; left: 2px;
-            transition: transform 0.2s;
+        .rut-toggle.on { background:var(--green); }
+        .rut-toggle::after {
+            content:''; position:absolute; width:20px; height:20px;
+            border-radius:50%; background:white; top:2px; left:2px;
+            transition:transform 0.2s;
         }
-        .routine-toggle.on::after { transform: translateX(18px); }
+        .rut-toggle.on::after { transform:translateX(16px); }
+
+        /* ===== REMINDER ===== */
+        .rem-item {
+            display:flex; align-items:center; gap:10px;
+            padding:10px 12px; background:var(--card); border-radius:12px;
+            margin-bottom:5px; border:1px solid var(--border);
+        }
+        .rem-bell { font-size:16px; }
+        .rem-info { flex:1; }
+        .rem-title { font-size:13px; font-weight:500; }
+        .rem-time { font-size:10px; color:var(--muted); }
 
         /* ===== JOURNAL ===== */
-        .journal-entry {
-            padding: 12px; background: var(--bg-card); border-radius: 12px;
-            margin-bottom: 8px; border: 1px solid var(--border);
+        .journ-entry {
+            padding:11px; background:var(--card); border-radius:12px;
+            margin-bottom:6px; border:1px solid var(--border);
         }
-        .journal-date { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
-        .journal-text { font-size: 13px; line-height: 1.4; color: var(--text-secondary); }
+        .journ-date { font-size:10px; color:var(--muted); margin-bottom:3px; }
+        .journ-text { font-size:13px; line-height:1.4; color:var(--text2); }
 
-        /* ===== REMINDERS ===== */
-        .reminder-item {
-            display: flex; align-items: center; gap: 10px;
-            padding: 10px 12px; background: var(--bg-card); border-radius: 12px;
-            margin-bottom: 6px; border: 1px solid var(--border);
+        /* ===== REVIEW MODAL ===== */
+        .review-header {
+            text-align: center; padding: 10px 0 16px;
         }
-        .reminder-bell { font-size: 18px; }
-        .reminder-info { flex: 1; }
-        .reminder-title { font-size: 13px; font-weight: 500; }
-        .reminder-time-label { font-size: 11px; color: var(--text-muted); }
-        .reminder-toggle {
-            width: 42px; height: 24px; border-radius: 12px;
-            background: var(--text-muted); position: relative;
-            cursor: pointer; transition: background 0.2s; flex-shrink: 0;
+        .review-header .emoji { font-size: 48px; margin-bottom: 8px; }
+        .review-header h2 { font-size: 20px; font-weight: 700; }
+        .review-header p { font-size: 13px; color: var(--text2); margin-top: 4px; }
+        .review-section { margin-bottom: 14px; }
+        .review-section label {
+            display: block; font-size: 12px; color: var(--text2);
+            margin-bottom: 5px; font-weight: 600;
         }
-        .reminder-toggle.on { background: var(--success); }
-        .reminder-toggle::after {
-            content: ''; position: absolute; width: 20px; height: 20px;
-            border-radius: 50%; background: white; top: 2px; left: 2px;
-            transition: transform 0.2s;
+        .review-section textarea {
+            width:100%; padding:10px 12px; border-radius:10px;
+            border:1px solid var(--border); background:var(--bg);
+            color:var(--text); font-size:13px; font-family:inherit;
+            outline:none; min-height:60px; resize:none;
         }
-        .reminder-toggle.on::after { transform: translateX(18px); }
+        .review-section textarea:focus { border-color: var(--accent); }
+        .review-section input[type="text"] {
+            width:100%; padding:10px 12px; border-radius:10px;
+            border:1px solid var(--border); background:var(--bg);
+            color:var(--text); font-size:13px; font-family:inherit; outline:none;
+        }
 
         /* ===== ANALYTICS ===== */
-        .analytics-period {
-            display: flex; gap: 6px; margin-bottom: 14px;
+        .aperiod { display:flex; gap:5px; margin-bottom:12px; }
+        .aperiod-btn {
+            flex:1; padding:7px; border-radius:8px; border:1px solid var(--border);
+            background:var(--card); color:var(--text2);
+            font-size:11px; font-weight:600; font-family:inherit; cursor:pointer;
+            transition:all 0.15s;
         }
-        .period-btn {
-            flex: 1; padding: 8px; border-radius: 8px; border: 1px solid var(--border);
-            background: var(--bg-card); color: var(--text-secondary);
-            font-size: 12px; font-weight: 500; font-family: inherit; cursor: pointer;
-            transition: all 0.2s;
+        .aperiod-btn.active { background:var(--accent); color:white; border-color:var(--accent); }
+        .achart { margin-bottom:14px; }
+        .achart-title { font-size:12px; font-weight:600; margin-bottom:6px; color:var(--text2); }
+        .abars { display:flex; align-items:flex-end; gap:3px; height:80px; }
+        .abar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; }
+        .abar {
+            width:100%; border-radius:3px 3px 0 0;
+            background:linear-gradient(to top, var(--accent), var(--accent2));
+            min-height:3px; transition:height 0.6s ease;
         }
-        .period-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+        .abar-val { font-size:8px; color:var(--text2); font-weight:600; }
+        .abar-lbl { font-size:8px; color:var(--muted); }
+        .acard {
+            background:var(--card); border-radius:12px; padding:12px;
+            border:1px solid var(--border); margin-bottom:8px;
+        }
+        .arow {
+            display:flex; justify-content:space-between; align-items:center;
+            padding:6px 0; border-bottom:1px solid var(--border);
+        }
+        .arow:last-child { border-bottom:none; }
+        .arow-l { font-size:12px; color:var(--text2); }
+        .arow-v { font-size:13px; font-weight:700; }
 
-        .chart-container { margin-bottom: 16px; }
-        .chart-title { font-size: 13px; font-weight: 600; margin-bottom: 8px; }
-        .bar-chart { display: flex; align-items: flex-end; gap: 4px; height: 100px; }
-        .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .bar {
-            width: 100%; border-radius: 4px 4px 0 0;
-            background: linear-gradient(to top, var(--accent), var(--accent-light));
-            min-height: 4px; transition: height 0.5s ease;
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            display:none; position:fixed; inset:0;
+            background:rgba(0,0,0,0.65); z-index:2000;
+            justify-content:center; align-items:flex-end;
         }
-        .bar-label { font-size: 9px; color: var(--text-muted); }
-        .bar-value { font-size: 9px; color: var(--text-secondary); font-weight: 600; }
+        .modal-overlay.active { display:flex; animation: fadeIn 0.2s ease; }
+        .modal {
+            background:var(--bg2); border-radius:20px 20px 0 0;
+            padding:14px; padding-bottom:calc(14px + var(--safe-bottom));
+            width:100%; max-width:480px; max-height:88vh;
+            overflow-y:auto; animation:slideUp 0.3s ease;
+        }
+        .mhandle { width:36px; height:4px; background:var(--muted); border-radius:2px; margin:0 auto 12px; }
+        .modal h2 { font-size:17px; font-weight:700; margin-bottom:12px; }
+        .fg { margin-bottom:10px; }
+        .fg label { display:block; font-size:11px; color:var(--text2); margin-bottom:4px; font-weight:600; }
+        .fg input, .fg textarea, .fg select {
+            width:100%; padding:10px 12px; border-radius:10px;
+            border:1px solid var(--border); background:var(--bg);
+            color:var(--text); font-size:14px; font-family:inherit;
+            outline:none; transition:border 0.2s;
+        }
+        .fg input:focus, .fg textarea:focus { border-color:var(--accent); }
+        .fg textarea { min-height:64px; resize:vertical; }
+        .mactions { display:flex; gap:8px; margin-top:12px; }
+        .btn {
+            flex:1; padding:12px; border-radius:10px; border:none;
+            font-size:14px; font-weight:600; font-family:inherit; cursor:pointer;
+            transition:all 0.15s;
+        }
+        .btn:active { transform:scale(0.97); }
+        .btn-p { background:var(--accent); color:white; }
+        .btn-s { background:var(--card); color:var(--text2); }
+        .btn-d { background:rgba(255,51,102,0.1); color:var(--accent); }
 
-        .analytics-card {
-            background: var(--bg-card); border-radius: 14px; padding: 14px;
-            border: 1px solid var(--border); margin-bottom: 10px;
+        /* ===== SETTINGS ITEM ===== */
+        .sitem {
+            display:flex; align-items:center; gap:10px;
+            padding:12px; background:var(--card); border-radius:10px;
+            margin-bottom:5px; border:1px solid var(--border); cursor:pointer;
+            transition:all 0.15s;
         }
-        .analytics-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 0; border-bottom: 1px solid var(--border);
+        .sitem:active { transform:scale(0.98); }
+        .sicon { font-size:20px; }
+        .slabel { flex:1; font-size:13px; font-weight:500; }
+        .shint { font-size:10px; color:var(--muted); }
+
+        /* ===== EMPTY ===== */
+        .empty { text-align:center; padding:24px 14px; color:var(--muted); }
+        .empty .e { font-size:36px; margin-bottom:8px; }
+        .empty p { font-size:12px; line-height:1.4; }
+
+        /* ===== CONFETTI ===== */
+        .confetti-piece {
+            position:fixed; width:8px; height:8px; border-radius:2px;
+            z-index:9999; pointer-events:none;
+            animation: confettiFall 2.5s ease-in forwards;
         }
-        .analytics-row:last-child { border-bottom: none; }
-        .analytics-row-label { font-size: 13px; color: var(--text-secondary); }
-        .analytics-row-value { font-size: 14px; font-weight: 600; }
+
+        /* ===== XP POPUP ===== */
+        .xp-popup {
+            position:fixed; z-index:9998; pointer-events:none;
+            font-size:16px; font-weight:800; color:var(--cyan);
+            animation: xpGain 1s ease-out forwards;
+            text-shadow: 0 0 10px rgba(24,255,255,0.5);
+        }
+
+        /* ===== LEVEL UP OVERLAY ===== */
+        .levelup-overlay {
+            display:none; position:fixed; inset:0;
+            background:rgba(0,0,0,0.8); z-index:10000;
+            justify-content:center; align-items:center;
+            flex-direction: column;
+        }
+        .levelup-overlay.show { display:flex; animation:fadeIn 0.3s ease; }
+        .levelup-text {
+            font-size: 48px; font-weight: 900;
+            background: linear-gradient(135deg, var(--yellow), var(--orange), var(--accent));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: levelUp 0.6s ease;
+        }
+        .levelup-sub { font-size:16px; color:var(--text2); margin-top:8px; animation:fadeUp 0.6s ease 0.3s both; }
+        .levelup-close {
+            margin-top:20px; padding:12px 40px; border-radius:12px;
+            border:none; background:var(--accent); color:white;
+            font-size:14px; font-weight:600; font-family:inherit; cursor:pointer;
+            animation:fadeUp 0.6s ease 0.5s both;
+        }
+
+        /* ===== DAILY BONUS ===== */
+        .daily-bonus {
+            background: linear-gradient(135deg, #1a0a0a, #2a1010);
+            border: 1px solid rgba(255,51,102,0.2);
+            border-radius: 14px; padding: 12px; margin-bottom: 10px;
+            display: flex; align-items: center; gap: 10px;
+            cursor: pointer; transition: all 0.15s;
+        }
+        .daily-bonus:active { transform: scale(0.98); }
+        .daily-bonus .db-icon { font-size: 28px; animation: pulse 2s infinite; }
+        .daily-bonus .db-text { flex:1; }
+        .daily-bonus .db-title { font-size:13px; font-weight:600; color:var(--accent); }
+        .daily-bonus .db-sub { font-size:11px; color:var(--text2); }
+        .daily-bonus .db-claim {
+            padding:6px 14px; border-radius:8px; border:none;
+            background:var(--accent); color:white; font-size:11px;
+            font-weight:700; font-family:inherit; cursor:pointer;
+        }
+        .daily-bonus .db-claim.claimed {
+            background: rgba(0,230,118,0.15); color:var(--green);
+        }
 
         /* ===== STEPS ===== */
-        .steps-list { margin-top: 6px; }
+        .steps-list { margin-top:5px; }
         .step-item {
-            display: flex; align-items: center; gap: 8px;
-            padding: 7px 0; border-bottom: 1px solid var(--border); font-size: 13px;
+            display:flex; align-items:center; gap:7px;
+            padding:6px 0; border-bottom:1px solid var(--border); font-size:12px;
         }
-        .step-item:last-child { border-bottom: none; }
-        .step-checkbox {
-            width: 20px; height: 20px; border-radius: 6px;
-            border: 2px solid var(--text-muted);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.2s; flex-shrink: 0; font-size: 10px;
+        .step-item:last-child { border-bottom:none; }
+        .scheck {
+            width:20px; height:20px; border-radius:5px;
+            border:2px solid var(--muted);
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer; transition:all 0.2s; flex-shrink:0; font-size:10px;
         }
-        .step-checkbox.done { background: var(--success); border-color: var(--success); color: var(--bg-primary); }
-        .step-text { flex: 1; }
-        .step-text.done-text { text-decoration: line-through; opacity: 0.5; }
-        .step-delete { color: var(--text-muted); cursor: pointer; font-size: 14px; padding: 2px; }
-        .quick-add-step { display: flex; gap: 6px; margin-top: 6px; }
-        .quick-add-step input {
-            flex: 1; padding: 8px 10px; border-radius: 8px;
-            border: 1px solid var(--border); background: var(--bg-primary);
-            color: var(--text-primary); font-size: 12px; font-family: inherit; outline: none;
+        .scheck.done { background:var(--green); border-color:var(--green); color:var(--bg); }
+        .stext { flex:1; }
+        .stext.done-t { text-decoration:line-through; opacity:0.4; }
+        .sdel { color:var(--muted); cursor:pointer; font-size:13px; }
+        .qadd { display:flex; gap:5px; margin-top:5px; }
+        .qadd input {
+            flex:1; padding:7px 10px; border-radius:7px;
+            border:1px solid var(--border); background:var(--bg);
+            color:var(--text); font-size:12px; font-family:inherit; outline:none;
         }
-        .quick-add-step input:focus { border-color: var(--accent); }
-        .quick-add-step button {
-            padding: 8px 12px; border-radius: 8px; border: none;
-            background: var(--accent); color: white; font-size: 12px; font-family: inherit; cursor: pointer;
-        }
-
-        /* ===== EMPTY STATE ===== */
-        .empty-state { text-align: center; padding: 30px 16px; color: var(--text-muted); }
-        .empty-state .emoji { font-size: 40px; margin-bottom: 10px; }
-        .empty-state p { font-size: 13px; line-height: 1.5; }
-
-        /* ===== SETTINGS ===== */
-        .settings-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 14px; background: var(--bg-card); border-radius: 12px;
-            margin-bottom: 6px; border: 1px solid var(--border); cursor: pointer;
-            transition: all 0.15s;
-        }
-        .settings-item:active { transform: scale(0.98); background: var(--bg-card-hover); }
-        .settings-icon { font-size: 22px; }
-        .settings-label { flex: 1; font-size: 14px; font-weight: 500; }
-        .settings-hint { font-size: 11px; color: var(--text-muted); }
-
-        /* ===== DELETE BTN ===== */
-        .delete-btn {
-            padding: 4px 10px; border-radius: 6px; border: none;
-            background: rgba(233,69,96,0.12); color: var(--accent);
-            font-size: 11px; font-family: inherit; cursor: pointer;
+        .qadd input:focus { border-color:var(--accent); }
+        .qadd button {
+            padding:7px 12px; border-radius:7px; border:none;
+            background:var(--accent); color:white; font-size:12px; font-family:inherit; cursor:pointer;
         }
 
-        /* ===== NOTIFICATION BANNER ===== */
-        .notif-banner {
-            position: fixed; top: 0; left: 50%; transform: translateX(-50%);
-            width: 100%; max-width: 480px;
-            padding: 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px));
-            background: linear-gradient(135deg, var(--accent), #c0392b);
-            color: white; z-index: 3000;
-            animation: slideDown 0.3s ease; font-size: 14px; font-weight: 500;
-            display: none; text-align: center;
+        /* ===== ACHIEVEMENTS ===== */
+        .ach-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:8px; margin-bottom:12px; }
+        .ach-item {
+            text-align:center; padding:10px 4px; border-radius:10px;
+            background:var(--card); border:1px solid var(--border);
+            transition: all 0.2s;
         }
-        .notif-banner.show { display: block; }
-        @keyframes slideDown { from{transform:translateX(-50%) translateY(-100%)} to{transform:translateX(-50%) translateY(0)} }
+        .ach-item.locked { opacity:0.3; }
+        .ach-item.unlocked { border-color: rgba(255,215,64,0.3); background: rgba(255,215,64,0.05); }
+        .ach-item .ach-icon { font-size:24px; margin-bottom:2px; }
+        .ach-item .ach-name { font-size:8px; color:var(--text2); line-height:1.2; }
 
-        ::-webkit-scrollbar { width: 0; }
+        .del-btn {
+            padding:3px 8px; border-radius:5px; border:none;
+            background:rgba(255,51,102,0.1); color:var(--accent);
+            font-size:10px; font-family:inherit; cursor:pointer;
+        }
 
         /* ===== OVERVIEW QUOTE ===== */
-        .overview-quote {
-            font-style: italic; color: var(--text-secondary); font-size: 12px;
-            padding: 10px 12px; background: var(--bg-card); border-radius: 10px;
-            border-left: 3px solid var(--purple); margin-bottom: 10px; line-height: 1.4;
+        .ov-quote {
+            font-style:italic; color:var(--text2); font-size:12px;
+            padding:10px; background:var(--card); border-radius:10px;
+            border-left:3px solid var(--purple); margin-bottom:8px; line-height:1.4;
         }
 
-        /* Circular progress */
-        .circular-progress {
-            width: 56px; height: 56px; position: relative;
+        /* ===== NOTIF BANNER ===== */
+        .notif {
+            position:fixed; top:0; left:50%; transform:translateX(-50%);
+            width:100%; max-width:480px;
+            padding:14px; padding-top:calc(10px + env(safe-area-inset-top, 0px));
+            background:linear-gradient(135deg, var(--accent), #cc2244);
+            color:white; z-index:3000; display:none;
+            text-align:center; font-size:13px; font-weight:600;
         }
-        .circular-progress svg { transform: rotate(-90deg); }
-        .circular-progress .value {
-            position: absolute; inset: 0; display: flex; align-items: center;
-            justify-content: center; font-size: 12px; font-weight: 700;
-        }
+        .notif.show { display:block; animation:fadeUp 0.3s ease; }
+
+        ::-webkit-scrollbar { width:0; }
     </style>
 </head>
 <body>
 
-<div class="notif-banner" id="notifBanner"></div>
+<div class="notif" id="notif"></div>
+
+<!-- LEVEL UP OVERLAY -->
+<div class="levelup-overlay" id="levelupOverlay">
+    <div class="levelup-text" id="levelupText">УРОВЕНЬ 2!</div>
+    <div class="levelup-sub" id="levelupSub">Ты становишься сильнее 💪</div>
+    <button class="levelup-close" onclick="document.getElementById('levelupOverlay').classList.remove('show')">Продолжить</button>
+</div>
 
 <div class="app">
     <!-- HEADER -->
     <div class="app-header">
-        <div class="header-left">
-            <h1>⚡ Моя Жизнь</h1>
-            <div class="date" id="headerDate"></div>
+        <div class="header-row">
+            <div>
+                <h1>⚡ Моя Жизнь</h1>
+                <div class="header-date" id="hDate"></div>
+            </div>
+            <div style="display:flex;gap:6px">
+                <button class="header-btn" onclick="openReview()" title="Обзор дня">🌅</button>
+                <button class="header-btn" onclick="openSettings()" title="Настройки">⚙️</button>
+            </div>
         </div>
-        <div class="header-actions">
-            <button class="header-btn" onclick="openSettings()" title="Настройки">⚙️</button>
+        <div class="xp-bar-container">
+            <div class="xp-level" id="xpLevel">Ур.1</div>
+            <div class="xp-bar"><div class="xp-bar-fill" id="xpBarFill" style="width:0%"></div></div>
+            <div class="xp-text" id="xpText">0 XP</div>
         </div>
     </div>
 
-    <!-- ===== PAGE: HOME ===== -->
-    <div class="page active" id="page-home">
-        <div id="homeContent"></div>
-    </div>
-
-    <!-- ===== PAGE: GOALS ===== -->
+    <!-- HOME -->
+    <div class="page active" id="page-home"><div id="homeContent"></div></div>
+    <!-- GOALS -->
     <div class="page" id="page-goals">
-        <div class="section-title"><span class="icon">🎯</span> Мои цели</div>
+        <div class="stitle"><span>🎯</span> Мои цели</div>
         <div id="goalsList"></div>
         <button class="add-btn" onclick="openGoalModal()">+ Добавить цель</button>
     </div>
-
-    <!-- ===== PAGE: HABITS ===== -->
+    <!-- HABITS -->
     <div class="page" id="page-habits">
-        <div class="section-title"><span class="icon">✅</span> Привычки</div>
-        <div id="habitsList" class="habit-list"></div>
-        <div style="margin-top:10px;">
-            <button class="add-btn" onclick="openHabitModal()">+ Добавить привычку</button>
-        </div>
+        <div class="stitle"><span>✅</span> Привычки</div>
+        <div id="habitsList"></div>
+        <div style="margin-top:8px"><button class="add-btn" onclick="openHabitModal()">+ Добавить привычку</button></div>
     </div>
-
-    <!-- ===== PAGE: MIND ===== -->
+    <!-- MIND -->
     <div class="page" id="page-mind">
-        <div class="section-title"><span class="icon">🧠</span> Самопрограммирование</div>
-        <div id="affirmationsList"></div>
-        <button class="add-btn" onclick="openAffirmationModal()">+ Добавить установку</button>
-
-        <div class="section-title"><span class="icon">⏰</span> Напоминания</div>
-        <div id="remindersList"></div>
-        <button class="add-btn" onclick="openReminderModal()" style="margin-top:10px;">+ Добавить напоминание</button>
-
-        <div class="section-title"><span class="icon">📔</span> Дневник мыслей</div>
-        <div id="journalList"></div>
-        <button class="add-btn" onclick="openJournalModal()" style="margin-top:10px;">+ Записать мысль</button>
+        <div class="stitle"><span>🧠</span> Самопрограммирование</div>
+        <div id="affList"></div>
+        <button class="add-btn" onclick="openAffModal()">+ Добавить установку</button>
+        <div class="stitle"><span>⏰</span> Напоминания</div>
+        <div id="remList"></div>
+        <button class="add-btn" onclick="openRemModal()" style="margin-top:8px">+ Добавить напоминание</button>
+        <div class="stitle"><span>📔</span> Дневник мыслей</div>
+        <div id="journList"></div>
+        <button class="add-btn" onclick="openJournModal()" style="margin-top:8px">+ Записать мысль</button>
     </div>
-
-    <!-- ===== PAGE: ANALYTICS ===== -->
+    <!-- ANALYTICS -->
     <div class="page" id="page-analytics">
-        <div class="section-title" style="margin-top:8px;"><span class="icon">📊</span> Аналитика</div>
-        <div class="analytics-period">
-            <button class="period-btn active" onclick="setPeriod('week',this)">Неделя</button>
-            <button class="period-btn" onclick="setPeriod('month',this)">Месяц</button>
+        <div class="stitle" style="margin-top:6px"><span>📊</span> Аналитика</div>
+        <div class="aperiod">
+            <button class="aperiod-btn active" onclick="setPeriod('week',this)">Неделя</button>
+            <button class="aperiod-btn" onclick="setPeriod('month',this)">Месяц</button>
         </div>
         <div id="analyticsContent"></div>
     </div>
 
     <!-- BOTTOM NAV -->
     <div class="bottom-nav">
-        <button class="nav-item active" onclick="switchPage('home')" data-page="home">
-            <span class="nav-icon">🏠</span><span>Главная</span>
-        </button>
-        <button class="nav-item" onclick="switchPage('goals')" data-page="goals">
-            <span class="nav-icon">🎯</span><span>Цели</span>
-        </button>
-        <button class="nav-item" onclick="switchPage('habits')" data-page="habits">
-            <span class="nav-icon">✅</span><span>Привычки</span>
-        </button>
-        <button class="nav-item" onclick="switchPage('mind')" data-page="mind">
-            <span class="nav-icon">🧠</span><span>Разум</span>
-        </button>
-        <button class="nav-item" onclick="switchPage('analytics')" data-page="analytics">
-            <span class="nav-icon">📊</span><span>Аналитика</span>
-        </button>
+        <button class="nav-item active" onclick="switchPage('home')" data-page="home"><span class="nav-icon">🏠</span><span>Главная</span></button>
+        <button class="nav-item" onclick="switchPage('goals')" data-page="goals"><span class="nav-icon">🎯</span><span>Цели</span></button>
+        <button class="nav-item" onclick="switchPage('habits')" data-page="habits"><span class="nav-icon">✅</span><span>Привычки</span></button>
+        <button class="nav-item" onclick="switchPage('mind')" data-page="mind"><span class="nav-icon">🧠</span><span>Разум</span></button>
+        <button class="nav-item" onclick="switchPage('analytics')" data-page="analytics"><span class="nav-icon">📊</span><span>Стата</span></button>
     </div>
 </div>
 
 <!-- MODAL -->
-<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-    <div class="modal" id="modalContent">
-        <div class="modal-handle"></div>
-        <div id="modalBody"></div>
-    </div>
+<div class="modal-overlay" id="mOverlay" onclick="closeModal(event)">
+    <div class="modal" id="mContent"><div class="mhandle"></div><div id="mBody"></div></div>
 </div>
-
-<!-- HIDDEN FILE INPUT -->
 <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
 
 <script>
 // ===== QUOTES =====
-const QUOTES = [
-    { text: "Дисциплина — это мост между целями и достижениями.", author: "Джим Рон" },
-    { text: "Мы — то, что мы постоянно делаем. Отличие поэтому — не действие, а привычка.", author: "Аристотель" },
-    { text: "Единственный способ делать великие дела — любить то, что делаешь.", author: "Стив Джобс" },
-    { text: "Не бойся идти медленно, бойся стоять на месте.", author: "Китайская пословица" },
-    { text: "Сила воли — это мышца. Чем больше её тренируешь, тем сильнее она становится.", author: "Рой Баумайстер" },
-    { text: "Ты не можешь изменить направление ветра, но можешь настроить паруса.", author: "Джимми Дин" },
-    { text: "Лучшее время посадить дерево было 20 лет назад. Второе лучшее — сейчас.", author: "Китайская пословица" },
-    { text: "Успех — это сумма маленьких усилий, повторяемых изо дня в день.", author: "Роберт Кольер" },
-    { text: "То, что ты делаешь каждый день, важнее того, что делаешь раз в жизни.", author: "Гретчен Рубин" },
-    { text: "Мотивация — это то, что начинает тебя. Привычка — то, что заставляет продолжать.", author: "Джим Рон" },
-    { text: "Стань Change, который хочешь видеть в мире.", author: "Махатма Ганди" },
-    { text: "Каждое утро мы рождаемся заново. То, что мы делаем сегодня — самое важное.", author: "Будда" },
-    { text: "Твоя жизнь не станет лучше случайно. Она станет лучше, если ты изменишься.", author: "Джим Рон" },
-    { text: "Не считай дни — делай дни значимыми.", author: "Мохаммед Али" },
-    { text: "Самая большая слава в жизни — не в том, чтобы никогда не падать, а в том, чтобы подниматься каждый раз.", author: "Нельсон Мандела" },
-    { text: "Будь тем изменением, которое ты хочешь увидеть.", author: "Махатма Ганди" },
-    { text: "Трудности подготавливают обычных людей к необычной судьбе.", author: "К.С. Льюис" },
-    { text: "Делай что можешь, с тем что имеешь, там где ты есть.", author: "Теодор Рузвельт" },
-    { text: "Секрет успеха — начать.", author: "Марк Твен" },
-    { text: "Путь в тысячу миль начинается с одного шага.", author: "Лао-цзы" },
-    { text: "Ваше будущее создаётся тем, что вы делаете сегодня, а не завтра.", author: "Роберт Кийосаки" },
-    { text: "Повторение — мать учения и отец действия, которые делают человека мастером.", author: "Зиг Зиглар" },
-    { text: "Каждый день — это новая возможность изменить свою жизнь.", author: "Неизвестный автор" },
-    { text: "Невозможно — это всего лишь мнение.", author: "Мохаммед Али" },
-    { text: "Ваше время ограничено. Не тратьте его, живя чужой жизнью.", author: "Стив Джобс" },
-    { text: "Когда кажется, что весь мир настроен против тебя, помни: самолёт взлетает против ветра.", author: "Генри Форд" },
-    { text: "Характер — это то, что вы делаете, когда никто не смотрит.", author: "Дж. К. Линг" },
-    { text: "Терпение и настойчивость определяют успех.", author: "Бенджамин Франклин" },
-    { text: "Слабые дают обещания, сильные — выполняют.", author: "Неизвестный автор" },
-    { text: "Не важно, как медленно ты идёшь, главное — не останавливайся.", author: "Конфуций" },
-    { text: "Победитель — это梦想er, который никогда не сдаётся.", author: "Неизвестный автор" },
+const QUOTES=[
+    {t:"Дисциплина — это мост между целями и достижениями.",a:"Джим Рон"},
+    {t:"Мы — то, что мы постоянно делаем. Отличие — не действие, а привычка.",a:"Аристотель"},
+    {t:"Единственный способ делать великие дела — любить то, что делаешь.",a:"Стив Джобс"},
+    {t:"Не бойся идти медленно, бойся стоять на месте.",a:"Китайская пословица"},
+    {t:"Сила воли — это мышца. Чем больше тренируешь, тем сильнее.",a:"Рой Баумайстер"},
+    {t:"Ты не можешь изменить направление ветра, но можешь настроить паруса.",a:"Джимми Дин"},
+    {t:"Лучшее время посадить дерево было 20 лет назад. Второе лучшее — сейчас.",a:"Китайская пословица"},
+    {t:"Успех — это сумма маленьких усилий, повторяемых изо дня в день.",a:"Роберт Кольер"},
+    {t:"Мотивация начинает тебя. Привычка заставляет продолжать.",a:"Джим Рон"},
+    {t:"Каждое утро мы рождаемся заново. Что мы делаем сегодня — самое важное.",a:"Будда"},
+    {t:"Твоя жизнь не станет лучше случайно. Она станет лучше, если ты изменишься.",a:"Джим Рон"},
+    {t:"Не считай дни — делай дни значимыми.",a:"Мохаммед Али"},
+    {t:"Самая большая слава — не в том, чтобы никогда не падать, а в том, чтобы подниматься каждый раз.",a:"Нельсон Мандела"},
+    {t:"Трудности подготавливают обычных людей к необычной судьбе.",a:"К.С. Льюис"},
+    {t:"Делай что можешь, с тем что имеешь, там где ты есть.",a:"Теодор Рузвельт"},
+    {t:"Секрет успеха — начать.",a:"Марк Твен"},
+    {t:"Путь в тысячу миль начинается с одного шага.",a:"Лао-цзы"},
+    {t:"Ваше будущее создаётся тем, что вы делаете сегодня, а не завтра.",a:"Роберт Кийосаки"},
+    {t:"Когда кажется, что весь мир против тебя, помни: самолёт взлетает против ветра.",a:"Генри Форд"},
+    {t:"Характер — это то, что ты делаешь, когда никто не смотрит.",a:"Дж.К. Линг"},
+    {t:"Не важно, как медленно ты идёшь, главное — не останавливайся.",a:"Конфуций"},
+    {t:"Повторение — мать учения и отец действия.",a:"Зиг Зиглар"},
+    {t:"Каждый день — это новая возможность изменить свою жизнь.",a:"Неизвестный"},
+    {t:"Невозможно — это всего лишь мнение.",a:"Мохаммед Али"},
+    {t:"Ваше время ограничено. Не тратьте его, живя чужой жизнью.",a:"Стив Джобс"},
+    {t:"Слабые дают обещания, сильные — выполняют.",a:"Неизвестный"},
+    {t:"Если ты можешь мечтать — ты можешь это сделать.",a:"Уолт Дисней"},
+    {t:"Победа — это ещё не всё, но желание победить — это.",a:"Винс Ломбарди"},
+    {t:"Боль, которую ты чувствуешь сегодня, — это сила, которую ты почувствуешь завтра.",a:"Неизвестный"},
+    {t:"Будь тем изменением, которое хочешь увидеть в мире.",a:"Махатма Ганди"},
+    {t:"Сегодня — самый лучший день, чтобы начать.",a:"Неизвестный"},
 ];
 
-function getDailyQuote() {
-    const dayOfYear = Math.floor((new Date() - new Date(new Date().getFullYear(),0,0)) / 86400000);
-    return QUOTES[dayOfYear % QUOTES.length];
+// ===== ACHIEVEMENTS =====
+const ACHIEVEMENTS = [
+    {id:'first_goal', icon:'🎯', name:'Первая цель', desc:'Создай первую цель'},
+    {id:'first_habit', icon:'✅', name:'Первая привычка', desc:'Добавь первую привычку'},
+    {id:'first_aff', icon:'🧠', name:'Программист', desc:'Напиши первую установку'},
+    {id:'first_journal', icon:'📔', name:'Дневник', desc:'Запиши первую мысль'},
+    {id:'first_routine', icon:'📅', name:'Режим', desc:'Создай распорядок дня'},
+    {id:'streak3', icon:'🔥', name:'3 дня подряд', desc:'Серия привычек 3+ дня'},
+    {id:'streak7', icon:'⚡', name:'Неделя!', desc:'Серия привычек 7+ дней'},
+    {id:'streak30', icon:'💎', name:'Месяц!', desc:'Серия привычек 30+ дней'},
+    {id:'goals5', icon:'🏆', name:'Целеустремлённый', desc:'Создай 5 целей'},
+    {id:'journal10', icon:'✍️', name:'Писатель', desc:'10 записей в дневнике'},
+    {id:'xp100', icon:'⭐', name:'100 XP', desc:'Набери 100 очков'},
+    {id:'xp500', icon:'🌟', name:'500 XP', desc:'Набери 500 очков'},
+];
+
+// ===== XP SYSTEM =====
+const XP_PER = {habit:15, step:10, journal:20, routine:5, goal:25, affirmation:10, review:30, dailyBonus:50};
+const XP_LEVEL = [0,50,120,220,350,520,730,1000,1350,1800,2400,3200,4200,5500,7000,9000,11500,14500,18000,22000,27000];
+
+function getXPData() {
+    try { const r=localStorage.getItem('mylife_xp'); if(r) return JSON.parse(r); } catch(e){}
+    return {total:0, today:0, lastDate:'', achievements:[], dailyBonusDate:''};
+}
+function saveXPData(x) { localStorage.setItem('mylife_xp', JSON.stringify(x)); }
+let xpData = getXPData();
+
+function getLevel(total) {
+    let lvl=1;
+    for(let i=0;i<XP_LEVEL.length;i++) { if(total>=XP_LEVEL[i]) lvl=i+1; }
+    return lvl;
+}
+function getLevelProgress(total) {
+    const lvl = getLevel(total);
+    const curr = XP_LEVEL[lvl-1]||0;
+    const next = XP_LEVEL[lvl]||XP_LEVEL[XP_LEVEL.length-1]+5000;
+    return {level:lvl, curr: total-curr, need: next-curr, pct: Math.round((total-curr)/(next-curr)*100)};
 }
 
-function getRandomQuote() {
-    return QUOTES[Math.floor(Math.random() * QUOTES.length)];
+function addXP(amount, x, y) {
+    const oldLvl = getLevel(xpData.total);
+    xpData.total += amount;
+    const today = getToday();
+    if(xpData.lastDate !== today) { xpData.today = 0; xpData.lastDate = today; }
+    xpData.today += amount;
+    saveXPData(xpData);
+    renderXPBar();
+    showXPPopup(amount, x, y);
+    const newLvl = getLevel(xpData.total);
+    if(newLvl > oldLvl) {
+        setTimeout(()=> showLevelUp(newLvl), 800);
+    }
+    checkAchievements();
+}
+
+function renderXPBar() {
+    const p = getLevelProgress(xpData.total);
+    document.getElementById('xpLevel').textContent = 'Ур.' + p.level;
+    document.getElementById('xpBarFill').style.width = p.pct + '%';
+    document.getElementById('xpText').textContent = xpData.total + ' XP';
+}
+
+function showXPPopup(amount, x, y) {
+    const el = document.createElement('div');
+    el.className = 'xp-popup';
+    el.textContent = '+' + amount + ' XP';
+    el.style.left = (x||window.innerWidth/2) + 'px';
+    el.style.top = (y||200) + 'px';
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 1200);
+}
+
+function showLevelUp(level) {
+    document.getElementById('levelupText').textContent = 'УРОВЕНЬ ' + level + '!';
+    const msgs = ['Ты становишься сильнее 💪','Дисциплина — твоя суперсила ⚡','Новая высота! 🏔️','Растешь на глазах! 🚀','Невероятно! 🔥','Неудержимый! 💎'];
+    document.getElementById('levelupSub').textContent = msgs[Math.floor(Math.random()*msgs.length)];
+    document.getElementById('levelupOverlay').classList.add('show');
+    spawnConfetti();
+}
+
+function spawnConfetti() {
+    const colors = ['#ff3366','#00e676','#ffd740','#448aff','#b388ff','#ff9100','#18ffff'];
+    for(let i=0;i<40;i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti-piece';
+        c.style.left = Math.random()*100 + 'vw';
+        c.style.background = colors[Math.floor(Math.random()*colors.length)];
+        c.style.animationDelay = Math.random()*0.5 + 's';
+        c.style.animationDuration = (2+Math.random()*1.5) + 's';
+        c.style.width = (5+Math.random()*8)+'px';
+        c.style.height = (5+Math.random()*8)+'px';
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(), 4000);
+    }
+}
+
+function checkAchievements() {
+    const u = xpData.achievements;
+    function unlock(id) { if(!u.includes(id)){u.push(id);saveXPData(xpData);showNotif('🏆 Достижение разблокировано!');} }
+    if(appData.goals.length>=1) unlock('first_goal');
+    if(appData.habits.length>=1) unlock('first_habit');
+    if(appData.affirmations.length>=1) unlock('first_aff');
+    if(appData.journal.length>=1) unlock('first_journal');
+    if(appData.routine.length>=1) unlock('first_routine');
+    if(appData.goals.length>=5) unlock('goals5');
+    if(appData.journal.length>=10) unlock('journal10');
+    if(xpData.total>=100) unlock('xp100');
+    if(xpData.total>=500) unlock('xp500');
+    let maxStreak=0;
+    appData.habits.forEach(h=>{
+        let s=0;if(h.doneDates&&h.doneDates.length){const sorted=[...h.doneDates].sort().reverse();const d=new Date();
+        for(let i=0;i<365;i++){const ds=d.toISOString().split('T')[0];if(sorted.includes(ds)){s++;d.setDate(d.getDate()-1);}else{if(i===0){d.setDate(d.getDate()-1);continue;}break;}}
+        maxStreak=Math.max(maxStreak,s);}
+    });
+    if(maxStreak>=3) unlock('streak3');
+    if(maxStreak>=7) unlock('streak7');
+    if(maxStreak>=30) unlock('streak30');
 }
 
 // ===== DATA =====
-const DB_KEY = 'mylife_app_data';
-function loadData() {
-    try { const r = localStorage.getItem(DB_KEY); if(r) return JSON.parse(r); } catch(e){}
-    return { goals:[], habits:[], affirmations:[], journal:[], routine:[], reminders:[] };
-}
-function saveData(d) { localStorage.setItem(DB_KEY, JSON.stringify(d)); }
-let appData = loadData();
-if(!appData.reminders) appData.reminders = [];
+const DB='mylife_app_data';
+function load(){try{const r=localStorage.getItem(DB);if(r)return JSON.parse(r);}catch(e){}return{goals:[],habits:[],affirmations:[],journal:[],routine:[],reminders:[]};}
+function save(d){localStorage.setItem(DB,JSON.stringify(d));}
+let D=load();if(!D.reminders)D.reminders=[];
 
-// ===== HELPERS =====
-function getToday() { return new Date().toISOString().split('T')[0]; }
-function uid() { return Date.now().toString(36) + Math.random().toString(36).substr(2,5); }
+function getToday(){return new Date().toISOString().split('T')[0];}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5);}
+function fmtDate(ds){const d=new Date(ds);const days=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];const m=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];return`${days[d.getDay()]}, ${d.getDate()} ${m[d.getMonth()]}`;}
+function fmtFull(ds){const d=new Date(ds);const days=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];const m=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];return`${days[d.getDay()]}, ${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}`;}
+function dayLabel(ds){if(ds===getToday())return'Сегодня';const y=new Date(Date.now()-864e5).toISOString().split('T')[0];if(ds===y)return'Вчера';return fmtDate(ds);}
+function catLabel(c){return{health:'💪 Здоровье',finance:'💰 Финансы',relationship:'❤️ Отношения',career:'💼 Карьера',growth:'📚 Развитие',other:'📌 Другое'}[c]||'📌 Другое';}
+function getStreak(h){let s=0;if(!h.doneDates||!h.doneDates.length)return 0;const sorted=[...h.doneDates].sort().reverse();const d=new Date();for(let i=0;i<365;i++){const ds=d.toISOString().split('T')[0];if(sorted.includes(ds)){s++;d.setDate(d.getDate()-1);}else{if(i===0){d.setDate(d.getDate()-1);continue;}break;}}return s;}
+function getTimeClass(t){if(!t)return'';const h=parseInt(t);if(h>=5&&h<12)return'morning';if(h>=12&&h<17)return'day';if(h>=17&&h<21)return'evening';return'night';}
 
-function formatDateRu(ds) {
-    const d = new Date(ds);
-    const days = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
-    const months = ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
-    return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
-}
-function formatDateFull(ds) {
-    const d = new Date(ds);
-    const days = ['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];
-    const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-    return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
-}
-function getDayLabel(ds) {
-    const today = getToday();
-    const yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
-    if(ds === today) return 'Сегодня';
-    if(ds === yesterday) return 'Вчера';
-    return formatDateRu(ds);
-}
-function getCatLabel(c) {
-    return {health:'💪 Здоровье',finance:'💰 Финансы',relationship:'❤️ Отношения',career:'💼 Карьера',growth:'📚 Развитие',other:'📌 Другое'}[c] || '📌 Другое';
+// ===== NAV =====
+function switchPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));document.querySelector(`.nav-item[data-page="${p}"]`).classList.add('active');renderAll();}
+document.getElementById('hDate').textContent=fmtFull(getToday());
+
+// ===== MODAL =====
+function openM(h){document.getElementById('mBody').innerHTML=h;document.getElementById('mOverlay').classList.add('active');}
+function closeModal(e){if(e&&e.target!==document.getElementById('mOverlay'))return;document.getElementById('mOverlay').classList.remove('active');}
+function closeM(){document.getElementById('mOverlay').classList.remove('active');}
+function showNotif(t){const b=document.getElementById('notif');b.textContent=t;b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2500);}
+
+// ===== RENDER HOME =====
+function renderHome(){
+    const today=getToday();
+    const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/864e5);
+    const q=QUOTES[doy%QUOTES.length];
+    const tJ=D.journal.filter(j=>j.date===today);
+    const hToday=D.habits.filter(h=>h.doneDates&&h.doneDates.includes(today)).length;
+    const hTotal=D.habits.length;
+    const cSteps=D.goals.reduce((a,g)=>a+(g.steps||[]).filter(s=>s.done).length,0);
+    const tSteps=D.goals.reduce((a,g)=>a+(g.steps||[]).length,0);
+    const rut=[...D.routine].sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+    const rutDone=rut.filter(r=>r.doneDates&&r.doneDates.includes(today)).length;
+    let dAff='';if(D.affirmations.length)dAff=D.affirmations[doy%D.affirmations.length].text;
+    const totalI=hTotal+rut.length;const doneI=hToday+rutDone;const pct=totalI>0?Math.round(doneI/totalI*100):0;
+    const dailyClaimed=xpData.dailyBonusDate===today;
+
+    let h=`
+    <div class="quote-w">
+        <button class="qr" onclick="refreshQ()">🔄</button>
+        <div class="qt" id="hQuote">${q.t}</div>
+        <div class="qa">— ${q.a}</div>
+    </div>`;
+
+    // Daily bonus
+    if(!dailyClaimed) {
+        h+=`<div class="daily-bonus" onclick="claimDailyBonus(event)">
+            <div class="db-icon">🎁</div>
+            <div class="db-text"><div class="db-title">Ежедневный бонус!</div><div class="db-sub">Забери +${XP_PER.dailyBonus} XP за новый день</div></div>
+            <button class="db-claim">Забрать</button>
+        </div>`;
+    }
+
+    h+=`<div class="stats-grid">
+        <div class="stat-card"><div class="stat-val" style="color:var(--green)">${hToday}/${hTotal}</div><div class="stat-lbl">Привычки</div></div>
+        <div class="stat-card"><div class="stat-val" style="color:var(--blue)">${cSteps}/${tSteps}</div><div class="stat-lbl">Шаги</div></div>
+        <div class="stat-card"><div class="stat-val" style="color:var(--accent)">${rutDone}/${rut.length}</div><div class="stat-lbl">Режим</div></div>
+        <div class="stat-card"><div class="stat-val" style="color:var(--purple)">${pct}%</div><div class="stat-lbl">День</div></div>
+    </div>`;
+
+    if(dAff){h+=`<div class="stitle"><span>💡</span> Установка дня</div><div class="ov-quote">${dAff}</div>`;}
+
+    // Achievements preview
+    const unlocked=xpData.achievements||[];
+    if(unlocked.length>0){
+        h+=`<div class="stitle"><span>🏆</span> Достижения <span class="see-all" onclick="showAllAchievements()">все →</span></div>`;
+        h+=`<div class="ach-grid">`;
+        ACHIEVEMENTS.slice(0,4).forEach(a=>{
+            const u=unlocked.includes(a.id);
+            h+=`<div class="ach-item ${u?'unlocked':'locked'}"><div class="ach-icon">${a.icon}</div><div class="ach-name">${a.name}</div></div>`;
+        });
+        h+=`</div>`;
+    }
+
+    const activeRem=D.reminders.filter(r=>r.active);
+    if(activeRem.length){h+=`<div class="stitle"><span>⏰</span> Напоминания</div>`;activeRem.slice(0,3).forEach(r=>{h+=`<div class="rem-item"><span class="rem-bell">🔔</span><div class="rem-info"><div class="rem-title">${r.text}</div><div class="rem-time">${r.time||''}</div></div></div>`;});}
+
+    if(rut.length){h+=`<div class="stitle"><span>📅</span> Режим дня</div>`;rut.forEach(r=>{const done=r.doneDates&&r.doneDates.includes(today);h+=`<div class="rut-item" style="${done?'opacity:0.5':''}"><div class="rut-time ${getTimeClass(r.time)}">${r.time||'—'}</div><div class="rut-desc" style="${done?'text-decoration:line-through':''}">${r.title}</div><div class="rut-toggle ${done?'on':''}" onclick="toggleRut('${r.id}')"></div></div>`;});}
+
+    if(tJ.length){h+=`<div class="stitle"><span>📔</span> Мысли сегодня</div>`;tJ.forEach(j=>{h+=`<div class="journ-entry"><div class="journ-date">${j.mood||''} ${j.time||''}</div><div class="journ-text">${j.text}</div></div>`;});}
+
+    if(!D.goals.length&&!D.habits.length&&!D.affirmations.length&&!D.routine.length){
+        h+=`<div class="empty"><div class="e">🚀</div><p>Добро пожаловать!<br>Начни настраивать свою жизнь.</p></div>`;}
+
+    document.getElementById('homeContent').innerHTML=h;
 }
 
-// ===== NAVIGATION =====
-function switchPage(p) {
-    document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
-    document.getElementById('page-'+p).classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
-    document.querySelector(`.nav-item[data-page="${p}"]`).classList.add('active');
+function refreshQ(){const q=QUOTES[Math.floor(Math.random()*QUOTES.length)];const el=document.getElementById('hQuote');if(el){el.textContent=q.t;el.parentElement.querySelector('.qa').textContent='— '+q.a;}}
+
+function claimDailyBonus(e){
+    const today=getToday();
+    if(xpData.dailyBonusDate===today)return;
+    xpData.dailyBonusDate=today;saveXPData(xpData);
+    const rect=e.target.closest('.daily-bonus').getBoundingClientRect();
+    addXP(XP_PER.dailyBonus, rect.left+rect.width/2, rect.top);
     renderAll();
 }
 
-// ===== HEADER =====
-document.getElementById('headerDate').textContent = formatDateFull(getToday());
-
-// ===== MODAL =====
-function openModal(h) { document.getElementById('modalBody').innerHTML=h; document.getElementById('modalOverlay').classList.add('active'); }
-function closeModal(e) { if(e && e.target!==document.getElementById('modalOverlay')) return; document.getElementById('modalOverlay').classList.remove('active'); }
-function forceCloseModal() { document.getElementById('modalOverlay').classList.remove('active'); }
-
-// ===== NOTIFICATION BANNER =====
-function showNotif(text) {
-    const b = document.getElementById('notifBanner');
-    b.textContent = text; b.classList.add('show');
-    setTimeout(()=>b.classList.remove('show'), 3000);
+function showAllAchievements(){
+    const u=xpData.achievements||[];
+    let h='<h2>🏆 Достижения</h2><div class="ach-grid">';
+    ACHIEVEMENTS.forEach(a=>{
+        const un=u.includes(a.id);
+        h+=`<div class="ach-item ${un?'unlocked':'locked'}"><div class="ach-icon">${a.icon}</div><div class="ach-name">${a.name}</div></div>`;
+    });
+    h+=`</div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Закрыть</button></div>`;
+    openM(h);
 }
 
-// ===== RENDER: HOME =====
-function renderHome() {
-    const today = getToday();
-    const quote = getDailyQuote();
-    const todayJournal = appData.journal.filter(j=>j.date===today);
-    const totalGoals = appData.goals.length;
-    const completedSteps = appData.goals.reduce((a,g)=>a+(g.steps||[]).filter(s=>s.done).length,0);
-    const totalSteps = appData.goals.reduce((a,g)=>a+(g.steps||[]).length,0);
-    const habitsToday = appData.habits.filter(h=>h.doneDates&&h.doneDates.includes(today)).length;
-    const totalHabits = appData.habits.length;
-    const routine = [...appData.routine].sort((a,b)=>(a.time||'').localeCompare(b.time||''));
-    const routineDone = routine.filter(r=>r.doneDates&&r.doneDates.includes(today)).length;
-
-    // Daily affirmation
-    let dailyAff = '';
-    if(appData.affirmations.length>0) {
-        const doy = Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/86400000);
-        dailyAff = appData.affirmations[doy % appData.affirmations.length].text;
-    }
-
-    // Overall progress circle
-    const totalItems = totalHabits + routine.length;
-    const doneItems = habitsToday + routineDone;
-    const pct = totalItems > 0 ? Math.round(doneItems/totalItems*100) : 0;
-
-    let html = `
-        <div class="quote-widget">
-            <button class="quote-refresh" onclick="refreshQuote()">🔄</button>
-            <div class="quote-text" id="homeQuote">${quote.text}</div>
-            <div class="quote-author">— ${quote.author}</div>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value" style="color:var(--success)">${habitsToday}/${totalHabits}</div>
-                <div class="stat-label">Привычки</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" style="color:var(--info)">${completedSteps}/${totalSteps}</div>
-                <div class="stat-label">Шаги к целям</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" style="color:var(--accent)">${routineDone}/${routine.length}</div>
-                <div class="stat-label">Режим дня</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value" style="color:var(--purple)">${pct}%</div>
-                <div class="stat-label">День готов</div>
-            </div>
-        </div>
-    `;
-
-    if(dailyAff) {
-        html += `<div class="section-title"><span class="icon">💡</span> Установка дня</div>`;
-        html += `<div class="overview-quote">${dailyAff}</div>`;
-    }
-
-    // Active reminders (today)
-    const activeReminders = appData.reminders.filter(r=>r.active);
-    if(activeReminders.length > 0) {
-        html += `<div class="section-title"><span class="icon">⏰</span> Напоминания</div>`;
-        activeReminders.slice(0,3).forEach(r=>{
-            html += `<div class="reminder-item"><span class="reminder-bell">🔔</span><div class="reminder-info"><div class="reminder-title">${r.text}</div><div class="reminder-time-label">${r.time || 'Без времени'}</div></div></div>`;
-        });
-    }
-
-    if(routine.length > 0) {
-        html += `<div class="section-title"><span class="icon">📅</span> Режим дня</div>`;
-        routine.forEach(r=>{
-            const done = r.doneDates&&r.doneDates.includes(today);
-            html += `<div class="routine-item" style="${done?'opacity:0.5':''}"><div class="routine-time">${r.time||'—'}</div><div class="routine-desc" style="${done?'text-decoration:line-through':''}">${r.title}</div><div class="routine-toggle ${done?'on':''}" onclick="toggleRoutine('${r.id}')"></div></div>`;
-        });
-    }
-
-    if(todayJournal.length>0) {
-        html += `<div class="section-title"><span class="icon">📔</span> Мысли сегодня</div>`;
-        todayJournal.forEach(j=>{
-            html += `<div class="journal-entry"><div class="journal-date">${j.mood||''} ${j.time||''}</div><div class="journal-text">${j.text}</div></div>`;
-        });
-    }
-
-    if(totalGoals===0 && totalHabits===0 && appData.affirmations.length===0 && routine.length===0) {
-        html += `<div class="empty-state"><div class="emoji">🚀</div><p>Добро пожаловать!<br>Начни настраивать свою жизнь —<br>добавь цели, привычки и установки.</p></div>`;
-    }
-
-    document.getElementById('homeContent').innerHTML = html;
+// ===== RENDER GOALS =====
+function renderGoals(){
+    const el=document.getElementById('goalsList');
+    if(!D.goals.length){el.innerHTML=`<div class="empty"><div class="e">🎯</div><p>Пока нет целей.<br>Добавь свою первую!</p></div>`;return;}
+    let h='';D.goals.forEach(g=>{const s=g.steps||[];const d=s.filter(x=>x.done).length;const t=s.length;const p=t>0?Math.round(d/t*100):0;const cc='ct-'+(g.category||'other');
+    h+=`<div class="card" onclick="openGoalDetail('${g.id}')"><div style="display:flex;justify-content:space-between;align-items:start"><div><span class="ctag ${cc}">${catLabel(g.category).split(' ')[0]}</span><div class="card-title" style="margin-top:3px">${g.title}</div></div><button class="del-btn" onclick="event.stopPropagation();delGoal('${g.id}')">✕</button></div>${g.description?`<div class="card-sub">${g.description}</div>`:''}${t?`<div class="gprog"><div class="gprog-bar" style="width:${p}%"></div></div><div class="gmeta"><span>${d}/${t}</span><span>${p}%</span></div>`:''}</div>`;});
+    el.innerHTML=h;
 }
 
-function refreshQuote() {
-    const q = getRandomQuote();
-    const el = document.getElementById('homeQuote');
-    if(el) {
-        el.parentElement.querySelector('.quote-text').textContent = q.text;
-        el.parentElement.querySelector('.quote-author').textContent = '— ' + q.author;
-    }
+// ===== RENDER HABITS =====
+function renderHabits(){
+    const el=document.getElementById('habitsList');const today=getToday();
+    if(!D.habits.length){el.innerHTML=`<div class="empty"><div class="e">✅</div><p>Нет привычек.<br>Добавь для отслеживания!</p></div>`;return;}
+    let h='';D.habits.forEach(hb=>{const done=hb.doneDates&&hb.doneDates.includes(today);const s=getStreak(hb);
+    h+=`<div class="habit-item"><div class="hcheck ${done?'done':''}" onclick="toggleHabit('${hb.id}',event)">${done?'✓':''}</div><div class="hname">${hb.title}</div>${s>0?`<div class="hstreak">🔥${s}</div>`:''}<div class="hxp">+${XP_PER.habit}</div><button class="del-btn" onclick="delHabit('${hb.id}')">✕</button></div>`;});
+    el.innerHTML=h;
 }
 
-// ===== RENDER: GOALS =====
-function renderGoals() {
-    const el = document.getElementById('goalsList');
-    if(!appData.goals.length) { el.innerHTML = `<div class="empty-state"><div class="emoji">🎯</div><p>Пока нет целей.<br>Добавь свою первую цель!</p></div>`; return; }
-    let h = '';
-    appData.goals.forEach(g=>{
-        const steps = g.steps||[];
-        const done = steps.filter(s=>s.done).length;
-        const total = steps.length;
-        const pct = total>0 ? Math.round(done/total*100) : 0;
-        const cc = 'cat-'+(g.category||'other');
-        h += `<div class="card" onclick="openGoalDetail('${g.id}')">
-            <div style="display:flex;justify-content:space-between;align-items:start">
-                <div><span class="category-tag ${cc}">${getCatLabel(g.category).split(' ')[0]}</span>
-                <div class="card-title" style="margin-top:4px">${g.title}</div></div>
-                <button class="delete-btn" onclick="event.stopPropagation();deleteGoal('${g.id}')">✕</button>
-            </div>
-            ${g.description?`<div class="card-subtitle">${g.description}</div>`:''}
-            ${total>0?`<div class="goal-progress"><div class="goal-progress-bar" style="width:${pct}%"></div></div><div class="goal-meta"><span>${done}/${total} шагов</span><span>${pct}%</span></div>`:''}
-        </div>`;
-    });
-    el.innerHTML = h;
+// ===== RENDER AFFIRMATIONS =====
+function renderAff(){
+    const el=document.getElementById('affList');
+    if(!D.affirmations.length){el.innerHTML=`<div class="empty"><div class="e">🧠</div><p>Нет установок.<br>Запрограммируй разум!</p></div>`;return;}
+    let h='';D.affirmations.forEach(a=>{h+=`<div class="aff-card"><div class="aff-text">${a.text}</div><div class="aff-actions"><button onclick="delAff('${a.id}')">🗑</button></div></div>`;});
+    el.innerHTML=h;
 }
 
-// ===== RENDER: HABITS =====
-function renderHabits() {
-    const el = document.getElementById('habitsList');
-    const today = getToday();
-    if(!appData.habits.length) { el.innerHTML = `<div class="empty-state"><div class="emoji">✅</div><p>Нет привычек.<br>Добавь привычки для отслеживания!</p></div>`; return; }
-    let h = '';
-    appData.habits.forEach(hb=>{
-        const done = hb.doneDates&&hb.doneDates.includes(today);
-        let streak = 0;
-        if(hb.doneDates&&hb.doneDates.length>0) {
-            const sorted = [...hb.doneDates].sort().reverse();
-            const d = new Date();
-            for(let i=0;i<365;i++) {
-                const ds = d.toISOString().split('T')[0];
-                if(sorted.includes(ds)) { streak++; d.setDate(d.getDate()-1); }
-                else { if(i===0){d.setDate(d.getDate()-1);continue;} break; }
-            }
-        }
-        h += `<div class="habit-item">
-            <div class="habit-check ${done?'done':''}" onclick="toggleHabit('${hb.id}')">${done?'✓':''}</div>
-            <div class="habit-name">${hb.title}</div>
-            ${streak>0?`<div class="habit-streak">🔥${streak}</div>`:''}
-            <button class="delete-btn" onclick="deleteHabit('${hb.id}')">✕</button>
-        </div>`;
-    });
-    el.innerHTML = h;
+// ===== RENDER REMINDERS =====
+function renderRem(){
+    const el=document.getElementById('remList');
+    if(!D.reminders.length){el.innerHTML=`<div class="empty" style="padding:16px"><div class="e">⏰</div><p>Нет напоминаний</p></div>`;return;}
+    let h='';D.reminders.forEach(r=>{h+=`<div class="rem-item"><span class="rem-bell">${r.active?'🔔':'🔕'}</span><div class="rem-info"><div class="rem-title">${r.text}</div><div class="rem-time">${r.daily?'Каждый день':'Один раз'} ${r.time?'в '+r.time:''}</div></div><div class="rut-toggle ${r.active?'on':''}" onclick="toggleRem('${r.id}')"></div><button class="del-btn" onclick="delRem('${r.id}')">✕</button></div>`;});
+    el.innerHTML=h;
 }
 
-// ===== RENDER: AFFIRMATIONS =====
-function renderAffirmations() {
-    const el = document.getElementById('affirmationsList');
-    if(!appData.affirmations.length) { el.innerHTML = `<div class="empty-state"><div class="emoji">🧠</div><p>Нет установок.<br>Запрограммируй свой разум!</p></div>`; return; }
-    let h = '';
-    appData.affirmations.forEach(a=>{
-        h += `<div class="affirmation-card">
-            <div class="affirmation-text">${a.text}</div>
-            <div class="affirmation-actions">
-                <button onclick="deleteAffirmation('${a.id}')">🗑 Удалить</button>
-            </div>
-        </div>`;
-    });
-    el.innerHTML = h;
+// ===== RENDER JOURNAL =====
+function renderJourn(){
+    const el=document.getElementById('journList');
+    const sorted=[...D.journal].sort((a,b)=>(b.date+(b.time||'')).localeCompare(a.date+(a.time||'')));
+    if(!sorted.length){el.innerHTML=`<div class="empty" style="padding:16px"><div class="e">📔</div><p>Пока пусто.<br>Запиши мысли!</p></div>`;return;}
+    let h='';sorted.slice(0,12).forEach(j=>{h+=`<div class="journ-entry"><div style="display:flex;justify-content:space-between;align-items:center"><div class="journ-date">${j.mood||''} ${dayLabel(j.date)} ${j.time||''}</div><button class="del-btn" onclick="delJourn('${j.id}')">✕</button></div><div class="journ-text">${j.text}</div></div>`;});
+    el.innerHTML=h;
 }
 
-// ===== RENDER: REMINDERS =====
-function renderReminders() {
-    const el = document.getElementById('remindersList');
-    if(!appData.reminders.length) { el.innerHTML = `<div class="empty-state" style="padding:20px"><div class="emoji">⏰</div><p>Нет напоминаний</p></div>`; return; }
-    let h = '';
-    appData.reminders.forEach(r=>{
-        h += `<div class="reminder-item">
-            <span class="reminder-bell">${r.active?'🔔':'🔕'}</span>
-            <div class="reminder-info">
-                <div class="reminder-title">${r.text}</div>
-                <div class="reminder-time-label">${r.daily?'Каждый день':'Один раз'} ${r.time?'в '+r.time:''}</div>
-            </div>
-            <div class="reminder-toggle ${r.active?'on':''}" onclick="toggleReminder('${r.id}')"></div>
-            <button class="delete-btn" onclick="deleteReminder('${r.id}')">✕</button>
-        </div>`;
-    });
-    el.innerHTML = h;
-}
+// ===== RENDER ANALYTICS =====
+let aPeriod='week';
+function setPeriod(p,b){aPeriod=p;document.querySelectorAll('.aperiod-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderAnalytics();}
 
-// ===== RENDER: JOURNAL =====
-function renderJournal() {
-    const el = document.getElementById('journalList');
-    const sorted = [...appData.journal].sort((a,b)=>(b.date+(b.time||'')).localeCompare(a.date+(a.time||'')));
-    if(!sorted.length) { el.innerHTML = `<div class="empty-state" style="padding:20px"><div class="emoji">📔</div><p>Пока пусто.<br>Запиши свои мысли!</p></div>`; return; }
-    let h = '';
-    sorted.slice(0,15).forEach(j=>{
-        h += `<div class="journal-entry">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-                <div class="journal-date">${j.mood||''} ${getDayLabel(j.date)} ${j.time||''}</div>
-                <button class="delete-btn" onclick="deleteJournal('${j.id}')">✕</button>
-            </div>
-            <div class="journal-text">${j.text}</div>
-        </div>`;
-    });
-    el.innerHTML = h;
-}
+function renderAnalytics(){
+    const el=document.getElementById('analyticsContent');
+    const days=aPeriod==='week'?7:30;const today=new Date();const dates=[];
+    for(let i=days-1;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);dates.push(d.toISOString().split('T')[0]);}
 
-// ===== RENDER: ANALYTICS =====
-let analyticsPeriod = 'week';
+    const habitD=dates.map(d=>({date:d,done:D.habits.filter(h=>h.doneDates&&h.doneDates.includes(d)).length,total:D.habits.length}));
+    const hAvg=D.habits.length?Math.round(habitD.reduce((a,d)=>a+d.done,0)/(habitD.length*D.habits.length)*100):0;
+    const rutD=dates.map(d=>({date:d,done:D.routine.filter(r=>r.doneDates&&r.doneDates.includes(d)).length,total:D.routine.length}));
+    const rAvg=D.routine.length?Math.round(rutD.reduce((a,d)=>a+d.done,0)/(rutD.length*D.routine.length)*100):0;
+    const jCount=dates.reduce((a,d)=>a+D.journal.filter(j=>j.date===d).length,0);
+    const tS=D.goals.reduce((a,g)=>a+(g.steps||[]).length,0);const dS=D.goals.reduce((a,g)=>a+(g.steps||[]).filter(s=>s.done).length,0);
+    const gPct=tS>0?Math.round(dS/tS*100):0;
 
-function setPeriod(p, btn) {
-    analyticsPeriod = p;
-    document.querySelectorAll('.period-btn').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    renderAnalytics();
-}
+    const cData=aPeriod==='week'?habitD:habitD.filter((_,i)=>i%Math.ceil(days/7)===0||i===days-1).slice(-7);
+    let hChart='';cData.forEach(d=>{const p=d.total>0?(d.done/d.total*100):0;const lbl=aPeriod==='week'?['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][new Date(d.date+'T12:00').getDay()]:fmtDate(d.date);
+    hChart+=`<div class="abar-col"><div class="abar-val">${d.done}/${d.total}</div><div class="abar" style="height:${Math.max(p,3)}%"></div><div class="abar-lbl">${lbl}</div></div>`;});
 
-function renderAnalytics() {
-    const el = document.getElementById('analyticsContent');
-    const days = analyticsPeriod === 'week' ? 7 : 30;
-    const today = new Date();
-    const dates = [];
-    for(let i=days-1; i>=0; i--) {
-        const d = new Date(today);
-        d.setDate(d.getDate()-i);
-        dates.push(d.toISOString().split('T')[0]);
-    }
+    const rcData=aPeriod==='week'?rutD:rutD.filter((_,i)=>i%Math.ceil(days/7)===0||i===days-1).slice(-7);
+    let rChart='';rcData.forEach(d=>{const p=d.total>0?(d.done/d.total*100):0;const lbl=aPeriod==='week'?['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][new Date(d.date+'T12:00').getDay()]:fmtDate(d.date);
+    rChart+=`<div class="abar-col"><div class="abar-val">${d.done}/${d.total}</div><div class="abar" style="height:${Math.max(p,3)}%;background:linear-gradient(to top,var(--green),var(--cyan))"></div><div class="abar-lbl">${lbl}</div></div>`;});
 
-    // Habits completion per day
-    const habitData = dates.map(d => {
-        const done = appData.habits.filter(h=>h.doneDates&&h.doneDates.includes(d)).length;
-        return { date: d, done, total: appData.habits.length };
-    });
-    const habitAvg = appData.habits.length > 0
-        ? Math.round(habitData.reduce((a,d)=>a+d.done,0) / (habitData.length * appData.habits.length) * 100)
-        : 0;
+    const streaks=D.habits.map(h=>({t:h.title,s:getStreak(h)})).sort((a,b)=>b.s-a.s);
 
-    // Routine completion per day
-    const routineData = dates.map(d => {
-        const done = appData.routine.filter(r=>r.doneDates&&r.doneDates.includes(d)).length;
-        return { date: d, done, total: appData.routine.length };
-    });
-    const routineAvg = appData.routine.length > 0
-        ? Math.round(routineData.reduce((a,d)=>a+d.done,0) / (routineData.length * appData.routine.length) * 100)
-        : 0;
-
-    // Journal entries count per day
-    const journalData = dates.map(d => appData.journal.filter(j=>j.date===d).length);
-    const totalJournal = journalData.reduce((a,b)=>a+b,0);
-
-    // Goals progress
-    const totalSteps = appData.goals.reduce((a,g)=>a+(g.steps||[]).length, 0);
-    const doneSteps = appData.goals.reduce((a,g)=>a+(g.steps||[]).filter(s=>s.done).length, 0);
-    const goalPct = totalSteps > 0 ? Math.round(doneSteps/totalSteps*100) : 0;
-
-    // Best habit streaks
-    const habitStreaks = appData.habits.map(h => {
-        let streak = 0;
-        if(h.doneDates&&h.doneDates.length>0) {
-            const sorted = [...h.doneDates].sort().reverse();
-            const d = new Date();
-            for(let i=0;i<365;i++) {
-                const ds = d.toISOString().split('T')[0];
-                if(sorted.includes(ds)){streak++;d.setDate(d.getDate()-1);}
-                else{if(i===0){d.setDate(d.getDate()-1);continue;}break;}
-            }
-        }
-        return { title: h.title, streak };
-    }).sort((a,b)=>b.streak-a.streak);
-
-    // Chart bars
-    const chartDays = analyticsPeriod === 'week' ? 7 : 7; // show last 7 bars even for month
-    const chartData = analyticsPeriod === 'week' ? habitData : habitData.filter((_,i)=>i%Math.ceil(days/7)===0||i===days-1).slice(-7);
-    const maxHabit = Math.max(...chartData.map(d=>d.total), 1);
-
-    let habitChartHtml = '';
-    chartData.forEach(d => {
-        const pct = d.total > 0 ? (d.done/d.total*100) : 0;
-        const h = Math.max(pct, 4);
-        const label = analyticsPeriod === 'week'
-            ? ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][new Date(d.date+'T12:00:00').getDay()]
-            : formatDateRu(d.date);
-        habitChartHtml += `<div class="bar-col">
-            <div class="bar-value">${d.done}/${d.total}</div>
-            <div class="bar" style="height:${h}%"></div>
-            <div class="bar-label">${label}</div>
-        </div>`;
-    });
-
-    // Routine chart
-    const routineChartData = analyticsPeriod === 'week' ? routineData : routineData.filter((_,i)=>i%Math.ceil(days/7)===0||i===days-1).slice(-7);
-    let routineChartHtml = '';
-    routineChartData.forEach(d => {
-        const pct = d.total > 0 ? (d.done/d.total*100) : 0;
-        const h = Math.max(pct, 4);
-        const label = analyticsPeriod === 'week'
-            ? ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][new Date(d.date+'T12:00:00').getDay()]
-            : formatDateRu(d.date);
-        routineChartHtml += `<div class="bar-col">
-            <div class="bar-value">${d.done}/${d.total}</div>
-            <div class="bar" style="height:${h}%;background:linear-gradient(to top,var(--success),#00e6e6)"></div>
-            <div class="bar-label">${label}</div>
-        </div>`;
-    });
-
-    let html = '';
-
-    // Summary card
-    html += `<div class="analytics-card">
-        <div style="font-size:14px;font-weight:600;margin-bottom:10px">📋 Общий прогресс</div>
-        <div class="analytics-row">
-            <div class="analytics-row-label">🎯 Цели выполнено</div>
-            <div class="analytics-row-value" style="color:var(--accent)">${doneSteps}/${totalSteps} (${goalPct}%)</div>
-        </div>
-        <div class="analytics-row">
-            <div class="analytics-row-label">✅ Привычки (среднее)</div>
-            <div class="analytics-row-value" style="color:var(--success)">${habitAvg}%</div>
-        </div>
-        <div class="analytics-row">
-            <div class="analytics-row-label">📅 Режим (среднее)</div>
-            <div class="analytics-row-value" style="color:var(--info)">${routineAvg}%</div>
-        </div>
-        <div class="analytics-row">
-            <div class="analytics-row-label">📔 Записей в дневнике</div>
-            <div class="analytics-row-value" style="color:var(--purple)">${totalJournal}</div>
-        </div>
+    let h=`<div class="acard"><div style="font-size:13px;font-weight:700;margin-bottom:8px">📋 Прогресс</div>
+        <div class="arow"><div class="arow-l">🎯 Цели</div><div class="arow-v" style="color:var(--accent)">${dS}/${tS} (${gPct}%)</div></div>
+        <div class="arow"><div class="arow-l">✅ Привычки (ср.)</div><div class="arow-v" style="color:var(--green)">${hAvg}%</div></div>
+        <div class="arow"><div class="arow-l">📅 Режим (ср.)</div><div class="arow-v" style="color:var(--blue)">${rAvg}%</div></div>
+        <div class="arow"><div class="arow-l">📔 Записей</div><div class="arow-v" style="color:var(--purple)">${jCount}</div></div>
+        <div class="arow"><div class="arow-l">⭐ Всего XP</div><div class="arow-v" style="color:var(--cyan)">${xpData.total}</div></div>
     </div>`;
 
-    // Habits chart
-    if(appData.habits.length > 0) {
-        html += `<div class="chart-container">
-            <div class="chart-title">✅ Привычки — выполнение</div>
-            <div class="bar-chart">${habitChartHtml}</div>
-        </div>`;
-    }
+    if(D.habits.length){h+=`<div class="achart"><div class="achart-title">✅ Привычки</div><div class="abars">${hChart}</div></div>`;}
+    if(D.routine.length){h+=`<div class="achart"><div class="achart-title">📅 Режим</div><div class="abars">${rChart}</div></div>`;}
+    if(streaks.some(x=>x.s>0)){h+=`<div class="acard"><div style="font-size:13px;font-weight:700;margin-bottom:6px">🔥 Серии</div>`;streaks.filter(x=>x.s>0).forEach(x=>{h+=`<div class="arow"><div class="arow-l">${x.t}</div><div class="arow-v" style="color:var(--yellow)">🔥 ${x.s} дн.</div></div>`;});h+=`</div>`;}
 
-    // Routine chart
-    if(appData.routine.length > 0) {
-        html += `<div class="chart-container">
-            <div class="chart-title">📅 Режим дня — выполнение</div>
-            <div class="bar-chart">${routineChartHtml}</div>
-        </div>`;
-    }
+    const moods=D.journal.filter(j=>j.mood).map(j=>j.mood);
+    if(moods.length){const mc={};moods.forEach(m=>mc[m]=(mc[m]||0)+1);const top=Object.entries(mc).sort((a,b)=>b[1]-a[1])[0];
+    h+=`<div class="acard"><div style="font-size:13px;font-weight:700;margin-bottom:6px">🎭 Настроение</div><div class="arow"><div class="arow-l">Частое</div><div class="arow-v">${top[0]} (×${top[1]})</div></div></div>`;}
 
-    // Habit streaks
-    if(habitStreaks.length > 0 && habitStreaks.some(h=>h.streak>0)) {
-        html += `<div class="analytics-card">
-            <div style="font-size:14px;font-weight:600;margin-bottom:8px">🔥 Серии привычек</div>`;
-        habitStreaks.filter(h=>h.streak>0).forEach(h=>{
-            html += `<div class="analytics-row">
-                <div class="analytics-row-label">${h.title}</div>
-                <div class="analytics-row-value" style="color:var(--warning)">🔥 ${h.streak} дн.</div>
-            </div>`;
-        });
-        html += `</div>`;
-    }
-
-    // Mood analysis
-    const moods = appData.journal.filter(j=>j.mood).map(j=>j.mood);
-    if(moods.length > 0) {
-        const moodCounts = {};
-        moods.forEach(m => moodCounts[m] = (moodCounts[m]||0)+1);
-        const topMood = Object.entries(moodCounts).sort((a,b)=>b[1]-a[1])[0];
-        html += `<div class="analytics-card">
-            <div style="font-size:14px;font-weight:600;margin-bottom:8px">🎭 Анализ настроения</div>
-            <div class="analytics-row">
-                <div class="analytics-row-label">Частое настроение</div>
-                <div class="analytics-row-value">${topMood[0]} (×${topMood[1]})</div>
-            </div>
-            <div class="analytics-row">
-                <div class="analytics-row-label">Всего записей с настроением</div>
-                <div class="analytics-row-value">${moods.length}</div>
-            </div>
-        </div>`;
-    }
-
-    if(appData.goals.length===0 && appData.habits.length===0 && appData.routine.length===0) {
-        html += `<div class="empty-state"><div class="emoji">📊</div><p>Недостаточно данных.<br>Начни пользоваться приложением —<br>здесь появится аналитика!</p></div>`;
-    }
-
-    el.innerHTML = html;
+    el.innerHTML=h;
 }
 
-// ===== ACTIONS: GOALS =====
-function openGoalModal() {
-    openModal(`<h2>Новая цель</h2>
-        <div class="form-group"><label>Название</label><input type="text" id="goalTitle" placeholder="Что ты хочешь достичь?"></div>
-        <div class="form-group"><label>Описание</label><textarea id="goalDesc" placeholder="Почему это важно?"></textarea></div>
-        <div class="form-group"><label>Категория</label>
-            <select id="goalCat">
-                <option value="health">💪 Здоровье</option><option value="finance">💰 Финансы</option>
-                <option value="relationship">❤️ Отношения</option><option value="career">💼 Карьера</option>
-                <option value="growth">📚 Развитие</option><option value="other">📌 Другое</option>
-            </select>
-        </div>
-        <div class="modal-actions">
-            <button class="btn btn-secondary" onclick="forceCloseModal()">Отмена</button>
-            <button class="btn btn-primary" onclick="addGoal()">Создать</button>
-        </div>`);
-}
-function addGoal() {
-    const t = document.getElementById('goalTitle').value.trim(); if(!t)return;
-    appData.goals.push({id:uid(),title:t,description:document.getElementById('goalDesc').value.trim(),category:document.getElementById('goalCat').value,steps:[],createdAt:getToday()});
-    saveData(appData); forceCloseModal(); renderAll(); showNotif('🎯 Цель добавлена!');
-}
-function deleteGoal(id) { if(!confirm('Удалить цель?'))return; appData.goals=appData.goals.filter(g=>g.id!==id); saveData(appData); renderAll(); }
+// ===== REVIEW =====
+function openReview(){
+    const today=getToday();const hour=new Date().getHours();
+    const isMorning=hour<14;
+    const existing=D.journal.find(j=>j.date===today&&j.isReview);
+    const data=existing?JSON.parse(existing.reviewData||'{}'):{};
 
-function openGoalDetail(id) {
-    const g = appData.goals.find(x=>x.id===id); if(!g)return;
-    let sh = '';
-    (g.steps||[]).forEach((s,i)=>{
-        sh += `<div class="step-item">
-            <div class="step-checkbox ${s.done?'done':''}" onclick="toggleStep('${id}',${i})">${s.done?'✓':''}</div>
-            <div class="step-text ${s.done?'done-text':''}">${s.text}</div>
-            <div class="step-delete" onclick="deleteStep('${id}',${i})">✕</div>
-        </div>`;
-    });
-    openModal(`<h2>${g.title}</h2>
-        ${g.description?`<p style="color:var(--text-secondary);font-size:13px;margin-bottom:10px">${g.description}</p>`:''}
-        <div class="section-title" style="margin-top:0"><span class="icon">📋</span> Шаги</div>
-        <div class="steps-list">${sh}</div>
-        <div class="quick-add-step"><input type="text" id="newStepText" placeholder="Новый шаг..."><button onclick="addStep('${id}')">+</button></div>
-        <div class="modal-actions"><button class="btn btn-secondary" onclick="forceCloseModal()">Закрыть</button></div>`);
-}
-function addStep(gid) {
-    const t=document.getElementById('newStepText').value.trim(); if(!t)return;
-    const g=appData.goals.find(x=>x.id===gid); if(!g.steps)g.steps=[];
-    g.steps.push({text:t,done:false}); saveData(appData); openGoalDetail(gid); renderAll();
-}
-function toggleStep(gid,i) {
-    const g=appData.goals.find(x=>x.id===gid); g.steps[i].done=!g.steps[i].done;
-    saveData(appData); openGoalDetail(gid); renderAll();
-}
-function deleteStep(gid,i) {
-    const g=appData.goals.find(x=>x.id===gid); g.steps.splice(i,1);
-    saveData(appData); openGoalDetail(gid); renderAll();
+    openM(`<div class="review-header">
+        <div class="emoji">${isMorning?'🌅':'🌙'}</div>
+        <h2>${isMorning?'Утренний обзор':'Вечерний обзор'}</h2>
+        <p>${isMorning?'Настрой свой день правильно':'Оцени прошедший день'}</p>
+    </div>
+    ${isMorning?`
+        <div class="review-section"><label>🙏 За что я благодарен сегодня?</label><textarea id="rvGrateful" placeholder="3 вещи...">${data.grateful||''}</textarea></div>
+        <div class="review-section"><label>🎯 Главная задача дня</label><input type="text" id="rvMain" placeholder="Одно самое важное дело" value="${data.main||''}"></div>
+        <div class="review-section"><label>💡 Моя установка на сегодня</label><textarea id="rvAff" placeholder="Кем я буду сегодня?">${data.affirmation||''}</textarea></div>
+    `:`
+        <div class="review-section"><label>⭐ Что прошло хорошо?</label><textarea id="rvGood" placeholder="Поблагодари себя">${data.good||''}</textarea></div>
+        <div class="review-section"><label>🔄 Что можно улучшить?</label><textarea id="rvImprove" placeholder="Без самоосуждения — только рост">${data.improve||''}</textarea></div>
+        <div class="review-section"><label>💪 Чем я горжусь сегодня?</label><textarea id="rvProud" placeholder="Даже мелочи важны">${data.proud||''}</textarea></div>
+    `}
+    <div class="mactions">
+        <button class="btn btn-s" onclick="closeM()">Пропустить</button>
+        <button class="btn btn-p" onclick="saveReview()">Сохранить +${XP_PER.review} XP</button>
+    </div>`);
 }
 
-// ===== ACTIONS: HABITS =====
-function openHabitModal() {
-    openModal(`<h2>Новая привычка</h2>
-        <div class="form-group"><label>Название</label><input type="text" id="habitTitle" placeholder="Например: Медитация 10 мин"></div>
-        <div class="modal-actions">
-            <button class="btn btn-secondary" onclick="forceCloseModal()">Отмена</button>
-            <button class="btn btn-primary" onclick="addHabit()">Добавить</button>
-        </div>`);
-}
-function addHabit() {
-    const t=document.getElementById('habitTitle').value.trim(); if(!t)return;
-    appData.habits.push({id:uid(),title:t,doneDates:[]});
-    saveData(appData); forceCloseModal(); renderAll(); showNotif('✅ Привычка добавлена!');
-}
-function toggleHabit(id) {
-    const today=getToday(), h=appData.habits.find(x=>x.id===id);
-    if(!h.doneDates)h.doneDates=[];
-    const i=h.doneDates.indexOf(today);
-    if(i>=0)h.doneDates.splice(i,1); else h.doneDates.push(today);
-    saveData(appData); renderAll();
-}
-function deleteHabit(id) { if(!confirm('Удалить привычку?'))return; appData.habits=appData.habits.filter(x=>x.id!==id); saveData(appData); renderAll(); }
+function saveReview(){
+    const today=getToday();const hour=new Date().getHours();const isMorning=hour<14;
+    let rd={};
+    if(isMorning){rd={grateful:document.getElementById('rvGrateful').value,main:document.getElementById('rvMain').value,affirmation:document.getElementById('rvAff').value};}
+    else{rd={good:document.getElementById('rvGood').value,improve:document.getElementById('rvImprove').value,proud:document.getElementById('rvProud').value};}
 
-// ===== ACTIONS: AFFIRMATIONS =====
-function openAffirmationModal() {
-    openModal(`<h2>Новая установка</h2>
-        <div class="form-group"><label>Текст установки</label><textarea id="affText" placeholder="Я — человек, который..."></textarea></div>
-        <div class="modal-actions">
-            <button class="btn btn-secondary" onclick="forceCloseModal()">Отмена</button>
-            <button class="btn btn-primary" onclick="addAffirmation()">Добавить</button>
-        </div>`);
-}
-function addAffirmation() {
-    const t=document.getElementById('affText').value.trim(); if(!t)return;
-    appData.affirmations.push({id:uid(),text:t});
-    saveData(appData); forceCloseModal(); renderAll(); showNotif('🧠 Установка добавлена!');
-}
-function deleteAffirmation(id) { appData.affirmations=appData.affirmations.filter(x=>x.id!==id); saveData(appData); renderAll(); }
-
-// ===== ACTIONS: REMINDERS =====
-function openReminderModal() {
-    openModal(`<h2>Новое напоминание</h2>
-        <div class="form-group"><label>Текст напоминания</label><input type="text" id="remText" placeholder="О чём напомнить?"></div>
-        <div class="form-group"><label>Время</label><input type="time" id="remTime"></div>
-        <div class="form-group"><label><input type="checkbox" id="remDaily" checked> Каждый день</label></div>
-        <div class="modal-actions">
-            <button class="btn btn-secondary" onclick="forceCloseModal()">Отмена</button>
-            <button class="btn btn-primary" onclick="addReminder()">Добавить</button>
-        </div>`);
-}
-function addReminder() {
-    const t=document.getElementById('remText').value.trim(); if(!t)return;
-    appData.reminders.push({
-        id: uid(), text: t,
-        time: document.getElementById('remTime').value,
-        daily: document.getElementById('remDaily').checked,
-        active: true
-    });
-    saveData(appData); forceCloseModal(); renderAll(); showNotif('⏰ Напоминание установлено!');
-    requestNotificationPermission();
-}
-function toggleReminder(id) {
-    const r=appData.reminders.find(x=>x.id===id); r.active=!r.active;
-    saveData(appData); renderAll();
-}
-function deleteReminder(id) { appData.reminders=appData.reminders.filter(x=>x.id!==id); saveData(appData); renderAll(); }
-
-// ===== ACTIONS: JOURNAL =====
-let selectedMood = '';
-function openJournalModal() {
-    selectedMood = '';
-    openModal(`<h2>Записать мысль</h2>
-        <div class="form-group"><label>Настроение</label>
-            <div style="display:flex;gap:8px;font-size:26px;margin-bottom:6px" id="moodPicker">
-                <span onclick="pickMood('😊')" data-mood="😊" style="cursor:pointer;opacity:0.4">😊</span>
-                <span onclick="pickMood('😐')" data-mood="😐" style="cursor:pointer;opacity:0.4">😐</span>
-                <span onclick="pickMood('😔')" data-mood="😔" style="cursor:pointer;opacity:0.4">😔</span>
-                <span onclick="pickMood('🔥')" data-mood="🔥" style="cursor:pointer;opacity:0.4">🔥</span>
-                <span onclick="pickMood('💪')" data-mood="💪" style="cursor:pointer;opacity:0.4">💪</span>
-                <span onclick="pickMood('🤔')" data-mood="🤔" style="cursor:pointer;opacity:0.4">🤔</span>
-            </div>
-        </div>
-        <div class="form-group"><label>Мысль</label><textarea id="journalText" placeholder="Что на уме?"></textarea></div>
-        <div class="modal-actions">
-            <button class="btn btn-secondary" onclick="forceCloseModal()">Отмена</button>
-            <button class="btn btn-primary" onclick="addJournal()">Записать</button>
-        </div>`);
-}
-function pickMood(m) {
-    selectedMood=m;
-    document.querySelectorAll('#moodPicker span').forEach(s=>{
-        s.style.opacity=s.dataset.mood===m?'1':'0.4';
-        s.style.transform=s.dataset.mood===m?'scale(1.2)':'scale(1)';
-    });
-}
-function addJournal() {
-    const t=document.getElementById('journalText').value.trim(); if(!t)return;
-    const now=new Date();
-    appData.journal.push({id:uid(),text:t,mood:selectedMood,date:getToday(),time:now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')});
-    selectedMood=''; saveData(appData); forceCloseModal(); renderAll(); showNotif('📔 Мысль записана!');
-}
-function deleteJournal(id) { appData.journal=appData.journal.filter(x=>x.id!==id); saveData(appData); renderAll(); }
-
-// ===== ACTIONS: ROUTINE (from home page) =====
-function toggleRoutine(id) {
-    const today=getToday(), r=appData.routine.find(x=>x.id===id);
-    if(!r.doneDates)r.doneDates=[];
-    const i=r.doneDates.indexOf(today);
-    if(i>=0)r.doneDates.splice(i,1); else r.doneDates.push(today);
-    saveData(appData); renderAll();
+    const existing=D.journal.find(j=>j.date===today&&j.isReview);
+    if(existing){existing.text=isMorning?'🌅 Утренний обзор':'🌙 Вечерний обзор';existing.reviewData=JSON.stringify(rd);}
+    else{D.journal.push({id:uid(),text:isMorning?'🌅 Утренний обзор':'🌙 Вечерний обзор',mood:'',date:today,time:new Date().getHours().toString().padStart(2,'0')+':'+new Date().getMinutes().toString().padStart(2,'0'),isReview:true,reviewData:JSON.stringify(rd)});}
+    save(D);
+    addXP(XP_PER.review, window.innerWidth/2, 200);
+    closeM();renderAll();showNotif(isMorning?'🌅 Утро настроено!':'🌙 Вечерний обзор сохранён!');
 }
 
-// ===== SETTINGS & BACKUP =====
-function openSettings() {
-    openModal(`<h2>⚙️ Настройки</h2>
-        <div class="settings-item" onclick="exportData()">
-            <div class="settings-icon">💾</div>
-            <div><div class="settings-label">Экспорт данных</div><div class="settings-hint">Скачать бэкап в JSON файл</div></div>
-        </div>
-        <div class="settings-item" onclick="document.getElementById('importFile').click();forceCloseModal();">
-            <div class="settings-icon">📂</div>
-            <div><div class="settings-label">Импорт данных</div><div class="settings-hint">Восстановить из бэкапа</div></div>
-        </div>
-        <div class="settings-item" onclick="requestNotificationPermission()">
-            <div class="settings-icon">🔔</div>
-            <div><div class="settings-label">Разрешить уведомления</div><div class="settings-hint">Для напоминаний</div></div>
-        </div>
-        <div class="settings-item" onclick="openRoutineManager()">
-            <div class="settings-icon">📅</div>
-            <div><div class="settings-label">Управление режимом дня</div><div class="settings-hint">Добавить/удалить пункты</div></div>
-        </div>
-        <div class="settings-item" onclick="if(confirm('Удалить ВСЕ данные? Это необратимо!')){localStorage.clear();appData=loadData();renderAll();forceCloseModal();showNotif('🗑 Все данные удалены');}">
-            <div class="settings-icon">🗑</div>
-            <div><div class="settings-label" style="color:var(--accent)">Сбросить все данные</div><div class="settings-hint">Удалить всё безвозвратно</div></div>
-        </div>
-        <div style="text-align:center;margin-top:16px;padding:10px;font-size:11px;color:var(--text-muted)">
-            Моя Жизнь v2.0 • Данные хранятся локально
-        </div>
-    `);
-}
+// ===== ACTIONS =====
+// Goals
+function openGoalModal(){openM(`<h2>Новая цель</h2><div class="fg"><label>Название</label><input type="text" id="gTitle" placeholder="Что ты хочешь достичь?"></div><div class="fg"><label>Описание</label><textarea id="gDesc" placeholder="Почему это важно?"></textarea></div><div class="fg"><label>Категория</label><select id="gCat"><option value="health">💪 Здоровье</option><option value="finance">💰 Финансы</option><option value="relationship">❤️ Отношения</option><option value="career">💼 Карьера</option><option value="growth">📚 Развитие</option><option value="other">📌 Другое</option></select></div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Отмена</button><button class="btn btn-p" onclick="addGoal()">Создать (+${XP_PER.goal}XP)</button></div>`);}
+function addGoal(){const t=document.getElementById('gTitle').value.trim();if(!t)return;D.goals.push({id:uid(),title:t,description:document.getElementById('gDesc').value.trim(),category:document.getElementById('gCat').value,steps:[],createdAt:getToday()});save(D);closeM();renderAll();addXP(XP_PER.goal,window.innerWidth/2,300);showNotif('🎯 Цель создана!');}
+function delGoal(id){if(!confirm('Удалить цель?'))return;D.goals=D.goals.filter(g=>g.id!==id);save(D);renderAll();}
+function openGoalDetail(id){const g=D.goals.find(x=>x.id===id);if(!g)return;let sh='';(g.steps||[]).forEach((s,i)=>{sh+=`<div class="step-item"><div class="scheck ${s.done?'done':''}" onclick="togStep('${id}',${i},event)">${s.done?'✓':''}</div><div class="stext ${s.done?'done-t':''}">${s.text}</div><div class="sdel" onclick="delStep('${id}',${i})">✕</div></div>`;});
+openM(`<h2>${g.title}</h2>${g.description?`<p style="color:var(--text2);font-size:12px;margin-bottom:8px">${g.description}</p>`:''}<div class="stitle" style="margin-top:0"><span>📋</span> Шаги</div><div class="steps-list">${sh}</div><div class="qadd"><input type="text" id="nsText" placeholder="Новый шаг..."><button onclick="addStep('${id}')">+</button></div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Закрыть</button></div>`);}
+function addStep(gid){const t=document.getElementById('nsText').value.trim();if(!t)return;const g=D.goals.find(x=>x.id===gid);if(!g.steps)g.steps=[];g.steps.push({text:t,done:false});save(D);openGoalDetail(gid);renderAll();}
+function togStep(gid,i,e){const g=D.goals.find(x=>x.id===gid);g.steps[i].done=!g.steps[i].done;save(D);if(g.steps[i].done){const rect=e.target.getBoundingClientRect();addXP(XP_PER.step,rect.left+rect.width/2,rect.top);}openGoalDetail(gid);renderAll();}
+function delStep(gid,i){const g=D.goals.find(x=>x.id===gid);g.steps.splice(i,1);save(D);openGoalDetail(gid);renderAll();}
 
-function exportData() {
-    const blob = new Blob([JSON.stringify(appData, null, 2)], {type:'application/json'});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `mylife_backup_${getToday()}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-    showNotif('💾 Бэкап скачан!');
-}
+// Habits
+function openHabitModal(){openM(`<h2>Новая привычка</h2><div class="fg"><label>Название</label><input type="text" id="hTitle" placeholder="Например: Медитация 10 мин"></div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Отмена</button><button class="btn btn-p" onclick="addHabit()">Добавить</button></div>`);}
+function addHabit(){const t=document.getElementById('hTitle').value.trim();if(!t)return;D.habits.push({id:uid(),title:t,doneDates:[]});save(D);closeM();renderAll();addXP(XP_PER.habit,window.innerWidth/2,300);showNotif('✅ Привычка добавлена!');}
+function toggleHabit(id,e){const today=getToday(),h=D.habits.find(x=>x.id===id);if(!h.doneDates)h.doneDates=[];const i=h.doneDates.indexOf(today);if(i>=0)h.doneDates.splice(i,1);else{h.doneDates.push(today);const rect=e.target.getBoundingClientRect();addXP(XP_PER.habit,rect.left+rect.width/2,rect.top);spawnConfetti();}save(D);renderAll();checkAchievements();}
+function delHabit(id){if(!confirm('Удалить?'))return;D.habits=D.habits.filter(x=>x.id!==id);save(D);renderAll();}
 
-function importData(e) {
-    const file = e.target.files[0]; if(!file) return;
-    const reader = new FileReader();
-    reader.onload = function(ev) {
-        try {
-            const data = JSON.parse(ev.target.result);
-            if(data.goals !== undefined) {
-                appData = data;
-                if(!appData.reminders) appData.reminders = [];
-                saveData(appData);
-                renderAll();
-                showNotif('📂 Данные восстановлены!');
-            } else {
-                showNotif('❌ Неверный формат файла');
-            }
-        } catch(err) {
-            showNotif('❌ Ошибка чтения файла');
-        }
-    };
-    reader.readAsText(file);
-    e.target.value = '';
-}
+// Affirmations
+function openAffModal(){openM(`<h2>Новая установка</h2><div class="fg"><label>Текст</label><textarea id="aText" placeholder="Я — человек, который..."></textarea></div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Отмена</button><button class="btn btn-p" onclick="addAff()">Добавить (+${XP_PER.affirmation}XP)</button></div>`);}
+function addAff(){const t=document.getElementById('aText').value.trim();if(!t)return;D.affirmations.push({id:uid(),text:t});save(D);closeM();renderAll();addXP(XP_PER.affirmation,window.innerWidth/2,300);showNotif('🧠 Установка добавлена!');}
+function delAff(id){D.affirmations=D.affirmations.filter(x=>x.id!==id);save(D);renderAll();}
 
-// ===== ROUTINE MANAGER =====
-function openRoutineManager() {
-    forceCloseModal();
-    const sorted = [...appData.routine].sort((a,b)=>(a.time||'').localeCompare(b.time||''));
-    let h = '';
-    sorted.forEach(r=>{
-        h += `<div class="routine-item">
-            <div class="routine-time">${r.time||'—'}</div>
-            <div class="routine-desc">${r.title}</div>
-            <button class="delete-btn" onclick="deleteRoutineItem('${r.id}');openRoutineManager();">✕</button>
-        </div>`;
-    });
-    setTimeout(()=>{
-        openModal(`<h2>📅 Режим дня</h2>
-            <div id="routineListMgr">${h || '<div class="empty-state" style="padding:16px"><p>Пусто</p></div>'}</div>
-            <div style="margin-top:10px">
-                <div class="form-group"><label>Время</label><input type="time" id="newRoutineTime"></div>
-                <div class="form-group"><label>Что делаем</label><input type="text" id="newRoutineTitle" placeholder="Например: Пробежка"></div>
-                <button class="btn btn-primary" style="width:100%" onclick="addRoutineFromManager()">Добавить</button>
-            </div>
-            <div class="modal-actions"><button class="btn btn-secondary" onclick="forceCloseModal();renderAll();">Готово</button></div>`);
-    }, 350);
-}
-function addRoutineFromManager() {
-    const t=document.getElementById('newRoutineTitle').value.trim(); if(!t)return;
-    appData.routine.push({id:uid(),title:t,time:document.getElementById('newRoutineTime').value,doneDates:[]});
-    saveData(appData); openRoutineManager(); showNotif('📅 Пункт добавлен!');
-}
-function deleteRoutineItem(id) {
-    appData.routine=appData.routine.filter(x=>x.id!==id); saveData(appData);
-}
+// Reminders
+function openRemModal(){openM(`<h2>Напоминание</h2><div class="fg"><label>Текст</label><input type="text" id="rText" placeholder="О чём напомнить?"></div><div class="fg"><label>Время</label><input type="time" id="rTime"></div><div class="fg"><label><input type="checkbox" id="rDaily" checked> Каждый день</label></div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Отмена</button><button class="btn btn-p" onclick="addRem()">Добавить</button></div>`);}
+function addRem(){const t=document.getElementById('rText').value.trim();if(!t)return;D.reminders.push({id:uid(),text:t,time:document.getElementById('rTime').value,daily:document.getElementById('rDaily').checked,active:true,lastFired:''});save(D);closeM();renderAll();showNotif('⏰ Напоминание!');requestNotif();}
+function toggleRem(id){const r=D.reminders.find(x=>x.id===id);r.active=!r.active;save(D);renderAll();}
+function delRem(id){D.reminders=D.reminders.filter(x=>x.id!==id);save(D);renderAll();}
 
-// ===== NOTIFICATIONS =====
-function requestNotificationPermission() {
-    if(!('Notification' in window)) { showNotif('❌ Уведомления не поддерживаются'); return; }
-    Notification.requestPermission().then(p => {
-        if(p==='granted') showNotif('🔔 Уведомления включены!');
-        else showNotif('❌ Уведомления отклонены');
-    });
-}
+// Journal
+let selMood='';
+function openJournModal(){selMood='';openM(`<h2>Записать мысль</h2><div class="fg"><label>Настроение</label><div style="display:flex;gap:6px;font-size:24px;margin-bottom:4px" id="moodP"><span onclick="pickM('😊')" data-m="😊" style="cursor:pointer;opacity:0.4">😊</span><span onclick="pickM('😐')" data-m="😐" style="cursor:pointer;opacity:0.4">😐</span><span onclick="pickM('😔')" data-m="😔" style="cursor:pointer;opacity:0.4">😔</span><span onclick="pickM('🔥')" data-m="🔥" style="cursor:pointer;opacity:0.4">🔥</span><span onclick="pickM('💪')" data-m="💪" style="cursor:pointer;opacity:0.4">💪</span><span onclick="pickM('🤔')" data-m="🤔" style="cursor:pointer;opacity:0.4">🤔</span></div></div><div class="fg"><label>Мысль</label><textarea id="jText" placeholder="Что на уме?"></textarea></div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Отмена</button><button class="btn btn-p" onclick="addJourn()">Записать (+${XP_PER.journal}XP)</button></div>`);}
+function pickM(m){selMood=m;document.querySelectorAll('#moodP span').forEach(s=>{s.style.opacity=s.dataset.m===m?'1':'0.4';s.style.transform=s.dataset.m===m?'scale(1.2)':'scale(1)';});}
+function addJourn(){const t=document.getElementById('jText').value.trim();if(!t)return;const now=new Date();D.journal.push({id:uid(),text:t,mood:selMood,date:getToday(),time:now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')});selMood='';save(D);closeM();renderAll();addXP(XP_PER.journal,window.innerWidth/2,300);showNotif('📔 Записано!');}
+function delJourn(id){D.journal=D.journal.filter(x=>x.id!==id);save(D);renderAll();}
 
-// Check reminders every minute
-function checkReminders() {
-    if(!('Notification' in window) || Notification.permission !== 'granted') return;
-    const now = new Date();
-    const currentTime = now.getHours().toString().padStart(2,'0') + ':' + now.getMinutes().toString().padStart(2,'0');
-    const today = getToday();
+// Routine
+function toggleRut(id){const today=getToday(),r=D.routine.find(x=>x.id===id);if(!r.doneDates)r.doneDates=[];const i=r.doneDates.indexOf(today);if(i>=0)r.doneDates.splice(i,1);else{r.doneDates.push(today);addXP(XP_PER.routine,window.innerWidth/2,300);}save(D);renderAll();}
 
-    appData.reminders.forEach(r => {
-        if(!r.active || !r.time) return;
-        if(r.time === currentTime) {
-            if(r.daily || !r.lastFired || r.lastFired !== today + '_' + currentTime) {
-                new Notification('⚡ Моя Жизнь', { body: r.text, icon: '⚡', tag: r.id });
-                r.lastFired = today + '_' + currentTime;
-                saveData(appData);
-            }
-        }
-    });
-}
-setInterval(checkReminders, 60000);
-checkReminders();
+// ===== SETTINGS =====
+function openSettings(){openM(`<h2>⚙️ Настройки</h2>
+    <div class="sitem" onclick="exportData()"><div class="sicon">💾</div><div><div class="slabel">Экспорт бэкапа</div><div class="shint">Скачать JSON</div></div></div>
+    <div class="sitem" onclick="document.getElementById('importFile').click();closeM();"><div class="sicon">📂</div><div><div class="slabel">Импорт данных</div><div class="shint">Восстановить из бэкапа</div></div></div>
+    <div class="sitem" onclick="requestNotif()"><div class="sicon">🔔</div><div><div class="slabel">Уведомления</div><div class="shint">Разрешить push</div></div></div>
+    <div class="sitem" onclick="closeM();openRutMgr()"><div class="sicon">📅</div><div><div class="slabel">Режим дня</div><div class="shint">Редактировать</div></div></div>
+    <div class="sitem" onclick="showAllAchievements()"><div class="sicon">🏆</div><div><div class="slabel">Достижения</div><div class="shint">${(xpData.achievements||[]).length}/${ACHIEVEMENTS.length}</div></div></div>
+    <div class="sitem" onclick="if(confirm('Удалить ВСЕ данные?')){localStorage.clear();D=load();xpData=getXPData();renderAll();renderXPBar();closeM();showNotif('🗑 Данные удалены');}"><div class="sicon">🗑</div><div><div class="slabel" style="color:var(--accent)">Сбросить всё</div><div class="shint">Безвозвратно</div></div></div>
+    <div style="text-align:center;margin-top:12px;font-size:10px;color:var(--muted)">Моя Жизнь v3.0 ⚡ XP: ${xpData.total}</div>`);}
+
+function exportData(){const b=new Blob([JSON.stringify({appData:D,xpData},null,2)],{type:'application/json'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=`mylife_${getToday()}.json`;a.click();URL.revokeObjectURL(u);showNotif('💾 Бэкап скачан!');}
+function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(ev){try{const d=JSON.parse(ev.target.result);if(d.appData){D=d.appData;if(!D.reminders)D.reminders=[];if(d.xpData){xpData=d.xpData;saveXPData(xpData);}save(D);renderAll();renderXPBar();showNotif('📂 Восстановлено!');}else showNotif('❌ Неверный формат');}catch(err){showNotif('❌ Ошибка');}};r.readAsText(f);e.target.value='';}
+
+function openRutMgr(){closeM();const sorted=[...D.routine].sort((a,b)=>(a.time||'').localeCompare(b.time||''));let h='';sorted.forEach(r=>{h+=`<div class="rut-item"><div class="rut-time ${getTimeClass(r.time)}">${r.time||'—'}</div><div class="rut-desc">${r.title}</div><button class="del-btn" onclick="delRut('${r.id}');openRutMgr();">✕</button></div>`;});
+setTimeout(()=>{openM(`<h2>📅 Режим дня</h2><div id="rutMgr">${h||'<div class="empty" style="padding:12px"><p>Пусто</p></div>'}</div><div style="margin-top:8px"><div class="fg"><label>Время</label><input type="time" id="nrTime"></div><div class="fg"><label>Что делаем</label><input type="text" id="nrTitle" placeholder="Например: Пробежка"></div><button class="btn btn-p" style="width:100%" onclick="addRutMgr()">Добавить</button></div><div class="mactions"><button class="btn btn-s" onclick="closeM();renderAll();">Готово</button></div>`;},350);}
+function addRutMgr(){const t=document.getElementById('nrTitle').value.trim();if(!t)return;D.routine.push({id:uid(),title:t,time:document.getElementById('nrTime').value,doneDates:[]});save(D);addXP(XP_PER.routine,window.innerWidth/2,300);openRutMgr();}
+function delRut(id){D.routine=D.routine.filter(x=>x.id!==id);save(D);}
+
+function requestNotif(){if(!('Notification' in window)){showNotif('❌ Не поддерживается');return;}Notification.requestPermission().then(p=>{showNotif(p==='granted'?'🔔 Включено!':'❌ Отклонено');});}
+setInterval(()=>{if(!('Notification' in window)||Notification.permission!=='granted')return;const now=new Date();const ct=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');const today=getToday();D.reminders.forEach(r=>{if(!r.active||!r.time||r.time!==ct)return;if(!r.lastFired||r.lastFired!==today+'_'+ct){new Notification('⚡ Моя Жизнь',{body:r.text,tag:r.id});r.lastFired=today+'_'+ct;save(D);}});},60000);
 
 // ===== RENDER ALL =====
-function renderAll() {
-    renderHome();
-    renderGoals();
-    renderHabits();
-    renderAffirmations();
-    renderReminders();
-    renderJournal();
-    renderAnalytics();
-}
-renderAll();
-
-// ===== SERVICE WORKER =====
-if('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js').catch(()=>{}); }
+function renderAll(){renderHome();renderGoals();renderHabits();renderAff();renderRem();renderJourn();renderAnalytics();}
+renderAll();renderXPBar();checkAchievements();
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 </script>
-
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ff440dd6993d596',t:'MTc3OTM3MzU1Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
