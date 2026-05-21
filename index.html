@@ -2,971 +2,1077 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=yes,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Моя Жизнь">
-<meta name="theme-color" content="#080818">
-<title>Моя Жизнь</title>
+<meta name="apple-mobile-web-app-title" content="ARISE">
+<meta name="theme-color" content="#050510">
+<title>ARISE</title>
 <link rel="manifest" href="manifest.json">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{--bg:#080818;--bg2:#0e0e28;--card:#141440;--card2:#1a1a50;--tx:#e8e8f8;--tx2:#8888bb;--tx3:#555580;--red:#ff2255;--red2:#ff5577;--grn:#00dd66;--ylw:#ffcc00;--blu:#3388ff;--prp:#aa66ff;--org:#ff8800;--cyn:#00cccc;--brd:rgba(255,255,255,0.04);--safe:env(safe-area-inset-bottom,0px)}
-body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-.app{max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;padding-bottom:calc(62px + var(--safe))}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#050510;--bg2:#08081a;--card:#0a0a2a;--card2:#0e0e35;--tx:#d0d0ff;--tx2:#7070aa;--tx3:#404066;--cyan:#00e5ff;--red:#ff1744;--purple:#aa44ff;--gold:#ffd740;--blue:#448aff;--green:#00e676;--orange:#ff9100;--brd:rgba(0,229,255,0.06)}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.app{max-width:480px;margin:0 auto;padding-bottom:70px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
 @keyframes confetti{0%{transform:translateY(-100vh) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
 @keyframes xpPop{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-50px) scale(1.8)}}
-@keyframes lvlUp{0%{transform:scale(0.3);opacity:0}50%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
-@keyframes breathe{0%,100%{box-shadow:0 0 15px rgba(255,34,85,0.15)}50%{box-shadow:0 0 30px rgba(255,34,85,0.35)}}
-@keyframes glow{0%,100%{opacity:0.5}50%{opacity:1}}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
-@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes lvlUp{0%{transform:scale(0.3);opacity:0}50%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+@keyframes glow{0%,100%{border-color:rgba(0,229,255,0.1)}50%{border-color:rgba(0,229,255,0.3)}}
 
-.page{display:none;padding:6px 16px 16px;animation:fadeUp .3s ease}.page.active{display:block}
+.page{display:none;padding:8px 14px 14px;animation:fadeUp .3s ease}.page.active{display:block}
 
-/* HEADER */
-.hdr{padding:10px 16px 6px;padding-top:calc(10px + env(safe-area-inset-top,0px));position:sticky;top:0;z-index:100;background:rgba(8,8,24,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--brd)}
+.hdr{padding:10px 14px 6px;padding-top:calc(10px + env(safe-area-inset-top,0px));position:sticky;top:0;z-index:50;background:var(--bg);border-bottom:1px solid var(--brd)}
 .hdr-row{display:flex;justify-content:space-between;align-items:center}
-.hdr h1{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--red),var(--org));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hdr-date{font-size:10px;color:var(--tx2);margin-top:1px}
-.hdr-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--brd);background:var(--card);color:var(--tx2);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
-.hdr-btn:active{transform:scale(.88)}
+.hdr-row h1{font-size:18px;font-weight:800;letter-spacing:2px;color:var(--cyan)}
+.hdr-sub{font-size:9px;color:var(--tx3);letter-spacing:1px;margin-top:1px}
+.hdr-btn{width:32px;height:32px;border-radius:8px;border:1px solid var(--brd);background:var(--card);color:var(--tx2);font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.hdr-btn:active{opacity:.6}
+.rank-row{display:flex;align-items:center;gap:6px;margin-top:5px}
+.rank-badge{font-size:13px;font-weight:900;padding:2px 7px;border-radius:4px;letter-spacing:1px}
+.rk-E{color:#8d6e63;background:rgba(141,110,99,0.12)}.rk-D{color:#42a5f5;background:rgba(66,165,245,0.12)}.rk-C{color:#ab47bc;background:rgba(171,71,188,0.12)}.rk-B{color:#ffd740;background:rgba(255,215,64,0.12)}.rk-A{color:#ff1744;background:rgba(255,23,68,0.12)}.rk-S{color:#00e5ff;background:rgba(0,229,255,0.15)}
+.xp-track{flex:1;height:4px;background:var(--card);border-radius:2px;overflow:hidden}
+.xp-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--cyan),var(--purple));transition:width .8s ease}
+.xp-txt{font-size:8px;color:var(--tx3);white-space:nowrap}
 
-/* XP BAR */
-.xp-wrap{margin-top:6px;display:flex;align-items:center;gap:6px}
-.xp-lvl{background:linear-gradient(135deg,var(--red),var(--org));color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;min-width:36px;text-align:center}
-.xp-track{flex:1;height:5px;background:var(--card);border-radius:3px;overflow:hidden}
-.xp-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--red),var(--org));transition:width .8s cubic-bezier(.4,0,.2,1);position:relative}
-.xp-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);background-size:200% 100%;animation:shimmer 2s infinite}
-.xp-txt{font-size:9px;color:var(--tx3);white-space:nowrap}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:var(--bg);border-top:1px solid var(--brd);display:flex;justify-content:space-around;padding:4px 0;padding-bottom:calc(4px + env(safe-area-inset-bottom,0px));z-index:50}
+.nav-i{display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px;border:none;background:none;color:var(--tx3);font-size:8px;font-family:inherit;cursor:pointer;min-width:44px}
+.nav-ic{font-size:18px;line-height:1}
+.nav-i.on{color:var(--cyan)}
 
-/* NAV */
-.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(8,8,24,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--brd);display:flex;justify-content:space-around;padding:4px 0;padding-bottom:calc(4px + var(--safe));z-index:1000}
-.nav-i{display:flex;flex-direction:column;align-items:center;gap:1px;padding:3px 5px;border:none;background:none;color:var(--tx3);font-size:8px;font-family:inherit;cursor:pointer;border-radius:6px;transition:all .2s;min-width:46px}
-.nav-ic{font-size:19px;line-height:1;transition:transform .2s}
-.nav-i.active{color:var(--red)}
-.nav-i.active .nav-ic{transform:scale(1.15)}
+.st{font-size:13px;font-weight:700;margin:12px 0 5px;color:var(--cyan)}
 
-/* STITLE */
-.st{font-size:14px;font-weight:700;margin:14px 0 6px;display:flex;align-items:center;gap:5px}
-.st .all{margin-left:auto;font-size:10px;color:var(--red);font-weight:500;cursor:pointer}
+.sys-box{border:1px solid rgba(0,229,255,0.08);border-radius:10px;padding:10px;margin-bottom:6px;background:rgba(0,229,255,0.02)}
+.sys-label{font-size:9px;color:var(--cyan);font-weight:700;letter-spacing:1px;margin-bottom:4px}
 
-/* CARDS */
-.crd{background:var(--card);border-radius:12px;padding:12px;margin-bottom:6px;border:1px solid var(--brd);transition:all .12s;cursor:pointer;overflow:hidden}
-.crd:active{transform:scale(.98);background:var(--card2)}
-.crd-t{font-size:13px;font-weight:600;margin-bottom:2px}
-.crd-s{font-size:11px;color:var(--tx2);line-height:1.3}
+.crd{background:var(--card);border-radius:10px;padding:10px;margin-bottom:5px;border:1px solid var(--brd);cursor:pointer}
+.crd:active{background:var(--card2)}
+.abtn{width:100%;padding:9px;border-radius:8px;border:1px dashed rgba(0,229,255,0.15);background:transparent;color:var(--cyan);font-size:11px;font-weight:500;cursor:pointer;font-family:inherit;text-align:center}
+.abtn:active{background:rgba(0,229,255,0.04)}
 
-/* ADD BTN */
-.abtn{width:100%;padding:10px;border-radius:10px;border:2px dashed rgba(255,34,85,.18);background:transparent;color:var(--red);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:4px;transition:all .15s}
-.abtn:active{background:rgba(255,34,85,.05);transform:scale(.98)}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:6px}
+.sbox{background:var(--card);border:1px solid var(--brd);border-radius:8px;padding:6px;text-align:center}
+.sbox .v{font-size:16px;font-weight:800}.sbox .n{font-size:7px;color:var(--tx3);letter-spacing:.5px}
 
-/* QUOTE */
-.qw{background:linear-gradient(135deg,#12082a,#20083a);border-radius:14px;padding:14px;margin-bottom:8px;border:1px solid rgba(170,100,255,.1);position:relative;overflow:hidden}
-.qw::before{content:'';position:absolute;top:-40%;right:-20%;width:180px;height:180px;background:radial-gradient(circle,rgba(170,100,255,.08),transparent);pointer-events:none}
-.qt{font-size:12px;font-weight:500;line-height:1.5;font-style:italic;position:relative}
-.qa{font-size:10px;color:var(--prp);margin-top:5px;font-weight:600}
-.qr-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.05);border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;color:var(--tx3)}
+.qi{display:flex;align-items:center;gap:7px;padding:7px;background:var(--card);border:1px solid var(--brd);border-radius:8px;margin-bottom:3px}
+.qi.done{opacity:.5}
+.qc{width:22px;height:22px;border-radius:4px;border:2px solid var(--cyan);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:10px}
+.qc.ok{background:var(--green);border-color:var(--green);color:var(--bg)}
+.qi-info{flex:1}.qi-t{font-size:11px;font-weight:500}.qi-r{font-size:8px;color:var(--cyan)}
 
-/* STATS */
-.sg{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px}
-.sc{background:var(--card);border-radius:10px;padding:8px;border:1px solid var(--brd);text-align:center}
-.sv{font-size:20px;font-weight:800}
-.sl{font-size:8px;color:var(--tx3);margin-top:1px;text-transform:uppercase;letter-spacing:.4px}
+.boss{background:linear-gradient(135deg,#1a0000,#0a0020);border:1px solid rgba(255,23,68,0.12);border-radius:10px;padding:10px;margin-bottom:5px;cursor:pointer}
+.boss:active{opacity:.8}
+.boss .rk{font-size:8px;color:var(--orange);font-weight:700}.boss .nm{font-size:12px;font-weight:700;color:var(--red);margin-top:1px}
+.hp-bar{width:100%;height:6px;background:rgba(255,23,68,0.1);border-radius:3px;margin-top:5px;overflow:hidden}
+.hp-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--red),var(--orange));transition:width .5s}
+.hp-txt{font-size:8px;color:var(--tx3);margin-top:1px;text-align:right}
 
-/* TAGS */
-.tg{display:inline-block;padding:2px 6px;border-radius:4px;font-size:8px;font-weight:700}
-.tg-health{background:rgba(0,221,102,.1);color:var(--grn)}
-.tg-finance{background:rgba(255,204,0,.1);color:var(--ylw)}
-.tg-relationship{background:rgba(255,34,85,.1);color:var(--red)}
-.tg-career{background:rgba(51,136,255,.1);color:var(--blu)}
-.tg-growth{background:rgba(170,102,255,.1);color:var(--prp)}
-.tg-other{background:rgba(255,255,255,.04);color:var(--tx2)}
+.shgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:6px}
+.shi{text-align:center;padding:6px 2px;background:var(--card);border:1px solid rgba(170,68,255,0.08);border-radius:6px}
+.shi .ic{font-size:18px}.shi .nm{font-size:7px;color:var(--purple);margin-top:1px}
 
-/* HABIT */
-.hi{display:flex;align-items:center;gap:8px;padding:10px;background:var(--card);border-radius:10px;border:1px solid var(--brd);margin-bottom:4px;transition:all .12s}
-.hi:active{transform:scale(.98)}
-.hc{width:26px;height:26px;border-radius:50%;border:2px solid var(--tx3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0;font-size:12px}
-.hc.dn{background:var(--grn);border-color:var(--grn);color:var(--bg)}
-.hn{flex:1;font-size:12px;font-weight:500}
-.hk{font-size:9px;color:var(--ylw);font-weight:700}
-.hx{font-size:8px;color:var(--cyn);font-weight:600}
+.dg{border:1px solid rgba(0,229,255,0.08);border-radius:8px;padding:8px;margin-bottom:4px;animation:glow 3s infinite}
+.dg .rk{font-size:8px;font-weight:700}.dg .nm{font-size:11px;font-weight:600;margin-top:1px}
+.dg .pr{font-size:8px;color:var(--tx2);margin-top:2px}
+.dg-bar{width:100%;height:3px;background:var(--card);border-radius:2px;margin-top:2px;overflow:hidden}
+.dg-fill{height:100%;border-radius:2px;background:var(--cyan)}
 
-/* GOAL PROG */
-.gp{width:100%;height:4px;background:var(--bg);border-radius:2px;margin-top:6px;overflow:hidden}
-.gpb{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--red),var(--red2));transition:width .5s ease}
-.gm{display:flex;justify-content:space-between;margin-top:2px;font-size:9px;color:var(--tx3)}
+.ri{display:flex;align-items:center;gap:7px;padding:6px 8px;background:var(--card);border:1px solid var(--brd);border-radius:8px;margin-bottom:3px}
+.ri .tm{font-size:10px;font-weight:700;min-width:36px;color:var(--cyan)}.ri .ds{flex:1;font-size:11px}
+.sw{width:34px;height:20px;border-radius:10px;background:var(--tx3);position:relative;cursor:pointer;flex-shrink:0}
+.sw.on{background:var(--green)}
+.sw::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .2s}
+.sw.on::after{transform:translateX(14px)}
 
-/* AFF */
-.af{background:linear-gradient(135deg,#10062a,#1e083a);border-radius:12px;padding:12px;margin-bottom:5px;border:1px solid rgba(170,100,255,.08);position:relative;overflow:hidden}
-.aft{font-size:12px;font-weight:500;line-height:1.4;position:relative;padding-left:10px}
-.aft::before{content:'\201C';font-size:24px;color:var(--prp);position:absolute;top:-4px;left:-2px;opacity:.3}
-.afa{display:flex;gap:4px;margin-top:6px;position:relative}
-.afa button{padding:3px 8px;border-radius:5px;border:none;font-size:9px;font-family:inherit;cursor:pointer;background:rgba(255,255,255,.04);color:var(--tx2)}
+.rmi{display:flex;align-items:center;gap:7px;padding:6px 8px;background:var(--card);border:1px solid var(--brd);border-radius:8px;margin-bottom:3px}
+.rmi .mt{font-size:11px;font-weight:500}.rmi .ms{font-size:8px;color:var(--tx3)}
 
-/* ROUTINE */
-.ri{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--card);border-radius:10px;margin-bottom:4px;border:1px solid var(--brd)}
-.rt{font-size:11px;font-weight:700;min-width:40px}
-.rt.mrn{color:var(--ylw)}.rt.day{color:var(--org)}.rt.evn{color:var(--prp)}.rt.nit{color:var(--blu)}
-.rd{flex:1;font-size:12px}
-.tgl{width:38px;height:22px;border-radius:11px;background:var(--tx3);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
-.tgl.on{background:var(--grn)}
-.tgl::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .2s}
-.tgl.on::after{transform:translateX(16px)}
+.je{padding:8px;background:var(--card);border:1px solid var(--brd);border-radius:8px;margin-bottom:4px}
+.je .dt{font-size:8px;color:var(--tx3);margin-bottom:1px}.je .tx{font-size:11px;line-height:1.3;color:var(--tx2)}
 
-/* REMINDER */
-.rmi{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--card);border-radius:10px;margin-bottom:4px;border:1px solid var(--brd)}
-.rm-i{flex:1}.rm-t{font-size:12px;font-weight:500}.rm-t2{font-size:9px;color:var(--tx3)}
+.af{background:rgba(170,68,255,0.03);border:1px solid rgba(170,68,255,0.08);border-radius:8px;padding:8px;margin-bottom:4px}
+.af .at{font-size:11px;font-weight:500;line-height:1.3;padding-left:8px}
+.af .aa{margin-top:4px}
 
-/* JOURNAL */
-.je{padding:10px;background:var(--card);border-radius:10px;margin-bottom:5px;border:1px solid var(--brd)}
-.jd{font-size:9px;color:var(--tx3);margin-bottom:2px}
-.jt{font-size:12px;line-height:1.3;color:var(--tx2)}
+.db{border:1px solid rgba(0,229,255,0.12);border-radius:8px;padding:8px;margin-bottom:6px;display:flex;align-items:center;gap:6px;cursor:pointer}
+.db:active{opacity:.7}
+.db .di{font-size:20px;animation:pulse 2s infinite}.db .dt2{flex:1}.db .dt2 .dtt{font-size:11px;font-weight:600;color:var(--cyan)}.db .dt2 .dts{font-size:9px;color:var(--tx2)}
+.db .dbb{padding:4px 10px;border-radius:4px;border:none;background:var(--cyan);color:var(--bg);font-size:9px;font-weight:700;font-family:inherit;cursor:pointer}
 
-/* DAILY BONUS */
-.db{background:linear-gradient(135deg,#1a0808,#2a1010);border:1px solid rgba(255,34,85,.15);border-radius:12px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:8px;cursor:pointer;animation:breathe 3s infinite}
-.db:active{transform:scale(.97)}
-.db-i{font-size:24px;animation:pulse 2s infinite}
-.db-t{flex:1}.db-tt{font-size:12px;font-weight:600;color:var(--red)}.db-ts{font-size:10px;color:var(--tx2)}
-.db-b{padding:5px 12px;border-radius:6px;border:none;background:var(--red);color:#fff;font-size:10px;font-weight:700;font-family:inherit;cursor:pointer}
+.xbtn{padding:2px 6px;border-radius:3px;border:none;background:rgba(255,23,68,0.08);color:var(--red);font-size:8px;font-family:inherit;cursor:pointer}
+.emp{text-align:center;padding:14px 10px;color:var(--tx3)}.emp .e{font-size:28px;margin-bottom:4px}.emp p{font-size:10px;line-height:1.2}
 
-/* ACHIEVEMENTS */
-.ag{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
-.ai{text-align:center;padding:8px 2px;border-radius:8px;background:var(--card);border:1px solid var(--brd)}
-.ai.lk{opacity:.25}.ai.ul{border-color:rgba(255,204,0,.2);background:rgba(255,204,0,.03)}
-.ai-i{font-size:20px;margin-bottom:1px}.ai-n{font-size:7px;color:var(--tx2);line-height:1.1}
-
-/* REVIEW */
-.rv-h{text-align:center;padding:8px 0 12px}
-.rv-h .e{font-size:40px;margin-bottom:6px}
-.rv-h h2{font-size:18px;font-weight:700}
-.rv-h p{font-size:12px;color:var(--tx2);margin-top:3px}
-.rv-s{margin-bottom:10px}
-.rv-s label{display:block;font-size:11px;color:var(--tx2);margin-bottom:4px;font-weight:600}
-.rv-s textarea,.rv-s input[type=text]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--brd);background:var(--bg);color:var(--tx);font-size:13px;font-family:inherit;outline:none}
-.rv-s textarea{min-height:50px;resize:none}
-.rv-s textarea:focus,.rv-s input:focus{border-color:var(--red)}
-
-/* ANALYTICS */
-.ap{display:flex;gap:4px;margin-bottom:10px}
-.apb{flex:1;padding:6px;border-radius:6px;border:1px solid var(--brd);background:var(--card);color:var(--tx2);font-size:10px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .12s}
-.apb.act{background:var(--red);color:#fff;border-color:var(--red)}
-.ac{background:var(--card);border-radius:10px;padding:10px;border:1px solid var(--brd);margin-bottom:6px}
-.ac-t{font-size:11px;font-weight:600;margin-bottom:4px;color:var(--tx2)}
-.abr{display:flex;align-items:flex-end;gap:2px;height:70px}
-.abc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
-.ab{width:100%;border-radius:2px 2px 0 0;background:linear-gradient(to top,var(--red),var(--red2));min-height:2px;transition:height .5s ease}
-.abv{font-size:7px;color:var(--tx2);font-weight:600}
-.abl{font-size:7px;color:var(--tx3)}
-.ar{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--brd)}
-.ar:last-child{border-bottom:none}
-.arl{font-size:11px;color:var(--tx2)}.arv{font-size:12px;font-weight:700}
-
-/* MODAL */
-.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;justify-content:center;align-items:flex-end}
-.mo.act{display:flex;animation:fadeUp .2s ease}
-.ml{background:var(--bg2);border-radius:18px 18px 0 0;padding:12px;padding-bottom:calc(12px + var(--safe));width:100%;max-width:480px;max-height:88vh;overflow-y:auto}
-.mh{width:32px;height:3px;background:var(--tx3);border-radius:2px;margin:0 auto 10px}
-.ml h2{font-size:16px;font-weight:700;margin-bottom:10px}
-.fg{margin-bottom:8px}
-.fg label{display:block;font-size:10px;color:var(--tx2);margin-bottom:3px;font-weight:600}
-.fg input,.fg textarea,.fg select{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--brd);background:var(--bg);color:var(--tx);font-size:13px;font-family:inherit;outline:none}
-.fg input:focus,.fg textarea:focus{border-color:var(--red)}
-.fg textarea{min-height:56px;resize:vertical}
-.ma{display:flex;gap:6px;margin-top:10px}
-.bt{flex:1;padding:10px;border-radius:8px;border:none;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .12s}
-.bt:active{transform:scale(.97)}
-.bt-p{background:var(--red);color:#fff}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2000;justify-content:center;align-items:flex-end}
+.mo.on{display:flex}
+.ml{background:var(--bg2);border-radius:14px 14px 0 0;border-top:1px solid rgba(0,229,255,0.08);padding:10px;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));width:100%;max-width:480px;max-height:85vh;overflow-y:auto}
+.mh{width:30px;height:3px;background:var(--tx3);border-radius:2px;margin:0 auto 8px}
+.ml h2{font-size:14px;font-weight:700;margin-bottom:8px;color:var(--cyan)}
+.fg{margin-bottom:7px}
+.fg label{display:block;font-size:9px;color:var(--tx2);margin-bottom:2px;font-weight:600}
+.fg input,.fg textarea,.fg select{width:100%;padding:8px;border-radius:6px;border:1px solid var(--brd);background:var(--bg);color:var(--tx);font-size:13px;font-family:inherit;outline:none}
+.fg textarea{min-height:44px;resize:none}
+.ma{display:flex;gap:5px;margin-top:8px}
+.bt{flex:1;padding:9px;border-radius:6px;border:none;font-size:12px;font-weight:600;font-family:inherit;cursor:pointer}
+.bt:active{opacity:.7}
+.bt-p{background:var(--cyan);color:var(--bg);font-weight:700}
 .bt-s{background:var(--card);color:var(--tx2)}
 
-/* SETTINGS */
-.si{display:flex;align-items:center;gap:8px;padding:10px;background:var(--card);border-radius:8px;margin-bottom:4px;border:1px solid var(--brd);cursor:pointer;transition:all .12s}
-.si:active{transform:scale(.98)}
-.si-i{font-size:18px}.si-l{flex:1;font-size:12px;font-weight:500}.si-h{font-size:9px;color:var(--tx3)}
+.si{display:flex;align-items:center;gap:7px;padding:8px;background:var(--card);border:1px solid var(--brd);border-radius:6px;margin-bottom:3px;cursor:pointer}
+.si:active{opacity:.7}
+.si-i{font-size:16px}.si-l{flex:1;font-size:11px;font-weight:500}
 
-/* EMPTY */
-.emp{text-align:center;padding:20px 12px;color:var(--tx3)}
-.emp .e{font-size:32px;margin-bottom:6px}
-.emp p{font-size:11px;line-height:1.3}
-
-.db2{padding:2px 6px;border-radius:4px;border:none;background:rgba(255,34,85,.08);color:var(--red);font-size:9px;font-family:inherit;cursor:pointer}
-
-/* XP POPUP */
-.xpp{position:fixed;z-index:9998;pointer-events:none;font-size:15px;font-weight:800;color:var(--cyn);animation:xpPop 1s ease-out forwards;text-shadow:0 0 8px rgba(0,204,204,.5)}
-/* CONFETTI */
-.cfp{position:fixed;border-radius:2px;z-index:9999;pointer-events:none;animation:confetti 2.5s ease-in forwards}
-/* LEVEL UP */
-.luo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10000;justify-content:center;align-items:center;flex-direction:column}
-.luo.act{display:flex}
-.lu-t{font-size:42px;font-weight:900;background:linear-gradient(135deg,var(--ylw),var(--org),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:lvlUp .6s ease}
-.lu-s{font-size:14px;color:var(--tx2);margin-top:6px;animation:fadeUp .5s ease .3s both}
-.lu-b{margin-top:16px;padding:10px 36px;border-radius:10px;border:none;background:var(--red);color:#fff;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;animation:fadeUp .5s ease .5s both}
-/* NOTIF */
-.ntf{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;padding:12px;padding-top:calc(8px + env(safe-area-inset-top,0px));background:linear-gradient(135deg,var(--red),#cc1144);color:#fff;z-index:3000;display:none;text-align:center;font-size:12px;font-weight:600}
-.ntf.act{display:block;animation:fadeUp .3s ease}
-
-/* STEPS */
-.sli{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--brd);font-size:11px}
+.sli{display:flex;align-items:center;gap:5px;padding:4px 0;border-bottom:1px solid var(--brd);font-size:10px}
 .sli:last-child{border-bottom:none}
-.sck{width:18px;height:18px;border-radius:4px;border:2px solid var(--tx3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0;font-size:9px}
-.sck.dn{background:var(--grn);border-color:var(--grn);color:var(--bg)}
+.sck{width:16px;height:16px;border-radius:3px;border:2px solid var(--cyan);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:8px}
+.sck.ok{background:var(--green);border-color:var(--green);color:var(--bg)}
 .stx{flex:1}.stx.dt{text-decoration:line-through;opacity:.4}
-.sdl{color:var(--tx3);cursor:pointer;font-size:12px}
-.qas{display:flex;gap:4px;margin-top:4px}
-.qas input{flex:1;padding:6px 8px;border-radius:6px;border:1px solid var(--brd);background:var(--bg);color:var(--tx);font-size:11px;font-family:inherit;outline:none}
-.qas button{padding:6px 10px;border-radius:6px;border:none;background:var(--red);color:#fff;font-size:11px;font-family:inherit;cursor:pointer}
+.qas{display:flex;gap:3px;margin-top:3px}
+.qas input{flex:1;padding:5px 7px;border-radius:4px;border:1px solid var(--brd);background:var(--bg);color:var(--tx);font-size:10px;font-family:inherit;outline:none}
+.qas button{padding:5px 8px;border-radius:4px;border:none;background:var(--cyan);color:var(--bg);font-size:10px;font-family:inherit;cursor:pointer}
 
-.ovq{font-style:italic;color:var(--tx2);font-size:11px;padding:8px;background:var(--card);border-radius:8px;border-left:2px solid var(--prp);margin-bottom:6px;line-height:1.3}
+.rv-h{text-align:center;padding:6px 0 10px}.rv-h .e{font-size:36px;margin-bottom:4px}.rv-h h2{font-size:16px;font-weight:700;color:var(--cyan)}.rv-h p{font-size:11px;color:var(--tx2);margin-top:2px}
+.rv-s{margin-bottom:8px}
+.rv-s label{display:block;font-size:10px;color:var(--tx2);margin-bottom:3px;font-weight:600}
+.rv-s textarea,.rv-s input[type=text]{width:100%;padding:8px;border-radius:6px;border:1px solid var(--brd);background:var(--bg);color:var(--tx);font-size:12px;font-family:inherit;outline:none}
+.rv-s textarea{min-height:40px;resize:none}
+
+.ac{background:var(--card);border:1px solid var(--brd);border-radius:8px;padding:8px;margin-bottom:5px}
+.ac-t{font-size:10px;font-weight:600;margin-bottom:3px;color:var(--tx2)}
+.abr{display:flex;align-items:flex-end;gap:2px;height:60px}
+.abc{flex:1;display:flex;flex-direction:column;align-items:center;gap:1px}
+.ab{width:100%;border-radius:2px 2px 0 0;background:linear-gradient(to top,var(--cyan),var(--purple));min-height:2px;transition:height .5s}
+.abv{font-size:6px;color:var(--tx2);font-weight:600}.abl{font-size:6px;color:var(--tx3)}
+.ar{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--brd)}
+.ar:last-child{border-bottom:none}
+.arl{font-size:10px;color:var(--tx2)}.arv{font-size:11px;font-weight:700}
+
+.ntf{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;padding:10px;padding-top:calc(8px + env(safe-area-inset-top,0px));background:linear-gradient(135deg,var(--cyan),var(--purple));color:var(--bg);z-index:3000;display:none;text-align:center;font-size:11px;font-weight:700}
+.ntf.on{display:block}
+.xpp{position:fixed;z-index:9998;pointer-events:none;font-size:14px;font-weight:800;color:var(--gold);animation:xpPop 1s ease-out forwards;text-shadow:0 0 8px rgba(255,215,64,0.5)}
+.cfp{position:fixed;border-radius:2px;z-index:9999;pointer-events:none;animation:confetti 2.5s ease-in forwards}
+.luo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:10000;justify-content:center;align-items:center;flex-direction:column}
+.luo.on{display:flex}
+.luo .lt{font-size:36px;font-weight:900;color:var(--cyan);animation:lvlUp .6s ease;letter-spacing:3px}
+.luo .ls{font-size:13px;color:var(--tx2);margin-top:4px}
+.luo .lb{margin-top:14px;padding:8px 30px;border-radius:6px;border:1px solid var(--cyan);background:transparent;color:var(--cyan);font-size:12px;font-weight:600;font-family:inherit;cursor:pointer}
 
 ::-webkit-scrollbar{width:0}
 </style>
 </head>
 <body>
+
 <div class="ntf" id="ntf"></div>
-<div class="luo" id="luOv"><div class="lu-t" id="luT">LEVEL 2!</div><div class="lu-s" id="luS">Ты становишься сильнее</div><button class="lu-b" onclick="document.getElementById('luOv').classList.remove('act')">Продолжить</button></div>
+
+<div class="luo" id="luOv">
+<div class="lt" id="luT">ARISE</div>
+<div class="ls" id="luS"></div>
+<button class="lb" id="luBtn">ПРОДОЛЖИТЬ</button>
+</div>
 
 <div class="app">
+
 <div class="hdr">
 <div class="hdr-row">
-<div><h1>⚡ Моя Жизнь</h1><div class="hdr-date" id="hDate"></div></div>
-<div style="display:flex;gap:5px"><button class="hdr-btn" onclick="openReview()">🌅</button><button class="hdr-btn" onclick="openSettings()">⚙️</button></div>
+<div><h1>⚡ ARISE</h1><div class="hdr-sub" id="hSub"></div></div>
+<div style="display:flex;gap:4px">
+<button class="hdr-btn" id="btnReview">🌅</button>
+<button class="hdr-btn" id="btnSettings">⚙️</button>
 </div>
-<div class="xp-wrap"><div class="xp-lvl" id="xLvl">Ур.1</div><div class="xp-track"><div class="xp-fill" id="xBar" style="width:0%"></div></div><div class="xp-txt" id="xTxt">0 XP</div></div>
+</div>
+<div class="rank-row">
+<div class="rank-badge" id="rkBadge">E</div>
+<div class="xp-track"><div class="xp-fill" id="xpFill" style="width:0%"></div></div>
+<div class="xp-txt" id="xpTxt">0 XP</div>
+</div>
 </div>
 
 <div class="page active" id="pg-home"><div id="homeC"></div></div>
-<div class="page" id="pg-goals"><div class="st"><span>🎯</span> Мои цели</div><div id="goalsC"></div><button class="abtn" onclick="openGoalM()">+ Добавить цель</button></div>
-<div class="page" id="pg-habits"><div class="st"><span>✅</span> Привычки</div><div id="habitsC"></div><div style="margin-top:6px"><button class="abtn" onclick="openHabitM()">+ Добавить привычку</button></div></div>
+<div class="page" id="pg-quests"><div id="questsC"></div></div>
+<div class="page" id="pg-goals"><div id="goalsC"></div></div>
 <div class="page" id="pg-mind">
-<div class="st"><span>🧠</span> Установки</div><div id="affC"></div><button class="abtn" onclick="openAffM()">+ Добавить установку</button>
-<div class="st"><span>⏰</span> Напоминания</div><div id="remC"></div><button class="abtn" onclick="openRemM()" style="margin-top:6px">+ Напоминание</button>
-<div class="st"><span>📔</span> Дневник</div><div id="journC"></div><button class="abtn" onclick="openJournM()" style="margin-top:6px">+ Записать мысль</button>
+<div class="st">🧠 Установки</div><div id="affC"></div><button class="abtn" id="btnAddAff">+ Установка</button>
+<div class="st">⏰ Напоминания</div><div id="remC"></div><button class="abtn" id="btnAddRem" style="margin-top:4px">+ Напоминание</button>
+<div class="st">📔 Дневник</div><div id="journC"></div><button class="abtn" id="btnAddJourn" style="margin-top:4px">+ Мысль</button>
 </div>
-<div class="page" id="pg-stats"><div class="st" style="margin-top:4px"><span>📊</span> Статистика</div><div class="ap"><button class="apb act" id="pw" onclick="setPer('week')">Неделя</button><button class="apb" id="pm" onclick="setPer('month')">Месяц</button></div><div id="statsC"></div></div>
+<div class="page" id="pg-stats"><div id="statsC"></div></div>
 
 <div class="nav">
-<button class="nav-i active" onclick="goPage('home')" data-p="home"><span class="nav-ic">🏠</span><span>Главная</span></button>
-<button class="nav-i" onclick="goPage('goals')" data-p="goals"><span class="nav-ic">🎯</span><span>Цели</span></button>
-<button class="nav-i" onclick="goPage('habits')" data-p="habits"><span class="nav-ic">✅</span><span>Привычки</span></button>
-<button class="nav-i" onclick="goPage('mind')" data-p="mind"><span class="nav-ic">🧠</span><span>Разум</span></button>
-<button class="nav-i" onclick="goPage('stats')" data-p="stats"><span class="nav-ic">📊</span><span>Стата</span></button>
-</div>
+<button class="nav-i on" data-p="home"><span class="nav-ic">🏠</span><span>Статус</span></button>
+<button class="nav-i" data-p="quests"><span class="nav-ic">⚔️</span><span>Квесты</span></button>
+<button class="nav-i" data-p="goals"><span class="nav-ic">👹</span><span>Боссы</span></button>
+<button class="nav-i" data-p="mind"><span class="nav-ic">🧠</span><span>Разум</span></button>
+<button class="nav-i" data-p="stats"><span class="nav-ic">📊</span><span>Лог</span></button>
 </div>
 
-<div class="mo" id="mOv" onclick="cModal(event)">
+</div>
+
+<div class="mo" id="mOv">
 <div class="ml"><div class="mh"></div><div id="mBd"></div></div>
 </div>
-<input type="file" id="impF" accept=".json" style="display:none" onchange="impData(event)">
+
+<input type="file" id="impF" accept=".json" style="display:none">
 
 <script>
-// ========== QUOTES ==========
-var QUOTES=[
-{t:"Дисциплина — мост между целями и достижениями.",a:"Джим Рон"},
-{t:"Мы — то, что постоянно делаем. Отличие — привычка.",a:"Аристотель"},
-{t:"Единственный способ делать великие дела — любить то, что делаешь.",a:"Стив Джобс"},
-{t:"Не бойся идти медленно, бойся стоять на месте.",a:"Китайская пословица"},
-{t:"Ты не можешь изменить ветер, но можешь настроить паруса.",a:"Джимми Дин"},
-{t:"Лучшее время посадить дерево было 20 лет назад. Теперь — сейчас.",a:"Китайская пословица"},
-{t:"Успех — сумма маленьких усилий, повторяемых изо дня в день.",a:"Роберт Кольер"},
-{t:"Мотивация начинает. Привычка заставляет продолжать.",a:"Джим Рон"},
-{t:"Каждое утро мы рождаемся заново. Что делаем сегодня — самое важное.",a:"Будда"},
-{t:"Твоя жизнь не станет лучше случайно. Она станет лучше, если ты изменишься.",a:"Джим Рон"},
-{t:"Не считай дни — делай дни значимыми.",a:"Мохаммед Али"},
-{t:"Самая большая слава — подниматься каждый раз, когда падаешь.",a:"Нельсон Мандела"},
-{t:"Делай что можешь, с тем что имеешь, там где ты есть.",a:"Теодор Рузвельт"},
-{t:"Секрет успеха — начать.",a:"Марк Твен"},
-{t:"Путь в тысячу миль начинается с одного шага.",a:"Лао-цзы"},
-{t:"Ваше будущее создаётся тем, что вы делаете сегодня.",a:"Роберт Кийосаки"},
-{t:"Когда мир против тебя — помни, самолёт взлетает против ветра.",a:"Генри Форд"},
-{t:"Не важно как медленно идёшь — главное не останавливайся.",a:"Конфуций"},
-{t:"Невозможно — это всего лишь мнение.",a:"Мохаммед Али"},
-{t:"Если можешь мечтать — можешь это сделать.",a:"Уолт Дисней"},
-{t:"Сегодня — лучший день чтобы начать.",a:"Неизвестный"},
-{t:"Дискомфорт — знак роста. Двигайся туда, где страшно.",a:"Неизвестный"},
-{t:"Слабые дают обещания. Сильные — выполняют.",a:"Неизвестный"},
-{t:"Каждый день — новая возможность изменить жизнь.",a:"Неизвестный"},
-{t:"Боль сегодня — сила завтра.",a:"Неизвестный"},
-{t:"Первая победа — над собой. Всё остальное — следствие.",a:"Платон"},
-{t:"Характер — то, что делаешь, когда никто не смотрит.",a:"Дж.К. Линг"},
-{t:"Привычки формируют характер, а характер — судьбу.",a:"Джон Драйден"},
-{t:"Будь изменением, которое хочешь увидеть.",a:"Махатма Ганди"},
-{t:"Не завтра. Не потом. Сейчас.",a:"Неизвестный"}
+// ====== HELPERS: no inline onclick, use addEventListener ======
+
+function $(id){return document.getElementById(id)}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5)}
+function today(){return new Date().toISOString().split("T")[0]}
+
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+
+// ====== DATA ======
+function loadD(){
+  try{var r=localStorage.getItem("arise5");if(r)return JSON.parse(r)}catch(e){}
+  return{goals:[],habits:[],affirms:[],journal:[],routine:[],reminders:[],dailyQuests:[],dungeons:[],shadows:[]}
+}
+function saveD(){localStorage.setItem("arise5",JSON.stringify(D))}
+
+function loadXP(){
+  try{var r=localStorage.getItem("arise5_xp");if(r)return JSON.parse(r)}catch(e){}
+  return{total:0,today:0,lastDate:"",dailyDate:"",stats:{str:10,agi:10,int:10,end:10,per:10,wil:10}}
+}
+function saveXP(){localStorage.setItem("arise5_xp",JSON.stringify(X))}
+
+var D=loadD();
+var X=loadXP();
+
+// ====== QUOTES ======
+var QS=[
+"Вставай. Тебе не нужно быть тем, кого создали другие.",
+"Слабость — это выбор. Сила — тоже.",
+"Уровень — это не просто число. Это доказательство твоей боли.",
+"ARISE. Восстань из тьмы.",
+"Дисциплина — мост между целями и достижениями.",
+"Я один справлюсь.",
+"Каждый день ты выбираешь: быть жертвой или охотником.",
+"Привычки формируют характер. Характер — судьбу.",
+"Мотивация начинается. Привычка заставляет продолжать.",
+"Секрет успеха — начать.",
+"Путь в тысячу миль начинается с одного шага.",
+"Не завтра. Не потом. Сейчас.",
+"Боль сегодня — сила завтра.",
+"Первый шаг к силе — признать свою слабость.",
+"Твои тени — твои побеждённые слабости.",
+"Лучшее время начать — сейчас.",
+"Не бойся идти медленно, бойся стоять на месте.",
+"Невозможно — это всего лишь мнение.",
+"Тот, кто побеждает себя, сильнейший из воинов.",
+"Будь изменением, которое хочешь увидеть.",
+"Успех — сумма маленьких усилий каждый день.",
+"Если можешь мечтать — можешь это сделать.",
+"Когда мир против тебя — самолёт взлетает против ветра.",
+"Сегодня — лучший день, чтобы начать.",
+"Твои привычки — твои теневые воины.",
+"Каждое утро мы рождаемся заново.",
+"Первый шаг сделан. Остальные будет легче.",
+"Делай что можешь, с тем что имеешь, там где ты есть.",
+"Мы — то, что постоянно делаем.",
+"Вставай. Охота начинается."
 ];
+function getQuote(){var d=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/864e5);return QS[d%QS.length]}
 
-// ========== ACHIEVEMENTS ==========
-var ACHS=[
-{id:"fg",i:"🎯",n:"Первая цель"},
-{id:"fh",i:"✅",n:"Первая привычка"},
-{id:"fa",i:"🧠",n:"Программист"},
-{id:"fj",i:"📔",n:"Дневник"},
-{id:"fr",i:"📅",n:"Режим"},
-{id:"s3",i:"🔥",n:"3 дня подряд"},
-{id:"s7",i:"⚡",n:"Неделя!"},
-{id:"s30",i:"💎",n:"Месяц!"},
-{id:"g5",i:"🏆",n:"5 целей"},
-{id:"j10",i:"✍️",n:"Писатель"},
-{id:"x1",i:"⭐",n:"100 XP"},
-{id:"x5",i:"🌟",n:"500 XP"}
-];
+// ====== RANK ======
+var RANKS=[{r:"E",min:0},{r:"D",min:100},{r:"C",min:350},{r:"B",min:700},{r:"A",min:1200},{r:"S",min:2000}];
+function getRank(){var r=RANKS[0];for(var i=0;i<RANKS.length;i++){if(X.total>=RANKS[i].min)r=RANKS[i]}return r}
+var XPLV=[0,50,120,220,350,520,730,1000,1350,1800,2400,3200,4200,5500,7000,9000];
+function getLv(){var l=1;for(var i=0;i<XPLV.length;i++){if(X.total>=XPLV[i])l=i+1}return l}
+function getLvPct(){var l=getLv();var c=XPLV[l-1]||0;var n=XPLV[l]||(XPLV[XPLV.length-1]+5000);return Math.round((X.total-c)/(n-c)*100)}
 
-// ========== XP SYSTEM ==========
-var XPR={habit:15,step:10,journal:20,routine:5,goal:25,affirmation:10,review:30,daily:50};
-var XPLV=[0,50,120,220,350,520,730,1000,1350,1800,2400,3200,4200,5500,7000,9000,11500,14500,18000,22000,27000];
+// ====== STATS ======
+var STATS=[{k:"str",n:"СИЛ",i:"⚔️"},{k:"agi",n:"ЛОВ",i:"🏃"},{k:"int",n:"ИНТ",i:"🧠"},{k:"end",n:"ВЫН",i:"❤️"},{k:"per",n:"ВОС",i:"👁️"},{k:"wil",n:"ВОЛЯ",i:"💎"}];
+var STAT_CLR={str:"#ff1744",agi:"#00e676",int:"#448aff",end:"#ff9100",per:"#aa44ff",wil:"#00e5ff"};
 
-function gXP(){try{var r=localStorage.getItem("ml_xp");if(r)return JSON.parse(r)}catch(e){}return{total:0,today:0,lastDate:"",achs:[],dailyDate:""}}
-function sXP(x){localStorage.setItem("ml_xp",JSON.stringify(x))}
-var xpD=gXP();
+// ====== SHADOW NAMES ======
+var SHNAMES=["Igris","Tank","Iron","Tusk","Beru","Kaisel","Bellion","Gran","Fang","Goth","Jima","Rima","Metus","Nanna","Karg","Tark","Volk","Zar","Ash","Venom"];
 
-function getLv(t){var l=1;for(var i=0;i<XPLV.length;i++){if(t>=XPLV[i])l=i+1}return l}
-function getLvP(t){var l=getLv(t);var c=XPLV[l-1]||0;var n=XPLV[l]||(XPLV[XPLV.length-1]+5000);return{level:l,curr:t-c,need:n-c,pct:Math.round((t-c)/(n-c)*100)}}
+// ====== XP ======
+var XPR={habit:15,step:10,journal:20,routine:5,goal:25,affirm:10,review:30,daily:50,quest:20,dungeon:15};
 
-function addXP(amt,px,py){
-    var oldLv=getLv(xpD.total);
-    xpD.total+=amt;
-    var td=today();
-    if(xpD.lastDate!==td){xpD.today=0;xpD.lastDate=td}
-    xpD.today+=amt;
-    sXP(xpD);
-    renderXP();
-    showXPPop(amt,px,py);
-    var newLv=getLv(xpD.total);
-    if(newLv>oldLv){setTimeout(function(){showLvlUp(newLv)},800)}
-    checkAchs();
+function addXP(amt,el){
+  var oldR=getRank().r;
+  X.total+=amt;
+  var td=today();
+  if(X.lastDate!==td){X.today=0;X.lastDate=td}
+  X.today+=amt;
+  saveXP();
+  renderXPBar();
+  showXPPop(amt,el);
+  var newR=getRank().r;
+  if(newR!==oldR){setTimeout(function(){showLvlUp(newR)},600)}
 }
 
-function renderXP(){
-    var p=getLvP(xpD.total);
-    document.getElementById("xLvl").textContent="Ур."+p.level;
-    document.getElementById("xBar").style.width=p.pct+"%";
-    document.getElementById("xTxt").textContent=xpD.total+" XP";
+function showXPPop(amt,el){
+  var p=document.createElement("div");
+  p.className="xpp";
+  p.textContent="+"+amt+" XP";
+  var x=window.innerWidth/2, y=180;
+  if(el&&el.getBoundingClientRect){var r=el.getBoundingClientRect();x=r.left+r.width/2;y=r.top}
+  p.style.left=x+"px";p.style.top=y+"px";
+  document.body.appendChild(p);
+  setTimeout(function(){p.remove()},1200);
 }
 
-function showXPPop(a,x,y){
-    var el=document.createElement("div");
-    el.className="xpp";
-    el.textContent="+"+a+" XP";
-    el.style.left=(x||(window.innerWidth/2))+"px";
-    el.style.top=(y||180)+"px";
-    document.body.appendChild(el);
-    setTimeout(function(){el.remove()},1200);
-}
-
-function showLvlUp(lv){
-    document.getElementById("luT").textContent="УРОВЕНЬ "+lv+"!";
-    var ms=["Ты становишься сильнее 💪","Дисциплина — суперсила ⚡","Новая высота! 🏔️","Растешь! 🚀","Невероятно! 🔥","Неудержимый! 💎"];
-    document.getElementById("luS").textContent=ms[Math.floor(Math.random()*ms.length)];
-    document.getElementById("luOv").classList.add("act");
-    spawnConf();
+function showLvlUp(rk){
+  $("luT").textContent="РАНГ "+rk;
+  $("luS").textContent="Система зафиксировала рост.";
+  $("luOv").classList.add("on");
+  spawnConf();
 }
 
 function spawnConf(){
-    var colors=["#ff2255","#00dd66","#ffcc00","#3388ff","#aa66ff","#ff8800","#00cccc"];
-    for(var i=0;i<35;i++){
-        var c=document.createElement("div");
-        c.className="cfp";
-        c.style.left=Math.random()*100+"vw";
-        c.style.background=colors[Math.floor(Math.random()*colors.length)];
-        c.style.animationDelay=Math.random()*0.5+"s";
-        c.style.animationDuration=(2+Math.random()*1.5)+"s";
-        c.style.width=(4+Math.random()*7)+"px";
-        c.style.height=(4+Math.random()*7)+"px";
-        document.body.appendChild(c);
-        setTimeout(function(el){el.remove()},4000,c);
-    }
+  var cs=["#00e5ff","#ff1744","#ffd740","#aa44ff","#00e676","#ff9100"];
+  for(var i=0;i<25;i++){
+    var c=document.createElement("div");c.className="cfp";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=cs[Math.floor(Math.random()*cs.length)];
+    c.style.animationDelay=Math.random()*0.5+"s";
+    c.style.animationDuration=(2+Math.random())+"s";
+    c.style.width=(3+Math.random()*6)+"px";
+    c.style.height=(3+Math.random()*6)+"px";
+    document.body.appendChild(c);
+    (function(el){setTimeout(function(){el.remove()},3500)})(c);
+  }
 }
 
-function checkAchs(){
-    var u=xpD.achs;
-    function ul(id){if(u.indexOf(id)<0){u.push(id);sXP(xpD);showNtf("🏆 Достижение!")}}
-    if(D.goals.length>=1)ul("fg");
-    if(D.habits.length>=1)ul("fh");
-    if(D.affirms.length>=1)ul("fa");
-    if(D.journal.length>=1)ul("fj");
-    if(D.routine.length>=1)ul("fr");
-    if(D.goals.length>=5)ul("g5");
-    if(D.journal.length>=10)ul("j10");
-    if(xpD.total>=100)ul("x1");
-    if(xpD.total>=500)ul("x5");
-    var ms=0;
-    D.habits.forEach(function(h){var s=getStr(h);if(s>ms)ms=s});
-    if(ms>=3)ul("s3");
-    if(ms>=7)ul("s7");
-    if(ms>=30)ul("s30");
+function showNtf(t){var b=$("ntf");b.textContent=t;b.classList.add("on");setTimeout(function(){b.classList.remove("on")},2500)}
+
+// ====== STREAK ======
+function getStreak(h){
+  if(!h.doneDates||!h.doneDates.length)return 0;
+  var s=h.doneDates.slice().sort().reverse();
+  var d=new Date();var streak=0;
+  for(var i=0;i<365;i++){
+    var ds=d.toISOString().split("T")[0];
+    if(s.indexOf(ds)>=0){streak++;d.setDate(d.getDate()-1)}
+    else{if(i===0){d.setDate(d.getDate()-1);continue}break}
+  }
+  return streak;
 }
 
-// ========== DATA ==========
-function loadD(){try{var r=localStorage.getItem("ml_data");if(r)return JSON.parse(r)}catch(e){}return{goals:[],habits:[],affirms:[],journal:[],routine:[],reminders:[]}}
-function saveD(d){localStorage.setItem("ml_data",JSON.stringify(d))}
-var D=loadD();
-
-function today(){return new Date().toISOString().split("T")[0]}
-function uid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5)}
-function fmtD(s){var d=new Date(s);var w=["Вс","Пн","Вт","Ср","Чт","Пт","Сб"];var m=["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];return w[d.getDay()]+", "+d.getDate()+" "+m[d.getMonth()]}
-function fmtDF(s){var d=new Date(s);var w=["Воскресенье","Понедельник","Вторник","Среда","Четверг","Пятница","Суббота"];var m=["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];return w[d.getDay()]+", "+d.getDate()+" "+m[d.getMonth()]+" "+d.getFullYear()}
-function dayL(s){if(s===today())return"Сегодня";var y=new Date(Date.now()-864e5).toISOString().split("T")[0];if(s===y)return"Вчера";return fmtD(s)}
-function catL(c){var m={health:"💪",finance:"💰",relationship:"❤️",career:"💼",growth:"📚",other:"📌"};return m[c]||"📌"}
-function catN(c){var m={health:"Здоровье",finance:"Финансы",relationship:"Отношения",career:"Карьера",growth:"Развитие",other:"Другое"};return m[c]||"Другое"}
-function getStr(h){if(!h.doneDates||!h.doneDates.length)return 0;var sorted=h.doneDates.slice().sort().reverse();var d=new Date();var s=0;for(var i=0;i<365;i++){var ds=d.toISOString().split("T")[0];if(sorted.indexOf(ds)>=0){s++;d.setDate(d.getDate()-1)}else{if(i===0){d.setDate(d.getDate()-1);continue}break}}return s}
-function timeC(t){if(!t)return"";var h=parseInt(t);if(h>=5&&h<12)return"mrn";if(h>=12&&h<17)return"day";if(h>=17&&h<21)return"evn";return"nit"}
-
-// ========== NAV ==========
-function goPage(p){
-    var pages=document.querySelectorAll(".page");
-    for(var i=0;i<pages.length;i++)pages[i].classList.remove("active");
-    document.getElementById("pg-"+p).classList.add("active");
-    var navs=document.querySelectorAll(".nav-i");
-    for(var i=0;i<navs.length;i++)navs[i].classList.remove("active");
-    document.querySelector('.nav-i[data-p="'+p+'"]').classList.add("active");
-    renderAll();
+// ====== ADD SHADOW ======
+function addShadow(origin){
+  if(!D.shadows)D.shadows=[];
+  var nm=SHNAMES[Math.floor(Math.random()*SHNAMES.length)];
+  D.shadows.push({id:uid(),name:nm,origin:origin,date:today()});
+  saveD();
 }
-document.getElementById("hDate").textContent=fmtDF(today());
 
-// ========== MODAL ==========
-function openM(h){document.getElementById("mBd").innerHTML=h;document.getElementById("mOv").classList.add("act")}
-function cModal(e){if(e&&e.target!==document.getElementById("mOv"))return;document.getElementById("mOv").classList.remove("act")}
-function closeM(){document.getElementById("mOv").classList.remove("act")}
-function showNtf(t){var b=document.getElementById("ntf");b.textContent=t;b.classList.add("act");setTimeout(function(){b.classList.remove("act")},2500)}
+// ====== FORMAT ======
+function fmtD(s){var d=new Date(s);return d.getDate()+"/"+(d.getMonth()+1)}
+function dayL(s){if(s===today())return"Сегодня";return fmtD(s)}
+function catI(c){return{health:"💪",finance:"💰",relationship:"❤️",career:"💼",growth:"📚",other:"📌"}[c]||"📌"}
 
-// ========== RENDER HOME ==========
+// ====== RENDER XP BAR ======
+function renderXPBar(){
+  var rk=getRank();
+  var b=$("rkBadge");b.textContent=rk.r;b.className="rank-badge rk-"+rk.r;
+  $("xpFill").style.width=getLvPct()+"%";
+  $("xpTxt").textContent=X.total+" XP";
+}
+
+// ====== NAV ======
+(function(){
+  var btns=document.querySelectorAll(".nav-i");
+  for(var i=0;i<btns.length;i++){
+    (function(btn){
+      btn.addEventListener("click",function(){
+        var p=btn.getAttribute("data-p");
+        // hide all pages
+        var pages=document.querySelectorAll(".page");
+        for(var j=0;j<pages.length;j++)pages[j].classList.remove("active");
+        $("pg-"+p).classList.add("active");
+        // update nav
+        for(var j=0;j<btns.length;j++)btns[j].classList.remove("on");
+        btn.classList.add("on");
+        renderAll();
+      });
+    })(btns[i]);
+  }
+})();
+
+// ====== HEADER BUTTONS ======
+$("btnReview").addEventListener("click",function(){openReview()});
+$("btnSettings").addEventListener("click",function(){openSettings()});
+$("luBtn").addEventListener("click",function(){$("luOv").classList.remove("on")});
+
+// ====== MIND PAGE BUTTONS ======
+$("btnAddAff").addEventListener("click",function(){openAffM()});
+$("btnAddRem").addEventListener("click",function(){openRemM()});
+$("btnAddJourn").addEventListener("click",function(){openJournM()});
+
+// ====== MODAL ======
+function openM(html){$("mBd").innerHTML=html;$("mOv").classList.add("on")}
+function closeM(){$("mOv").classList.remove("on")}
+$("mOv").addEventListener("click",function(e){if(e.target===$("mOv"))closeM()});
+
+// Set header date
+$("hSub").textContent=today().replace(/-/g,".").toUpperCase();
+
+// ====== RENDER ALL ======
+function renderAll(){renderHome();renderQuests();renderGoals();renderAff();renderRem();renderJourn();renderStats()}
+
+// ====== RENDER HOME ======
 function renderHome(){
-    var td=today();
-    var doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/864e5);
-    var q=QUOTES[doy%QUOTES.length];
-    var tJ=D.journal.filter(function(j){return j.date===td});
-    var hDone=D.habits.filter(function(h){return h.doneDates&&h.doneDates.indexOf(td)>=0}).length;
-    var hTot=D.habits.length;
-    var cSt=D.goals.reduce(function(a,g){return a+(g.steps||[]).filter(function(s){return s.done}).length},0);
-    var tSt=D.goals.reduce(function(a,g){return a+(g.steps||[]).length},0);
-    var rut=D.routine.slice().sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});
-    var rDone=rut.filter(function(r){return r.doneDates&&r.doneDates.indexOf(td)>=0}).length;
-    var dAff="";if(D.affirms.length)dAff=D.affirms[doy%D.affirms.length].text;
-    var tI=hTot+rut.length;var dI=hDone+rDone;var pct=tI>0?Math.round(dI/tI*100):0;
-    var dbClaimed=xpD.dailyDate===td;
+  var td=today();
+  var q=getQuote();
+  var dbClaimed=X.dailyDate===td;
 
-    var h="";
-    h+='<div class="qw">';
-    h+='<button class="qr-btn" onclick="refQ()">🔄</button>';
-    h+='<div class="qt" id="hQ">'+q.t+'</div>';
-    h+='<div class="qa" id="hA">— '+q.a+'</div>';
+  var h="";
+  h+='<div class="sys-box"><div class="sys-label">⚡ СИСТЕМА</div><div style="font-size:11px;line-height:1.4">'+esc(q)+'</div></div>';
+
+  if(!dbClaimed){
+    h+='<div class="db" id="dbBtn"><div class="di">🎁</div><div class="dt2"><div class="dtt">Ежедневная награда</div><div class="dts">+'+XPR.daily+' XP</div></div><button class="dbb">Забрать</button></div>';
+  }
+
+  // Stats
+  h+='<div class="st">📊 Характеристики</div><div class="sgrid">';
+  for(var i=0;i<STATS.length;i++){
+    var s=STATS[i];
+    var v=X.stats[s.k]||10;
+    h+='<div class="sbox"><div class="v" style="color:'+(STAT_CLR[s.k]||"#fff")+'">'+s.i+" "+v+'</div><div class="n">'+s.n+'</div></div>';
+  }
+  h+='</div>';
+
+  // Daily quests
+  var dq=D.dailyQuests||[];
+  h+='<div class="st">⚔️ Ежедневные квесты</div>';
+  if(dq.length){
+    h+='<div class="sys-box" id="dqList">';
+    for(var i=0;i<dq.length&&i<3;i++){
+      var q2=dq[i];
+      var dn=q2.doneDates&&q2.doneDates.indexOf(td)>=0;
+      h+='<div class="qi '+(dn?"done":"")+'" data-dqid="'+q2.id+'">';
+      h+='<div class="qc '+(dn?"ok":"")+'">'+(dn?"✓":"")+'</div>';
+      h+='<div class="qi-info"><div class="qi-t">'+esc(q2.title)+'</div><div class="qi-r">+'+q2.xp+' XP</div></div>';
+      h+='</div>';
+    }
     h+='</div>';
+  }else{
+    h+='<div class="emp"><p>Создай квесты в разделе ⚔️</p></div>';
+  }
 
-    if(!dbClaimed){
-        h+='<div class="db" onclick="claimDB(event)">';
-        h+='<div class="db-i">🎁</div>';
-        h+='<div class="db-t"><div class="db-tt">Ежедневный бонус!</div><div class="db-ts">Забери +'+XPR.daily+' XP</div></div>';
-        h+='<button class="db-b">Забрать</button>';
-        h+='</div>';
+  // Shadows
+  var sh=D.shadows||[];
+  if(sh.length){
+    h+='<div class="st">🖤 Теневая армия: '+sh.length+'</div><div class="shgrid">';
+    for(var i=0;i<sh.length&&i<6;i++){
+      h+='<div class="shi"><div class="ic">⚔️</div><div class="nm">'+esc(sh[i].name)+'</div></div>';
     }
-
-    h+='<div class="sg">';
-    h+='<div class="sc"><div class="sv" style="color:var(--grn)">'+hDone+"/"+hTot+'</div><div class="sl">Привычки</div></div>';
-    h+='<div class="sc"><div class="sv" style="color:var(--blu)">'+cSt+"/"+tSt+'</div><div class="sl">Шаги</div></div>';
-    h+='<div class="sc"><div class="sv" style="color:var(--red)">'+rDone+"/"+rut.length+'</div><div class="sl">Режим</div></div>';
-    h+='<div class="sc"><div class="sv" style="color:var(--prp)">'+pct+'%</div><div class="sl">День</div></div>';
     h+='</div>';
+  }
 
-    if(dAff){
-        h+='<div class="st"><span>💡</span> Установка дня</div>';
-        h+='<div class="ovq">'+dAff+'</div>';
+  // Routine
+  var rut=(D.routine||[]).slice().sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});
+  if(rut.length){
+    h+='<div class="st">📅 Распорядок</div>';
+    for(var i=0;i<rut.length;i++){
+      var r=rut[i];
+      var dn=r.doneDates&&r.doneDates.indexOf(td)>=0;
+      h+='<div class="ri" style="'+(dn?"opacity:.5":"")+'">';
+      h+='<div class="tm">'+(r.time||"—")+'</div>';
+      h+='<div class="ds" style="'+(dn?"text-decoration:line-through":"")+'">'+esc(r.title)+'</div>';
+      h+='<div class="sw '+(dn?"on":"")+'" data-rid="'+r.id+'"></div>';
+      h+='</div>';
     }
+  }
 
-    var ul=xpD.achs||[];
-    if(ul.length>0){
-        h+='<div class="st"><span>🏆</span> Достижения <span class="all" onclick="showAchs()">все →</span></div>';
-        h+='<div class="ag">';
-        for(var i=0;i<4&&i<ACHS.length;i++){
-            var un=ul.indexOf(ACHS[i].id)>=0;
-            h+='<div class="ai '+(un?"ul":"lk")+'"><div class="ai-i">'+ACHS[i].i+'</div><div class="ai-n">'+ACHS[i].n+'</div></div>';
-        }
-        h+='</div>';
-    }
+  $("homeC").innerHTML=h;
 
-    var aRem=D.reminders.filter(function(r){return r.active});
-    if(aRem.length){
-        h+='<div class="st"><span>⏰</span> Напоминания</div>';
-        aRem.slice(0,3).forEach(function(r){
-            h+='<div class="rmi"><span style="font-size:14px">🔔</span><div class="rm-i"><div class="rm-t">'+r.text+'</div><div class="rm-t2">'+(r.time||"")+'</div></div></div>';
-        });
-    }
-
-    if(rut.length){
-        h+='<div class="st"><span>📅</span> Режим дня</div>';
-        rut.forEach(function(r){
-            var dn=r.doneDates&&r.doneDates.indexOf(td)>=0;
-            h+='<div class="ri" style="'+(dn?"opacity:.5":"")+'">';
-            h+='<div class="rt '+timeC(r.time)+'">'+(r.time||"—")+'</div>';
-            h+='<div class="rd" style="'+(dn?"text-decoration:line-through":"")+'">'+r.title+'</div>';
-            h+='<div class="tgl '+(dn?"on":"")+'" onclick="togRut(\''+r.id+'\')"></div>';
-            h+='</div>';
-        });
-    }
-
-    if(tJ.length){
-        h+='<div class="st"><span>📔</span> Мысли сегодня</div>';
-        tJ.forEach(function(j){
-            h+='<div class="je"><div class="jd">'+(j.mood||"")+" "+(j.time||"")+'</div><div class="jt">'+j.text+'</div></div>';
-        });
-    }
-
-    if(!D.goals.length&&!D.habits.length&&!D.affirms.length&&!D.routine.length){
-        h+='<div class="emp"><div class="e">🚀</div><p>Добро пожаловать!<br>Начни настраивать свою жизнь.</p></div>';
-    }
-
-    document.getElementById("homeC").innerHTML=h;
-}
-
-function refQ(){var q=QUOTES[Math.floor(Math.random()*QUOTES.length)];var el=document.getElementById("hQ");if(el){el.textContent=q.t;document.getElementById("hA").textContent="— "+q.a}}
-
-function claimDB(e){
-    var td=today();
-    if(xpD.dailyDate===td)return;
-    xpD.dailyDate=td;sXP(xpD);
-    var rect=e.target.closest(".db").getBoundingClientRect();
-    addXP(XPR.daily,rect.left+rect.width/2,rect.top);
+  // Attach events
+  var dbBtn=document.getElementById("dbBtn");
+  if(dbBtn)dbBtn.addEventListener("click",function(e){
+    X.dailyDate=td;saveXP();
+    addXP(XPR.daily,dbBtn);
     renderAll();
+  });
+
+  var dqItems=document.querySelectorAll("[data-dqid]");
+  for(var i=0;i<dqItems.length;i++){
+    (function(el){
+      el.querySelector(".qc").addEventListener("click",function(e){
+        e.stopPropagation();
+        var id=el.getAttribute("data-dqid");
+        togDQ(id,el);
+      });
+    })(dqItems[i]);
+  }
+
+  var swBtns=document.querySelectorAll("[data-rid]");
+  for(var i=0;i<swBtns.length;i++){
+    (function(el){
+      el.addEventListener("click",function(){
+        var id=el.getAttribute("data-rid");
+        togRut(id);
+      });
+    })(swBtns[i]);
+  }
 }
 
-function showAchs(){
-    var ul=xpD.achs||[];
-    var h='<h2>🏆 Достижения ('+ul.length+"/"+ACHS.length+')</h2><div class="ag">';
-    ACHS.forEach(function(a){
-        var un=ul.indexOf(a.id)>=0;
-        h+='<div class="ai '+(un?"ul":"lk")+'"><div class="ai-i">'+a.i+'</div><div class="ai-n">'+a.n+'</div></div>';
-    });
-    h+='</div><div class="ma"><button class="bt bt-s" onclick="closeM()">Закрыть</button></div>';
-    openM(h);
+function togDQ(id,el){
+  var td=today();
+  var q=(D.dailyQuests||[]).filter(function(x){return x.id===id})[0];
+  if(!q)return;
+  if(!q.doneDates)q.doneDates=[];
+  var i=q.doneDates.indexOf(td);
+  if(i>=0){q.doneDates.splice(i,1)}
+  else{
+    q.doneDates.push(td);
+    addXP(q.xp||XPR.quest,el);
+    if(q.stat&&X.stats[q.stat]!==undefined){X.stats[q.stat]+=q.statAmt||2;saveXP()}
+    spawnConf();
+    // Check all done
+    var allDone=(D.dailyQuests||[]).every(function(qq){return qq.doneDates&&qq.doneDates.indexOf(td)>=0});
+    if(allDone&&D.dailyQuests.length>=3){addShadow("Все квесты дня");showNtf("🖤 Новый тень!")}
+  }
+  saveD();renderAll();
 }
 
-// ========== RENDER GOALS ==========
+function togRut(id){
+  var td=today();
+  var r=D.routine.filter(function(x){return x.id===id})[0];
+  if(!r)return;
+  if(!r.doneDates)r.doneDates=[];
+  var i=r.doneDates.indexOf(td);
+  if(i>=0)r.doneDates.splice(i,1);
+  else{r.doneDates.push(td);addXP(XPR.routine,null)}
+  saveD();renderAll();
+}
+
+// ====== RENDER QUESTS ======
+function renderQuests(){
+  var td=today();var dq=D.dailyQuests||[];
+  var h="";
+
+  h+='<div class="st">⚔️ Ежедневные квесты</div>';
+  if(dq.length){
+    h+='<div class="sys-box"><div class="sys-label">⚡ ЗАДАНИЯ — ДЕНЬ '+Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/864e5)+'</div>';
+    for(var i=0;i<dq.length;i++){
+      var q=dq[i];var dn=q.doneDates&&q.doneDates.indexOf(td)>=0;
+      h+='<div class="qi '+(dn?"done":"")+'" data-dqid2="'+q.id+'">';
+      h+='<div class="qc '+(dn?"ok":"")+'">'+(dn?"✓":"")+'</div>';
+      h+='<div class="qi-info"><div class="qi-t">'+esc(q.title)+'</div>';
+      h+='<div class="qi-r">+'+q.xp+' XP';
+      if(q.statName)h+=' | +'+(q.statAmt||2)+' '+q.statName;
+      h+='</div></div>';
+      h+='<button class="xbtn" data-deldq="'+q.id+'">✕</button></div>';
+    }
+    h+='</div>';
+  }
+  h+='<button class="abtn" id="btnAddDQ" style="margin-top:4px">+ Добавить квест</button>';
+
+  // Dungeons
+  h+='<div class="st">🏰 Подземелья</div>';
+  var dg=D.dungeons||[];
+  for(var i=0;i<dg.length;i++){
+    var d=dg[i];var pct=d.total>0?Math.round(d.progress/d.total*100):0;
+    h+='<div class="dg"><div class="rk" style="color:'+(d.rank==="S"?"var(--cyan)":d.rank==="A"?"var(--red)":"var(--gold)")+'">'+d.rank+'-ранг</div>';
+    h+='<div class="nm">'+esc(d.title)+'</div>';
+    h+='<div class="pr">'+d.progress+'/'+d.total+' дней</div>';
+    h+='<div class="dg-bar"><div class="dg-fill" style="width:'+pct+'%"></div></div>';
+    h+='<div style="display:flex;gap:4px;margin-top:4px">';
+    h+='<button class="bt bt-p" style="flex:1;padding:5px;font-size:9px" data-advdg="'+d.id+'">Пройти день</button>';
+    h+='<button class="xbtn" data-deldg="'+d.id+'">✕</button>';
+    h+='</div></div>';
+  }
+  h+='<button class="abtn" id="btnAddDG" style="margin-top:4px">+ Открыть подземелье</button>';
+
+  $("questsC").innerHTML=h;
+
+  // Events
+  var btn=$("btnAddDQ");if(btn)btn.addEventListener("click",openDQM);
+  var btn2=$("btnAddDG");if(btn2)btn2.addEventListener("click",openDGM);
+
+  var qitems=document.querySelectorAll("[data-dqid2]");
+  for(var i=0;i<qitems.length;i++){
+    (function(el){
+      el.querySelector(".qc").addEventListener("click",function(e){
+        e.stopPropagation();
+        togDQ(el.getAttribute("data-dqid2"),el);
+      });
+    })(qitems[i]);
+  }
+
+  var delDQs=document.querySelectorAll("[data-deldq]");
+  for(var i=0;i<delDQs.length;i++){
+    (function(el){el.addEventListener("click",function(e){
+      e.stopPropagation();
+      var id=el.getAttribute("data-deldq");
+      D.dailyQuests=D.dailyQuests.filter(function(x){return x.id!==id});saveD();renderAll();
+    })})(delDQs[i]);
+  }
+
+  var advDGs=document.querySelectorAll("[data-advdg]");
+  for(var i=0;i<advDGs.length;i++){
+    (function(el){el.addEventListener("click",function(){
+      var id=el.getAttribute("data-advdg");
+      var d=D.dungeons.filter(function(x){return x.id===id})[0];
+      if(!d||d.progress>=d.total)return;
+      d.progress++;saveD();
+      addXP(XPR.dungeon,el);
+      if(d.progress>=d.total){addShadow(d.title);showNtf("🏰 Подземелье пройдено!");spawnConf()}
+      renderAll();
+    })})(advDGs[i]);
+  }
+
+  var delDGs=document.querySelectorAll("[data-deldg]");
+  for(var i=0;i<delDGs.length;i++){
+    (function(el){el.addEventListener("click",function(){
+      var id=el.getAttribute("data-deldg");
+      D.dungeons=D.dungeons.filter(function(x){return x.id!==id});saveD();renderAll();
+    })})(delDGs[i]);
+  }
+}
+
+function openDQM(){
+  var opts="";for(var i=0;i<STATS.length;i++)opts+='<option value="'+STATS[i].k+'">'+STATS[i].i+" "+STATS[i].n+'</option>';
+  openM('<h2>⚔️ Новый квест</h2>'+
+  '<div class="fg"><label>Название</label><input type="text" id="dqT" placeholder="100 отжиманий"></div>'+
+  '<div class="fg"><label>Награда XP</label><input type="number" id="dqXP" value="20"></div>'+
+  '<div class="fg"><label>Характеристика</label><select id="dqS">'+opts+'</select></div>'+
+  '<div class="fg"><label>Бонус к стату</label><input type="number" id="dqSA" value="2"></div>'+
+  '<div class="ma"><button class="bt bt-s" id="dqCancel">Отмена</button><button class="bt bt-p" id="dqOk">Создать</button></div>');
+  $("dqCancel").addEventListener("click",closeM);
+  $("dqOk").addEventListener("click",function(){
+    var t=$("dqT").value.trim();if(!t)return;
+    if(!D.dailyQuests)D.dailyQuests=[];
+    var sk=$("dqS").value;
+    var sn="";for(var i=0;i<STATS.length;i++){if(STATS[i].k===sk)sn=STATS[i].n}
+    D.dailyQuests.push({id:uid(),title:t,xp:parseInt($("dqXP").value)||20,stat:sk,statAmt:parseInt($("dqSA").value)||2,statName:sn,doneDates:[]});
+    saveD();closeM();renderAll();showNtf("⚔️ Квест создан!");
+  });
+}
+
+function openDGM(){
+  openM('<h2>🏰 Подземелье</h2>'+
+  '<div class="fg"><label>Название</label><input type="text" id="dgT" placeholder="Неделя без соцсетей"></div>'+
+  '<div class="fg"><label>Дней</label><input type="number" id="dgD" value="7"></div>'+
+  '<div class="fg"><label>Ранг</label><select id="dgR"><option value="E">🟤 E</option><option value="D">🔵 D</option><option value="C">🟣 C</option><option value="B" selected>🟡 B</option><option value="A">🔴 A</option><option value="S">⭐ S</option></select></div>'+
+  '<div class="ma"><button class="bt bt-s" id="dgCancel">Отмена</button><button class="bt bt-p" id="dgOk">Открыть</button></div>');
+  $("dgCancel").addEventListener("click",closeM);
+  $("dgOk").addEventListener("click",function(){
+    var t=$("dgT").value.trim();if(!t)return;
+    if(!D.dungeons)D.dungeons=[];
+    D.dungeons.push({id:uid(),title:t,total:parseInt($("dgD").value)||7,progress:0,rank:$("dgR").value});
+    saveD();closeM();renderAll();showNtf("🏰 Открыто!");
+  });
+}
+
+// ====== RENDER GOALS (BOSSES) ======
 function renderGoals(){
-    var el=document.getElementById("goalsC");
-    if(!D.goals.length){el.innerHTML='<div class="emp"><div class="e">🎯</div><p>Пока нет целей.<br>Добавь первую!</p></div>';return}
-    var h="";
-    D.goals.forEach(function(g){
-        var s=g.steps||[];var d=s.filter(function(x){return x.done}).length;var t=s.length;
-        var p=t>0?Math.round(d/t*100):0;
-        h+='<div class="crd" onclick="openGD(\''+g.id+'\')">';
-        h+='<div style="display:flex;justify-content:space-between;align-items:start">';
-        h+='<div><span class="tg tg-'+(g.category||"other")+'">'+catL(g.category)+" "+catN(g.category)+'</span>';
-        h+='<div class="crd-t" style="margin-top:2px">'+g.title+'</div></div>';
-        h+='<button class="db2" onclick="event.stopPropagation();delGoal(\''+g.id+'\')">✕</button>';
-        h+='</div>';
-        if(g.description)h+='<div class="crd-s">'+g.description+'</div>';
-        if(t>0)h+='<div class="gp"><div class="gpb" style="width:'+p+'%"></div></div><div class="gm"><span>'+d+"/"+t+'</span><span>'+p+'%</span></div>';
-        h+='</div>';
-    });
-    el.innerHTML=h;
-}
-
-// ========== RENDER HABITS ==========
-function renderHabits(){
-    var el=document.getElementById("habitsC");var td=today();
-    if(!D.habits.length){el.innerHTML='<div class="emp"><div class="e">✅</div><p>Нет привычек.</p></div>';return}
-    var h="";
-    D.habits.forEach(function(hb){
-        var dn=hb.doneDates&&hb.doneDates.indexOf(td)>=0;
-        var s=getStr(hb);
-        h+='<div class="hi">';
-        h+='<div class="hc '+(dn?"dn":"")+'" onclick="togHab(\''+hb.id+'\',event)">'+(dn?"✓":"")+'</div>';
-        h+='<div class="hn">'+hb.title+'</div>';
-        if(s>0)h+='<div class="hk">🔥'+s+'</div>';
-        h+='<div class="hx">+'+XPR.habit+'</div>';
-        h+='<button class="db2" onclick="delHab(\''+hb.id+'\')">✕</button>';
-        h+='</div>';
-    });
-    el.innerHTML=h;
-}
-
-// ========== RENDER AFFIRMS ==========
-function renderAff(){
-    var el=document.getElementById("affC");
-    if(!D.affirms.length){el.innerHTML='<div class="emp"><div class="e">🧠</div><p>Запрограммируй разум!</p></div>';return}
-    var h="";
-    D.affirms.forEach(function(a){
-        h+='<div class="af"><div class="aft">'+a.text+'</div><div class="afa"><button onclick="delAff(\''+a.id+'\')">🗑 Удалить</button></div></div>';
-    });
-    el.innerHTML=h;
-}
-
-// ========== RENDER REMINDERS ==========
-function renderRem(){
-    var el=document.getElementById("remC");
-    if(!D.reminders.length){el.innerHTML='<div class="emp" style="padding:14px"><div class="e">⏰</div><p>Нет напоминаний</p></div>';return}
-    var h="";
-    D.reminders.forEach(function(r){
-        h+='<div class="rmi">';
-        h+='<span style="font-size:14px">'+(r.active?"🔔":"🔕")+'</span>';
-        h+='<div class="rm-i"><div class="rm-t">'+r.text+'</div><div class="rm-t2">'+(r.daily?"Каждый день":"Один раз")+(r.time?" в "+r.time:"")+'</div></div>';
-        h+='<div class="tgl '+(r.active?"on":"")+'" onclick="togRem(\''+r.id+'\')"></div>';
-        h+='<button class="db2" onclick="delRem(\''+r.id+'\')">✕</button>';
-        h+='</div>';
-    });
-    el.innerHTML=h;
-}
-
-// ========== RENDER JOURNAL ==========
-function renderJourn(){
-    var el=document.getElementById("journC");
-    var sorted=D.journal.slice().sort(function(a,b){return(b.date+(b.time||"")).localeCompare(a.date+(a.time||""))});
-    if(!sorted.length){el.innerHTML='<div class="emp" style="padding:14px"><div class="e">📔</div><p>Запиши мысли!</p></div>';return}
-    var h="";
-    sorted.slice(0,10).forEach(function(j){
-        h+='<div class="je">';
-        h+='<div style="display:flex;justify-content:space-between;align-items:center">';
-        h+='<div class="jd">'+(j.mood||"")+" "+dayL(j.date)+" "+(j.time||"")+'</div>';
-        h+='<button class="db2" onclick="delJourn(\''+j.id+'\')">✕</button>';
-        h+='</div>';
-        h+='<div class="jt">'+j.text+'</div></div>';
-    });
-    el.innerHTML=h;
-}
-
-// ========== RENDER ANALYTICS ==========
-var aPer="week";
-function setPer(p){
-    aPer=p;
-    document.getElementById("pw").className="apb"+(p==="week"?" act":"");
-    document.getElementById("pm").className="apb"+(p==="month"?" act":"");
-    renderStats();
-}
-
-function renderStats(){
-    var el=document.getElementById("statsC");
-    var days=aPer==="week"?7:30;
-    var td=new Date();var dates=[];
-    for(var i=days-1;i>=0;i--){var d=new Date(td);d.setDate(d.getDate()-i);dates.push(d.toISOString().split("T")[0])}
-
-    var hD=dates.map(function(d){return{date:d,done:D.habits.filter(function(h){return h.doneDates&&h.doneDates.indexOf(d)>=0}).length,total:D.habits.length}});
-    var hAvg=D.habits.length?Math.round(hD.reduce(function(a,d){return a+d.done},0)/(hD.length*D.habits.length)*100):0;
-    var rD=dates.map(function(d){return{date:d,done:D.routine.filter(function(r){return r.doneDates&&r.doneDates.indexOf(d)>=0}).length,total:D.routine.length}});
-    var rAvg=D.routine.length?Math.round(rD.reduce(function(a,d){return a+d.done},0)/(rD.length*D.routine.length)*100):0;
-    var jC=dates.reduce(function(a,d){return a+D.journal.filter(function(j){return j.date===d}).length},0);
-    var tS=D.goals.reduce(function(a,g){return a+(g.steps||[]).length},0);
-    var dS=D.goals.reduce(function(a,g){return a+(g.steps||[]).filter(function(s){return s.done}).length},0);
-    var gP=tS>0?Math.round(dS/tS*100):0;
-
-    var cD=aPer==="week"?hD:hD.filter(function(_,i){return i%Math.ceil(days/7)===0||i===days-1}).slice(-7);
-    var hCh="";
-    cD.forEach(function(d){
-        var p=d.total>0?(d.done/d.total*100):0;
-        var lb=aPer==="week"?["Вс","Пн","Вт","Ср","Чт","Пт","Сб"][new Date(d.date+"T12:00").getDay()]:fmtD(d.date);
-        hCh+='<div class="abc"><div class="abv">'+d.done+"/"+d.total+'</div><div class="ab" style="height:'+Math.max(p,2)+'%"></div><div class="abl">'+lb+'</div></div>';
-    });
-
-    var rcD=aPer==="week"?rD:rD.filter(function(_,i){return i%Math.ceil(days/7)===0||i===days-1}).slice(-7);
-    var rCh="";
-    rcD.forEach(function(d){
-        var p=d.total>0?(d.done/d.total*100):0;
-        var lb=aPer==="week"?["Вс","Пн","Вт","Ср","Чт","Пт","Сб"][new Date(d.date+"T12:00").getDay()]:fmtD(d.date);
-        rCh+='<div class="abc"><div class="abv">'+d.done+"/"+d.total+'</div><div class="ab" style="height:'+Math.max(p,2)+'%;background:linear-gradient(to top,var(--grn),var(--cyn))"></div><div class="abl">'+lb+'</div></div>';
-    });
-
-    var streaks=D.habits.map(function(h){return{t:h.title,s:getStr(h)}}).sort(function(a,b){return b.s-a.s});
-
-    var h="";
-    h+='<div class="ac"><div style="font-size:12px;font-weight:700;margin-bottom:6px">📋 Прогресс</div>';
-    h+='<div class="ar"><div class="arl">🎯 Цели</div><div class="arv" style="color:var(--red)">'+dS+"/"+tS+" ("+gP+"%)</div></div>";
-    h+='<div class="ar"><div class="arl">✅ Привычки</div><div class="arv" style="color:var(--grn)">'+hAvg+"%</div></div>";
-    h+='<div class="ar"><div class="arl">📅 Режим</div><div class="arv" style="color:var(--blu)">'+rAvg+"%</div></div>";
-    h+='<div class="ar"><div class="arl">📔 Записей</div><div class="arv" style="color:var(--prp)">'+jC+"</div></div>";
-    h+='<div class="ar"><div class="arl">⭐ Всего XP</div><div class="arv" style="color:var(--cyn)">'+xpD.total+"</div></div>";
-    h+="</div>";
-
-    if(D.habits.length){h+='<div class="ac"><div class="ac-t">✅ Привычки</div><div class="abr">'+hCh+"</div></div>"}
-    if(D.routine.length){h+='<div class="ac"><div class="ac-t">📅 Режим</div><div class="abr">'+rCh+"</div></div>"}
-
-    if(streaks.some(function(x){return x.s>0})){
-        h+='<div class="ac"><div style="font-size:12px;font-weight:700;margin-bottom:4px">🔥 Серии</div>';
-        streaks.filter(function(x){return x.s>0}).forEach(function(x){
-            h+='<div class="ar"><div class="arl">'+x.t+'</div><div class="arv" style="color:var(--ylw)">🔥 '+x.s+"</div></div>";
-        });
-        h+="</div>";
+  var h="";
+  h+='<div class="st">👹 Боссы</div>';
+  if(!D.goals.length){
+    h+='<div class="emp"><div class="e">👹</div><p>Нет боссов. Добавь цель!</p></div>';
+  }else{
+    for(var i=0;i<D.goals.length;i++){
+      var g=D.goals[i];
+      var s=g.steps||[];var d=s.filter(function(x){return x.done}).length;
+      var hp=s.length>0?Math.round(d/s.length*100):0;
+      var rk=s.length<=3?"E":s.length<=5?"D":s.length<=8?"C":s.length<=12?"B":"A";
+      h+='<div class="boss" data-gid="'+g.id+'">';
+      h+='<div style="display:flex;justify-content:space-between"><div>';
+      h+='<div class="rk">'+rk+"-ранг "+catI(g.category||"other")+'</div>';
+      h+='<div class="nm">'+esc(g.title)+'</div></div>';
+      h+='<button class="xbtn" data-delg="'+g.id+'">✕</button></div>';
+      if(g.description)h+='<div style="font-size:9px;color:var(--tx2);margin-top:2px">'+esc(g.description)+'</div>';
+      if(s.length){h+='<div class="hp-bar"><div class="hp-fill" style="width:'+hp+'%"></div></div><div class="hp-txt">HP: '+d+"/"+s.length+"</div>"}
+      h+='</div>';
     }
+  }
+  h+='<button class="abtn" id="btnAddGoal" style="margin-top:4px">+ Вызвать босса</button>';
 
-    var moods=D.journal.filter(function(j){return j.mood}).map(function(j){return j.mood});
-    if(moods.length){
-        var mc={};moods.forEach(function(m){mc[m]=(mc[m]||0)+1});
-        var top=Object.keys(mc).sort(function(a,b){return mc[b]-mc[a]})[0];
-        h+='<div class="ac"><div style="font-size:12px;font-weight:700;margin-bottom:4px">🎭 Настроение</div>';
-        h+='<div class="ar"><div class="arl">Частое</div><div class="arv">'+top+" (×"+mc[top]+")</div></div></div>";
+  // Shadows
+  var sh=D.shadows||[];
+  h+='<div class="st">🖤 Теневая армия: '+sh.length+'</div>';
+  if(sh.length){
+    h+='<div class="shgrid">';
+    for(var i=0;i<sh.length;i++){
+      h+='<div class="shi"><div class="ic">⚔️</div><div class="nm">'+esc(sh[i].name)+'<br><span style="color:var(--tx3)">'+esc(sh[i].origin)+'</span></div></div>';
     }
+    h+='</div>';
+  }
 
-    el.innerHTML=h;
+  $("goalsC").innerHTML=h;
+
+  var addBtn=$("btnAddGoal");if(addBtn)addBtn.addEventListener("click",openGoalM);
+
+  var bosses=document.querySelectorAll("[data-gid]");
+  for(var i=0;i<bosses.length;i++){
+    (function(el){
+      el.addEventListener("click",function(e){
+        if(e.target.getAttribute("data-delg"))return;
+        openGD(el.getAttribute("data-gid"));
+      });
+    })(bosses[i]);
+  }
+
+  var delGs=document.querySelectorAll("[data-delg]");
+  for(var i=0;i<delGs.length;i++){
+    (function(el){el.addEventListener("click",function(e){
+      e.stopPropagation();
+      if(!confirm("Удалить?"))return;
+      var id=el.getAttribute("data-delg");
+      D.goals=D.goals.filter(function(x){return x.id!==id});saveD();renderAll();
+    })})(delGs[i]);
+  }
 }
 
-// ========== REVIEW ==========
-function openReview(){
-    var td=today();var hr=new Date().getHours();var isM=hr<14;
-    var ex=D.journal.filter(function(j){return j.date===td&&j.isRev})[0];
-    var rd=ex?JSON.parse(ex.revData||"{}"):{};
-
-    var h='<div class="rv-h">';
-    h+='<div class="e">'+(isM?"🌅":"🌙")+'</div>';
-    h+='<h2>'+(isM?"Утренний обзор":"Вечерний обзор")+'</h2>';
-    h+='<p>'+(isM?"Настрой свой день":"Оцени прошедший день")+'</p></div>';
-
-    if(isM){
-        h+='<div class="rv-s"><label>🙏 За что я благодарен?</label><textarea id="rvG" placeholder="3 вещи...">'+(rd.grateful||"")+'</textarea></div>';
-        h+='<div class="rv-s"><label>🎯 Главная задача дня</label><input type="text" id="rvM" placeholder="Одно самое важное дело" value="'+(rd.main||"")+'"></div>';
-        h+='<div class="rv-s"><label>💡 Установка на сегодня</label><textarea id="rvA" placeholder="Кем я буду сегодня?">'+(rd.affirmation||"")+'</textarea></div>';
-    }else{
-        h+='<div class="rv-s"><label>⭐ Что прошло хорошо?</label><textarea id="rvGd" placeholder="Поблагодари себя">'+(rd.good||"")+'</textarea></div>';
-        h+='<div class="rv-s"><label>🔄 Что улучшить?</label><textarea id="rvIm" placeholder="Без осуждения — только рост">'+(rd.improve||"")+'</textarea></div>';
-        h+='<div class="rv-s"><label>💪 Чем горжусь?</label><textarea id="rvPr" placeholder="Даже мелочи важны">'+(rd.proud||"")+'</textarea></div>';
-    }
-
-    h+='<div class="ma">';
-    h+='<button class="bt bt-s" onclick="closeM()">Пропустить</button>';
-    h+='<button class="bt bt-p" onclick="saveRev()">Сохранить +'+XPR.review+" XP</button></div>";
-    openM(h);
-}
-
-function saveRev(){
-    var td=today();var hr=new Date().getHours();var isM=hr<14;
-    var rd={};
-    if(isM){
-        rd.grateful=document.getElementById("rvG").value;
-        rd.main=document.getElementById("rvM").value;
-        rd.affirmation=document.getElementById("rvA").value;
-    }else{
-        rd.good=document.getElementById("rvGd").value;
-        rd.improve=document.getElementById("rvIm").value;
-        rd.proud=document.getElementById("rvPr").value;
-    }
-    var ex=D.journal.filter(function(j){return j.date===td&&j.isRev})[0];
-    if(ex){ex.text=isM?"🌅 Утренний обзор":"🌙 Вечерний обзор";ex.revData=JSON.stringify(rd)}
-    else{D.journal.push({id:uid(),text:isM?"🌅 Утренний обзор":"🌙 Вечерний обзор",mood:"",date:td,time:new Date().getHours().toString().padStart(2,"0")+":"+new Date().getMinutes().toString().padStart(2,"0"),isRev:true,revData:JSON.stringify(rd)})}
-    saveD(D);
-    addXP(XPR.review,window.innerWidth/2,200);
-    closeM();renderAll();
-    showNtf(isM?"🌅 Утро настроено!":"🌙 Обзор сохранён!");
-}
-
-// ========== ACTIONS ==========
-
-// Goals
 function openGoalM(){
-    openM('<h2>Новая цель</h2>'+
-    '<div class="fg"><label>Название</label><input type="text" id="gT" placeholder="Что хочешь достичь?"></div>'+
-    '<div class="fg"><label>Описание</label><textarea id="gD" placeholder="Почему это важно?"></textarea></div>'+
-    '<div class="fg"><label>Категория</label><select id="gC">'+
-    '<option value="health">💪 Здоровье</option><option value="finance">💰 Финансы</option>'+
-    '<option value="relationship">❤️ Отношения</option><option value="career">💼 Карьера</option>'+
-    '<option value="growth">📚 Развитие</option><option value="other">📌 Другое</option></select></div>'+
-    '<div class="ma"><button class="bt bt-s" onclick="closeM()">Отмена</button>'+
-    '<button class="bt bt-p" onclick="addGoal()">Создать +'+XPR.goal+'XP</button></div>');
+  openM('<h2>👹 Новый босс</h2>'+
+  '<div class="fg"><label>Цель</label><input type="text" id="gT" placeholder="Что хочешь одолеть?"></div>'+
+  '<div class="fg"><label>Описание</label><textarea id="gD" placeholder="Почему это важно?"></textarea></div>'+
+  '<div class="fg"><label>Категория</label><select id="gC"><option value="health">💪 Здоровье</option><option value="finance">💰 Финансы</option><option value="relationship">❤️ Отношения</option><option value="career">💼 Карьера</option><option value="growth">📚 Развитие</option><option value="other">📌 Другое</option></select></div>'+
+  '<div class="ma"><button class="bt bt-s" id="gCancel">Отмена</button><button class="bt bt-p" id="gOk">Вызвать (+25XP)</button></div>');
+  $("gCancel").addEventListener("click",closeM);
+  $("gOk").addEventListener("click",function(){
+    var t=$("gT").value.trim();if(!t)return;
+    D.goals.push({id:uid(),title:t,description:$("gD").value.trim(),category:$("gC").value,steps:[],createdAt:today()});
+    saveD();closeM();addXP(XPR.goal,null);renderAll();showNtf("👹 Босс призван!");
+  });
 }
-function addGoal(){
-    var t=document.getElementById("gT").value.trim();if(!t)return;
-    D.goals.push({id:uid(),title:t,description:document.getElementById("gD").value.trim(),category:document.getElementById("gC").value,steps:[],createdAt:today()});
-    saveD(D);closeM();renderAll();addXP(XPR.goal,window.innerWidth/2,300);showNtf("🎯 Цель создана!");
-}
-function delGoal(id){if(!confirm("Удалить цель?"))return;D.goals=D.goals.filter(function(g){return g.id!==id});saveD(D);renderAll()}
 
 function openGD(id){
-    var g=D.goals.filter(function(x){return x.id===id})[0];if(!g)return;
-    var sh="";
-    (g.steps||[]).forEach(function(s,i){
-        sh+='<div class="sli">';
-        sh+='<div class="sck '+(s.done?"dn":"")+'" onclick="togStep(\''+id+"',"+i+',event)">'+(s.done?"✓":"")+"</div>";
-        sh+='<div class="stx '+(s.done?"dt":"")+'">'+s.text+'</div>';
-        sh+='<div class="sdl" onclick="delStep(\''+id+"',"+i+')">✕</div>';
-        sh+="</div>";
-    });
-    openM('<h2>'+g.title+'</h2>'+
-    (g.description?'<p style="color:var(--tx2);font-size:11px;margin-bottom:6px">'+g.description+"</p>":"")+
-    '<div class="st" style="margin-top:0"><span>📋</span> Шаги</div>'+
-    '<div>'+sh+'</div>'+
-    '<div class="qas"><input type="text" id="nsT" placeholder="Новый шаг..."><button onclick="addStep(\''+id+"')\">+</button></div>"+
-    '<div class="ma"><button class="bt bt-s" onclick="closeM()">Закрыть</button></div>');
-}
-function addStep(gid){
-    var t=document.getElementById("nsT").value.trim();if(!t)return;
-    var g=D.goals.filter(function(x){return x.id===gid})[0];
-    if(!g.steps)g.steps=[];
-    g.steps.push({text:t,done:false});saveD(D);openGD(gid);renderAll();
-}
-function togStep(gid,i,e){
-    var g=D.goals.filter(function(x){return x.id===gid})[0];
-    g.steps[i].done=!g.steps[i].done;saveD(D);
-    if(g.steps[i].done){var r=e.target.getBoundingClientRect();addXP(XPR.step,r.left+r.width/2,r.top)}
-    openGD(gid);renderAll();
-}
-function delStep(gid,i){
-    var g=D.goals.filter(function(x){return x.id===gid})[0];
-    g.steps.splice(i,1);saveD(D);openGD(gid);renderAll();
+  var g=D.goals.filter(function(x){return x.id===id})[0];if(!g)return;
+  var s=g.steps||[];
+  var h='<h2>👹 '+esc(g.title)+'</h2>';
+  if(g.description)h+='<p style="color:var(--tx2);font-size:10px;margin-bottom:6px">'+esc(g.description)+'</p>';
+  h+='<div class="sys-label">ФАЗЫ БОССА</div>';
+  for(var i=0;i<s.length;i++){
+    h+='<div class="sli"><div class="sck '+(s[i].done?"ok":"")+'" data-sidx="'+i+'">'+(s[i].done?"✓":"")+'</div>';
+    h+='<div class="stx '+(s[i].done?"dt":"")+'">'+esc(s[i].text)+'</div>';
+    h+='<button class="xbtn" data-dels="'+i+'">✕</button></div>';
+  }
+  h+='<div class="qas"><input type="text" id="nsT" placeholder="Новая фаза..."><button id="nsBtn">+</button></div>';
+  h+='<div class="ma"><button class="bt bt-s" id="gClose">Закрыть</button></div>';
+  openM(h);
+
+  $("gClose").addEventListener("click",closeM);
+  $("nsBtn").addEventListener("click",function(){
+    var t=$("nsT").value.trim();if(!t)return;
+    if(!g.steps)g.steps=[];g.steps.push({text:t,done:false});saveD();openGD(id);renderGoals();
+  });
+
+  var scks=document.querySelectorAll("[data-sidx]");
+  for(var i=0;i<scks.length;i++){
+    (function(el){el.addEventListener("click",function(){
+      var idx=parseInt(el.getAttribute("data-sidx"));
+      g.steps[idx].done=!g.steps[idx].done;saveD();
+      if(g.steps[idx].done){
+        addXP(XPR.step,el);
+        var allD=g.steps.every(function(s){return s.done});
+        if(allD){addShadow(g.title);showNtf("👹 Босс повержен!");spawnConf()}
+      }
+      openGD(id);renderGoals();
+    })})(scks[i]);
+  }
+
+  var dels=document.querySelectorAll("[data-dels]");
+  for(var i=0;i<dels.length;i++){
+    (function(el){el.addEventListener("click",function(){
+      var idx=parseInt(el.getAttribute("data-dels"));
+      g.steps.splice(idx,1);saveD();openGD(id);renderGoals();
+    })})(dels[i]);
+  }
 }
 
-// Habits
-function openHabitM(){
-    openM('<h2>Новая привычка</h2>'+
-    '<div class="fg"><label>Название</label><input type="text" id="hT" placeholder="Например: Медитация 10 мин"></div>'+
-    '<div class="ma"><button class="bt bt-s" onclick="closeM()">Отмена</button>'+
-    '<button class="bt bt-p" onclick="addHab()">Добавить</button></div>');
-}
-function addHab(){
-    var t=document.getElementById("hT").value.trim();if(!t)return;
-    D.habits.push({id:uid(),title:t,doneDates:[]});
-    saveD(D);closeM();renderAll();addXP(XPR.habit,window.innerWidth/2,300);showNtf("✅ Привычка добавлена!");
-}
-function togHab(id,e){
-    var td=today();var h=D.habits.filter(function(x){return x.id===id})[0];
-    if(!h.doneDates)h.doneDates=[];
-    var i=h.doneDates.indexOf(td);
-    if(i>=0){h.doneDates.splice(i,1)}
-    else{h.doneDates.push(td);var r=e.target.getBoundingClientRect();addXP(XPR.habit,r.left+r.width/2,r.top);spawnConf()}
-    saveD(D);renderAll();checkAchs();
-}
-function delHab(id){if(!confirm("Удалить?"))return;D.habits=D.habits.filter(function(x){return x.id!==id});saveD(D);renderAll()}
+// ====== RENDER AFFIRMS ======
+function renderAff(){
+  var el=$("affC");
+  if(!D.affirms.length){el.innerHTML='<div class="emp"><p>Запрограммируй разум!</p></div>';return}
+  var h="";
+  for(var i=0;i<D.affirms.length;i++){
+    h+='<div class="af"><div class="at">'+esc(D.affirms[i].text)+'</div><div class="aa"><button class="xbtn" data-delaff="'+D.affirms[i].id+'">🗑</button></div></div>';
+  }
+  el.innerHTML=h;
 
-// Affirms
+  var btns=document.querySelectorAll("[data-delaff]");
+  for(var i=0;i<btns.length;i++){
+    (function(el){el.addEventListener("click",function(){
+      var id=el.getAttribute("data-delaff");
+      D.affirms=D.affirms.filter(function(x){return x.id!==id});saveD();renderAll();
+    })})(btns[i]);
+  }
+}
+
 function openAffM(){
-    openM('<h2>Новая установка</h2>'+
-    '<div class="fg"><label>Текст</label><textarea id="aT" placeholder="Я — человек, который..."></textarea></div>'+
-    '<div class="ma"><button class="bt bt-s" onclick="closeM()">Отмена</button>'+
-    '<button class="bt bt-p" onclick="addAff()">Добавить +'+XPR.affirmation+"XP</button></div>");
+  openM('<h2>🧠 Установка</h2><div class="fg"><label>Текст</label><textarea id="aT" placeholder="Я — тот, кто..."></textarea></div><div class="ma"><button class="bt bt-s" id="aCancel">Отмена</button><button class="bt bt-p" id="aOk">Добавить</button></div>');
+  $("aCancel").addEventListener("click",closeM);
+  $("aOk").addEventListener("click",function(){
+    var t=$("aT").value.trim();if(!t)return;
+    D.affirms.push({id:uid(),text:t});saveD();closeM();addXP(XPR.affirm,null);renderAll();showNtf("🧠 Готово!");
+  });
 }
-function addAff(){
-    var t=document.getElementById("aT").value.trim();if(!t)return;
-    D.affirms.push({id:uid(),text:t});
-    saveD(D);closeM();renderAll();addXP(XPR.affirmation,window.innerWidth/2,300);showNtf("🧠 Установка добавлена!");
-}
-function delAff(id){D.affirms=D.affirms.filter(function(x){return x.id!==id});saveD(D);renderAll()}
 
-// Reminders
+// ====== RENDER REMINDERS ======
+function renderRem(){
+  var el=$("remC");
+  if(!D.reminders.length){el.innerHTML='<div class="emp" style="padding:10px"><p>Нет</p></div>';return}
+  var h="";
+  for(var i=0;i<D.reminders.length;i++){
+    var r=D.reminders[i];
+    h+='<div class="rmi"><span>'+(r.active?"🔔":"🔕")+'</span><div style="flex:1"><div class="mt">'+esc(r.text)+'</div><div class="ms">'+(r.daily?"Ежедневно":"Один раз")+(r.time?" "+r.time:"")+'</div></div>';
+    h+='<div class="sw '+(r.active?"on":"")+'" data-togrem="'+r.id+'"></div>';
+    h+='<button class="xbtn" data-delrem="'+r.id+'">✕</button></div>';
+  }
+  el.innerHTML=h;
+
+  var sws=document.querySelectorAll("[data-togrem]");
+  for(var i=0;i<sws.length;i++){
+    (function(el){el.addEventListener("click",function(){
+      var id=el.getAttribute("data-togrem");
+      var r=D.reminders.filter(function(x){return x.id===id})[0];r.active=!r.active;saveD();renderAll();
+    })})(sws[i]);
+  }
+
+  var dels=document.querySelectorAll("[data-delrem]");
+  for(var i=0;i<dels.length;i++){
+    (function(el){el.addEventListener("click",function(){
+      var id=el.getAttribute("data-delrem");
+      D.reminders=D.reminders.filter(function(x){return x.id!==id});saveD();renderAll();
+    })})(dels[i]);
+  }
+}
+
 function openRemM(){
-    openM('<h2>Напоминание</h2>'+
-    '<div class="fg"><label>Текст</label><input type="text" id="rmT" placeholder="О чём напомнить?"></div>'+
-    '<div class="fg"><label>Время</label><input type="time" id="rmTm"></div>'+
-    '<div class="fg"><label><input type="checkbox" id="rmD" checked> Каждый день</label></div>'+
-    '<div class="ma"><button class="bt bt-s" onclick="closeM()">Отмена</button>'+
-    '<button class="bt bt-p" onclick="addRem()">Добавить</button></div>');
+  openM('<h2>⏰ Напоминание</h2><div class="fg"><label>Текст</label><input type="text" id="rmT" placeholder="О чём напомнить?"></div><div class="fg"><label>Время</label><input type="time" id="rmTm"></div><div class="fg"><label><input type="checkbox" id="rmD" checked> Каждый день</label></div><div class="ma"><button class="bt bt-s" id="rmCancel">Отмена</button><button class="bt bt-p" id="rmOk">Добавить</button></div>');
+  $("rmCancel").addEventListener("click",closeM);
+  $("rmOk").addEventListener("click",function(){
+    var t=$("rmT").value.trim();if(!t)return;
+    D.reminders.push({id:uid(),text:t,time:$("rmTm").value,daily:$("rmD").checked,active:true});
+    saveD();closeM();renderAll();showNtf("⏰ Готово!");
+  });
 }
-function addRem(){
-    var t=document.getElementById("rmT").value.trim();if(!t)return;
-    D.reminders.push({id:uid(),text:t,time:document.getElementById("rmTm").value,daily:document.getElementById("rmD").checked,active:true,lastFired:""});
-    saveD(D);closeM();renderAll();showNtf("⏰ Напоминание!");reqNotif();
-}
-function togRem(id){var r=D.reminders.filter(function(x){return x.id===id})[0];r.active=!r.active;saveD(D);renderAll()}
-function delRem(id){D.reminders=D.reminders.filter(function(x){return x.id!==id});saveD(D);renderAll()}
 
-// Journal
+// ====== RENDER JOURNAL ======
+function renderJourn(){
+  var el=$("journC");
+  var sorted=D.journal.slice().sort(function(a,b){return(b.date+(b.time||"")).localeCompare(a.date+(a.time||""))});
+  if(!sorted.length){el.innerHTML='<div class="emp" style="padding:10px"><p>Запиши мысли!</p></div>';return}
+  var h="";
+  for(var i=0;i<Math.min(sorted.length,8);i++){
+    var j=sorted[i];
+    h+='<div class="je"><div style="display:flex;justify-content:space-between"><div class="dt">'+(j.mood||"")+" "+dayL(j.date)+" "+(j.time||"")+'</div><button class="xbtn" data-delj="'+j.id+'">✕</button></div><div class="tx">'+esc(j.text)+'</div></div>';
+  }
+  el.innerHTML=h;
+
+  var dels=document.querySelectorAll("[data-delj]");
+  for(var i=0;i<dels.length;i++){
+    (function(el){el.addEventListener("click",function(){
+      var id=el.getAttribute("data-delj");
+      D.journal=D.journal.filter(function(x){return x.id!==id});saveD();renderAll();
+    })})(dels[i]);
+  }
+}
+
 var selMood="";
 function openJournM(){
-    selMood="";
-    openM('<h2>Записать мысль</h2>'+
-    '<div class="fg"><label>Настроение</label><div style="display:flex;gap:5px;font-size:22px;margin-bottom:4px" id="mP"></div></div>'+
-    '<div class="fg"><label>Мысль</label><textarea id="jT" placeholder="Что на уме?"></textarea></div>'+
-    '<div class="ma"><button class="bt bt-s" onclick="closeM()">Отмена</button>'+
-    '<button class="bt bt-p" onclick="addJourn()">Записать +'+XPR.journal+"XP</button></div>");
-    var moods=["😊","😐","😔","🔥","💪","🤔"];
-    var mp=document.getElementById("mP");var h="";
-    moods.forEach(function(m){h+='<span onclick="pickM(\''+m+'\')" data-m="'+m+'" style="cursor:pointer;opacity:.4;font-size:22px">'+m+"</span>"});
-    mp.innerHTML=h;
-}
-function pickM(m){
-    selMood=m;
-    var spans=document.querySelectorAll("#mP span");
-    for(var i=0;i<spans.length;i++){
-        spans[i].style.opacity=spans[i].getAttribute("data-m")===m?"1":"0.4";
-        spans[i].style.transform=spans[i].getAttribute("data-m")===m?"scale(1.2)":"scale(1)";
-    }
-}
-function addJourn(){
-    var t=document.getElementById("jT").value.trim();if(!t)return;
+  selMood="";
+  openM('<h2>📔 Мысль</h2><div class="fg"><label>Настроение</label><div style="display:flex;gap:6px;font-size:20px" id="mP"></div></div><div class="fg"><label>Мысль</label><textarea id="jT" placeholder="Что на уме?"></textarea></div><div class="ma"><button class="bt bt-s" id="jCancel">Отмена</button><button class="bt bt-p" id="jOk">Записать +20XP</button></div>');
+
+  var moods=["😊","😐","😔","🔥","💪","🤔"];
+  var mp=$("mP");var mh="";
+  for(var i=0;i<moods.length;i++)mh+='<span style="cursor:pointer;opacity:.4;font-size:20px" data-mood="'+moods[i]+'">'+moods[i]+'</span>';
+  mp.innerHTML=mh;
+
+  var spans=mp.querySelectorAll("span");
+  for(var i=0;i<spans.length;i++){
+    (function(sp){sp.addEventListener("click",function(){
+      selMood=sp.getAttribute("data-mood");
+      for(var j=0;j<spans.length;j++){spans[j].style.opacity=spans[j]===sp?"1":"0.4";spans[j].style.transform=spans[j]===sp?"scale(1.2)":"scale(1)"}
+    })})(spans[i]);
+  }
+
+  $("jCancel").addEventListener("click",closeM);
+  $("jOk").addEventListener("click",function(){
+    var t=$("jT").value.trim();if(!t)return;
     var now=new Date();
     D.journal.push({id:uid(),text:t,mood:selMood,date:today(),time:now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0")});
-    selMood="";saveD(D);closeM();renderAll();addXP(XPR.journal,window.innerWidth/2,300);showNtf("📔 Записано!");
-}
-function delJourn(id){D.journal=D.journal.filter(function(x){return x.id!==id});saveD(D);renderAll()}
-
-// Routine
-function togRut(id){
-    var td=today();var r=D.routine.filter(function(x){return x.id===id})[0];
-    if(!r.doneDates)r.doneDates=[];
-    var i=r.doneDates.indexOf(td);
-    if(i>=0)r.doneDates.splice(i,1);
-    else{r.doneDates.push(td);addXP(XPR.routine,window.innerWidth/2,300)}
-    saveD(D);renderAll();
+    saveD();closeM();addXP(XPR.journal,null);renderAll();showNtf("📔 Записано!");
+  });
 }
 
-// Settings
+// ====== REVIEW ======
+function openReview(){
+  var td=today();var hr=new Date().getHours();var isM=hr<14;
+  var ex=D.journal.filter(function(j){return j.date===td&&j.isRev})[0];
+  var rd=ex?JSON.parse(ex.revData||"{}"):{};
+
+  var h='<div class="rv-h"><div class="e">'+(isM?"🌅":"🌙")+'</div><h2>'+(isM?"Утренний рапорт":"Вечерний отчёт")+'</h2><p>'+(isM?"Настрой день":"Оцени день")+'</p></div>';
+
+  if(isM){
+    h+='<div class="rv-s"><label>🙏 Благодарен за</label><textarea id="rv1">'+(rd.grateful||"")+'</textarea></div>';
+    h+='<div class="rv-s"><label>🎯 Главная задача</label><input type="text" id="rv2" value="'+(rd.main||"")+'"></div>';
+    h+='<div class="rv-s"><label>💡 Установка</label><textarea id="rv3">'+(rd.affirmation||"")+'</textarea></div>';
+  }else{
+    h+='<div class="rv-s"><label>⭐ Что хорошо?</label><textarea id="rv1">'+(rd.good||"")+'</textarea></div>';
+    h+='<div class="rv-s"><label>🔄 Улучшить?</label><textarea id="rv2">'+(rd.improve||"")+'</textarea></div>';
+    h+='<div class="rv-s"><label>💪 Горжусь?</label><textarea id="rv3">'+(rd.proud||"")+'</textarea></div>';
+  }
+  h+='<div class="ma"><button class="bt bt-s" id="rvSkip">Пропустить</button><button class="bt bt-p" id="rvOk">Сохранить +'+XPR.review+'XP</button></div>';
+  openM(h);
+
+  $("rvSkip").addEventListener("click",closeM);
+  $("rvOk").addEventListener("click",function(){
+    var rd2={};
+    if(isM){rd2.grateful=$("rv1").value;rd2.main=$("rv2").value;rd2.affirmation=$("rv3").value}
+    else{rd2.good=$("rv1").value;rd2.improve=$("rv2").value;rd2.proud=$("rv3").value}
+    if(ex){ex.revData=JSON.stringify(rd2)}
+    else{D.journal.push({id:uid(),text:isM?"🌅 Рапорт":"🌙 Отчёт",mood:"",date:today(),time:new Date().getHours().toString().padStart(2,"0")+":"+new Date().getMinutes().toString().padStart(2,"0"),isRev:true,revData:JSON.stringify(rd2)})}
+    saveD();addXP(XPR.review,null);closeM();renderAll();showNtf(isM?"🌅 Принято!":"🌙 Записано!");
+  });
+}
+
+// ====== RENDER STATS ======
+function renderStats(){
+  var h="";
+  h+='<div class="st">📊 Характеристики</div><div class="sgrid">';
+  for(var i=0;i<STATS.length;i++){
+    var s=STATS[i];var v=X.stats[s.k]||10;
+    h+='<div class="sbox"><div class="v" style="color:'+(STAT_CLR[s.k]||"#fff")+'">'+s.i+" "+v+'</div><div class="n">'+s.n+'</div></div>';
+  }
+  h+='</div>';
+
+  var rk=getRank();
+  h+='<div class="ac"><div class="ac-t">⚡ Ранг</div>';
+  h+='<div class="ar"><div class="arl">Ранг</div><div class="arv" style="color:var(--cyan)">'+rk.r+'</div></div>';
+  h+='<div class="ar"><div class="arl">Уровень</div><div class="arv">'+getLv()+'</div></div>';
+  h+='<div class="ar"><div class="arl">Всего XP</div><div class="arv" style="color:var(--gold)">'+X.total+'</div></div>';
+  h+='<div class="ar"><div class="arl">Сегодня</div><div class="arv">'+X.today+'</div></div>';
+  h+='<div class="ar"><div class="arl">Теней</div><div class="arv" style="color:var(--purple)">'+(D.shadows||[]).length+'</div></div>';
+  h+='</div>';
+
+  // Habit streaks
+  var stks=D.habits.map(function(hb){return{t:hb.title,s:getStreak(hb)}}).sort(function(a,b){return b.s-a.s});
+  if(stks.some(function(x){return x.s>0})){
+    h+='<div class="ac"><div class="ac-t">🔥 Серии</div>';
+    stks.filter(function(x){return x.s>0}).forEach(function(x){h+='<div class="ar"><div class="arl">'+esc(x.t)+'</div><div class="arv" style="color:var(--gold)">🔥 '+x.s+'</div></div>'});
+    h+='</div>';
+  }
+
+  $("statsC").innerHTML=h;
+}
+
+// ====== SETTINGS ======
 function openSettings(){
-    var ul=xpD.achs||[];
-    openM('<h2>⚙️ Настройки</h2>'+
-    '<div class="si" onclick="expData()"><div class="si-i">💾</div><div><div class="si-l">Экспорт бэкапа</div><div class="si-h">Скачать JSON</div></div></div>'+
-    '<div class="si" onclick="document.getElementById(\'impF\').click();closeM()"><div class="si-i">📂</div><div><div class="si-l">Импорт данных</div><div class="si-h">Восстановить</div></div></div>'+
-    '<div class="si" onclick="reqNotif()"><div class="si-i">🔔</div><div><div class="si-l">Уведомления</div><div class="si-h">Push</div></div></div>'+
-    '<div class="si" onclick="closeM();openRutMgr()"><div class="si-i">📅</div><div><div class="si-l">Режим дня</div><div class="si-h">Редактировать</div></div></div>'+
-    '<div class="si" onclick="showAchs()"><div class="si-i">🏆</div><div><div class="si-l">Достижения</div><div class="si-h">'+ul.length+"/"+ACHS.length+'</div></div></div>'+
-    '<div class="si" onclick="if(confirm(\'Удалить ВСЕ данные?\')){localStorage.clear();D=loadD();xpD=gXP();renderAll();renderXP();closeM();showNtf(\'Удалено\')}"><div class="si-i">🗑</div><div><div class="si-l" style="color:var(--red)">Сбросить всё</div><div class="si-h">Безвозвратно</div></div></div>'+
-    '<div style="text-align:center;margin-top:10px;font-size:9px;color:var(--tx3)">Моя Жизнь v3.0 ⚡ XP: '+xpD.total+"</div>");
-}
+  openM('<h2>⚙️ Система</h2>'+
+  '<div class="si" id="sExport"><div class="si-i">💾</div><div class="si-l">Экспорт</div></div>'+
+  '<div class="si" id="sImport"><div class="si-i">📂</div><div class="si-l">Импорт</div></div>'+
+  '<div class="si" id="sRut"><div class="si-i">📅</div><div class="si-l">Режим дня</div></div>'+
+  '<div class="si" id="sHab"><div class="si-i">✅</div><div class="si-l">Привычки</div></div>'+
+  '<div class="si" id="sReset"><div class="si-i">🗑</div><div class="si-l" style="color:var(--red)">Сбросить всё</div></div>'+
+  '<div style="text-align:center;margin-top:8px;font-size:8px;color:var(--tx3)">ARISE v4.0 | '+X.total+' XP | Ранг '+getRank().r+'</div>');
 
-function expData(){
-    var blob=new Blob([JSON.stringify({appData:D,xpData:xpD},null,2)],{type:"application/json"});
-    var url=URL.createObjectURL(blob);
-    var a=document.createElement("a");a.href=url;a.download="mylife_"+today()+".json";a.click();
-    URL.revokeObjectURL(url);showNtf("💾 Бэкап скачан!");
-}
-function impData(e){
-    var f=e.target.files[0];if(!f)return;
-    var r=new FileReader();
-    r.onload=function(ev){
+  $("sExport").addEventListener("click",function(){
+    var b=new Blob([JSON.stringify({D:D,X:X},null,2)],{type:"application/json"});
+    var u=URL.createObjectURL(b);var a=document.createElement("a");a.href=u;a.download="arise_"+today()+".json";a.click();
+    showNtf("💾 Скачано!");
+  });
+
+  $("sImport").addEventListener("click",function(){
+    closeM();
+    var inp=$("impF");
+    inp.onchange=function(e){
+      var f=e.target.files[0];if(!f)return;
+      var r=new FileReader();
+      r.onload=function(ev){
         try{
-            var d=JSON.parse(ev.target.result);
-            if(d.appData){D=d.appData;if(!D.reminders)D.reminders=[];if(!D.affirms)D.affirms=[];if(d.xpData){xpD=d.xpData;sXP(xpD)}saveD(D);renderAll();renderXP();showNtf("📂 Восстановлено!")}
-            else showNtf("❌ Неверный формат");
+          var d=JSON.parse(ev.target.result);
+          if(d.D){D=d.D;if(!D.shadows)D.shadows=[];if(!D.dailyQuests)D.dailyQuests=[];if(!D.dungeons)D.dungeons=[]}
+          if(d.X){X=d.X;saveXP()}
+          saveD();renderAll();renderXPBar();showNtf("📂 Восстановлено!");
         }catch(err){showNtf("❌ Ошибка")}
+      };
+      r.readAsText(f);inp.value="";
     };
-    r.readAsText(f);e.target.value="";
+    inp.click();
+  });
+
+  $("sRut").addEventListener("click",function(){closeM();openRutMgr()});
+  $("sHab").addEventListener("click",function(){closeM();openHabMgr()});
+
+  $("sReset").addEventListener("click",function(){
+    if(!confirm("Удалить ВСЕ данные?"))return;
+    localStorage.removeItem("arise5");localStorage.removeItem("arise5_xp");
+    D=loadD();X=loadXP();closeM();renderAll();renderXPBar();showNtf("🗑 Сброшено");
+  });
 }
 
 function openRutMgr(){
-    closeM();
-    var sorted=D.routine.slice().sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});
-    var h="";
-    sorted.forEach(function(r){
-        h+='<div class="ri"><div class="rt '+timeC(r.time)+'">'+(r.time||"—")+'</div><div class="rd">'+r.title+'</div><button class="db2" onclick="delRut(\''+r.id+"');openRutMgr()\">✕</button></div>";
-    });
-    setTimeout(function(){
-        openM('<h2>📅 Режим дня</h2><div id="rutMgr">'+(h||'<div class="emp" style="padding:10px"><p>Пусто</p></div>')+'</div>'+
-        '<div style="margin-top:6px"><div class="fg"><label>Время</label><input type="time" id="nrT"></div>'+
-        '<div class="fg"><label>Что делаем</label><input type="text" id="nrTl" placeholder="Например: Пробежка"></div>'+
-        '<button class="bt bt-p" style="width:100%" onclick="addRutMgr()">Добавить</button></div>'+
-        '<div class="ma"><button class="bt bt-s" onclick="closeM();renderAll()">Готово</button></div>');
-    },350);
-}
-function addRutMgr(){
-    var t=document.getElementById("nrTl").value.trim();if(!t)return;
-    D.routine.push({id:uid(),title:t,time:document.getElementById("nrT").value,doneDates:[]});
-    saveD(D);addXP(XPR.routine,window.innerWidth/2,300);openRutMgr();
-}
-function delRut(id){D.routine=D.routine.filter(function(x){return x.id!==id});saveD(D)}
+  var sorted=(D.routine||[]).slice().sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});
+  var h='<h2>📅 Режим дня</h2>';
+  for(var i=0;i<sorted.length;i++){
+    h+='<div class="ri"><div class="tm">'+(sorted[i].time||"—")+'</div><div class="ds">'+esc(sorted[i].title)+'</div><button class="xbtn" data-delrut="'+sorted[i].id+'">✕</button></div>';
+  }
+  h+='<div class="fg" style="margin-top:6px"><label>Время</label><input type="time" id="nrT"></div>';
+  h+='<div class="fg"><label>Действие</label><input type="text" id="nrTl" placeholder="Пробежка"></div>';
+  h+='<button class="bt bt-p" style="width:100%" id="nrOk">Добавить</button>';
+  h+='<div class="ma"><button class="bt bt-s" id="nrClose">Готово</button></div>';
+  openM(h);
 
-function reqNotif(){if(!("Notification" in window)){showNtf("Не поддерживается");return}Notification.requestPermission().then(function(p){showNtf(p==="granted"?"🔔 Включено!":"Отклонено")})}
+  $("nrClose").addEventListener("click",function(){closeM();renderAll()});
+  $("nrOk").addEventListener("click",function(){
+    var t=$("nrTl").value.trim();if(!t)return;
+    D.routine.push({id:uid(),title:t,time:$("nrT").value,doneDates:[]});saveD();openRutMgr();
+  });
 
-setInterval(function(){
-    if(!("Notification" in window)||Notification.permission!=="granted")return;
+  var dels=document.querySelectorAll("[data-delrut]");
+  for(var i=0;i<dels.length;i++){
+    (function(el){el.addEventListener("click",function(){
+      var id=el.getAttribute("data-delrut");
+      D.routine=D.routine.filter(function(x){return x.id!==id});saveD();openRutMgr();
+    })})(dels[i]);
+  }
+}
+
+function openHabMgr(){
+  var habs=D.habits||[];
+  var h='<h2>✅ Привычки</h2>';
+  for(var i=0;i<habs.length;i++){
+    h+='<div class="ri"><div class="ds">'+esc(habs[i].title)+'</div><div style="font-size:9px;color:var(--gold)">🔥'+getStreak(habs[i])+'</div><button class="xbtn" data-delhab="'+habs[i].id+'">✕</button></div>';
+  }
+  h+='<div class="fg" style="margin-top:6px"><label>Название</label><input type="text" id="nhT" placeholder="Медитация 10 мин"></div>';
+  h+='<button class="bt bt-p" style="width:100%" id="nhOk">Добавить</button>';
+  h+='<div class="ma"><button class="bt bt-s" id="nhClose">Готово</button></div>';
+  openM(h);
+
+  $("nhClose").addEventListener("click",function(){closeM();renderAll()});
+  $("nhOk").addEventListener("click",function(){
+    var t=$("nhT").value.trim();if(!t)return;
+    D.habits.push({id:uid(),title:t,doneDates:[]});saveD();openHabMgr();
+  });
+
+  var dels=document.querySelectorAll("[data-delhab]");
+  for(var i=0;i<dels.length;i++){
+    (function(el){el.addEventListener("click",function(){
+      var id=el.getAttribute("data-delhab");
+      D.habits=D.habits.filter(function(x){return x.id!==id});saveD();openHabMgr();
+    })})(dels[i]);
+  }
+}
+
+// ====== NOTIFICATIONS ======
+if("Notification" in window){
+  setInterval(function(){
+    if(Notification.permission!=="granted")return;
     var now=new Date();var ct=now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0");
     var td=today();
-    D.reminders.forEach(function(r){
-        if(!r.active||!r.time||r.time!==ct)return;
-        if(!r.lastFired||r.lastFired!==td+"_"+ct){
-            new Notification("⚡ Моя Жизнь",{body:r.text,tag:r.id});
-            r.lastFired=td+"_"+ct;saveD(D);
-        }
-    });
-},60000);
+    for(var i=0;i<D.reminders.length;i++){
+      var r=D.reminders[i];
+      if(!r.active||!r.time||r.time!==ct)continue;
+      var key=td+"_"+ct;
+      if(r.lastFired!==key){new Notification("⚡ ARISE",{body:r.text});r.lastFired=key;saveD()}
+    }
+  },60000);
+}
 
-// ========== RENDER ALL ==========
-function renderAll(){renderHome();renderGoals();renderHabits();renderAff();renderRem();renderJourn();renderStats()}
-renderAll();renderXP();checkAchs();
-if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});
+// ====== INIT ======
+renderAll();
+renderXPBar();
+
+if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(function(){})}
 </script>
 </body>
 </html>
