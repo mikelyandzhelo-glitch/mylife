@@ -1,1087 +1,972 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Моя Жизнь">
-    <meta name="theme-color" content="#0a0a1a">
-    <title>Моя Жизнь</title>
-    <link rel="manifest" href="manifest.json">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Моя Жизнь">
+<meta name="theme-color" content="#080818">
+<title>Моя Жизнь</title>
+<link rel="manifest" href="manifest.json">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--bg:#080818;--bg2:#0e0e28;--card:#141440;--card2:#1a1a50;--tx:#e8e8f8;--tx2:#8888bb;--tx3:#555580;--red:#ff2255;--red2:#ff5577;--grn:#00dd66;--ylw:#ffcc00;--blu:#3388ff;--prp:#aa66ff;--org:#ff8800;--cyn:#00cccc;--brd:rgba(255,255,255,0.04);--safe:env(safe-area-inset-bottom,0px)}
+body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.app{max-width:480px;margin:0 auto;min-height:100vh;min-height:100dvh;padding-bottom:calc(62px + var(--safe))}
 
-        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-        :root {
-            --bg: #0a0a1a;
-            --bg2: #111128;
-            --card: #161638;
-            --card-hover: #1c1c48;
-            --text: #e8e8f0;
-            --text2: #8888aa;
-            --muted: #555577;
-            --accent: #ff3366;
-            --accent2: #ff6699;
-            --green: #00e676;
-            --yellow: #ffd740;
-            --blue: #448aff;
-            --purple: #b388ff;
-            --orange: #ff9100;
-            --cyan: #18ffff;
-            --border: rgba(255,255,255,0.05);
-            --safe-bottom: env(safe-area-inset-bottom, 0px);
-        }
-        body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: var(--bg); color: var(--text);
-            min-height: 100vh; min-height: 100dvh;
-            overflow-x: hidden; -webkit-font-smoothing: antialiased;
-        }
-        .app {
-            max-width: 480px; margin: 0 auto;
-            min-height: 100vh; min-height: 100dvh;
-            padding-bottom: calc(66px + var(--safe-bottom));
-        }
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes confetti{0%{transform:translateY(-100vh) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+@keyframes xpPop{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-50px) scale(1.8)}}
+@keyframes lvlUp{0%{transform:scale(0.3);opacity:0}50%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+@keyframes breathe{0%,100%{box-shadow:0 0 15px rgba(255,34,85,0.15)}50%{box-shadow:0 0 30px rgba(255,34,85,0.35)}}
+@keyframes glow{0%,100%{opacity:0.5}50%{opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-        /* ===== ANIMATIONS ===== */
-        @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.05)} }
-        @keyframes glow { 0%,100%{box-shadow:0 0 20px rgba(255,51,102,0.2)} 50%{box-shadow:0 0 40px rgba(255,51,102,0.4)} }
-        @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
-        @keyframes confettiFall { 0%{transform:translateY(-100vh) rotate(0deg);opacity:1} 100%{transform:translateY(100vh) rotate(720deg);opacity:0} }
-        @keyframes xpGain { 0%{opacity:1;transform:translateY(0) scale(1)} 100%{opacity:0;transform:translateY(-40px) scale(1.5)} }
-        @keyframes levelUp { 0%{transform:scale(0.5);opacity:0} 50%{transform:scale(1.2)} 100%{transform:scale(1);opacity:1} }
-        @keyframes breathe { 0%,100%{opacity:0.6} 50%{opacity:1} }
-        @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
-        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
-        @keyframes ripple { to{transform:scale(2);opacity:0} }
+.page{display:none;padding:6px 16px 16px;animation:fadeUp .3s ease}.page.active{display:block}
 
-        .page { display:none; padding:6px 18px 18px; animation: fadeUp 0.35s ease; }
-        .page.active { display:block; }
+/* HEADER */
+.hdr{padding:10px 16px 6px;padding-top:calc(10px + env(safe-area-inset-top,0px));position:sticky;top:0;z-index:100;background:rgba(8,8,24,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--brd)}
+.hdr-row{display:flex;justify-content:space-between;align-items:center}
+.hdr h1{font-size:20px;font-weight:800;background:linear-gradient(135deg,var(--red),var(--org));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hdr-date{font-size:10px;color:var(--tx2);margin-top:1px}
+.hdr-btn{width:34px;height:34px;border-radius:10px;border:1px solid var(--brd);background:var(--card);color:var(--tx2);font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.hdr-btn:active{transform:scale(.88)}
 
-        /* ===== HEADER ===== */
-        .app-header {
-            padding: 12px 18px 8px;
-            padding-top: calc(12px + env(safe-area-inset-top, 0px));
-            position: sticky; top: 0; z-index: 100;
-            background: rgba(10,10,26,0.92);
-            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-            border-bottom: 1px solid var(--border);
-        }
-        .header-row { display: flex; justify-content: space-between; align-items: center; }
-        .header-row h1 {
-            font-size: 22px; font-weight: 800;
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-        }
-        .header-date { font-size: 11px; color: var(--text2); margin-top: 1px; }
-        .header-btn {
-            width: 36px; height: 36px; border-radius: 10px;
-            border: 1px solid var(--border); background: var(--card);
-            color: var(--text2); font-size: 16px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; transition: all 0.15s;
-        }
-        .header-btn:active { transform: scale(0.9); }
+/* XP BAR */
+.xp-wrap{margin-top:6px;display:flex;align-items:center;gap:6px}
+.xp-lvl{background:linear-gradient(135deg,var(--red),var(--org));color:#fff;font-size:10px;font-weight:800;padding:2px 7px;border-radius:5px;min-width:36px;text-align:center}
+.xp-track{flex:1;height:5px;background:var(--card);border-radius:3px;overflow:hidden}
+.xp-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--red),var(--org));transition:width .8s cubic-bezier(.4,0,.2,1);position:relative}
+.xp-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);background-size:200% 100%;animation:shimmer 2s infinite}
+.xp-txt{font-size:9px;color:var(--tx3);white-space:nowrap}
 
-        /* ===== XP BAR ===== */
-        .xp-bar-container {
-            margin-top: 8px; display: flex; align-items: center; gap: 8px;
-        }
-        .xp-level {
-            background: linear-gradient(135deg, var(--accent), var(--orange));
-            color: white; font-size: 11px; font-weight: 800;
-            padding: 3px 8px; border-radius: 6px; white-space: nowrap;
-            min-width: 42px; text-align: center;
-        }
-        .xp-bar {
-            flex: 1; height: 6px; background: var(--card);
-            border-radius: 3px; overflow: hidden;
-        }
-        .xp-bar-fill {
-            height: 100%; border-radius: 3px;
-            background: linear-gradient(90deg, var(--accent), var(--orange));
-            transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
-            position: relative;
-        }
-        .xp-bar-fill::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            background-size: 200% 100%;
-            animation: shimmer 2s infinite;
-        }
-        .xp-text { font-size: 10px; color: var(--muted); white-space: nowrap; }
+/* NAV */
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:rgba(8,8,24,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--brd);display:flex;justify-content:space-around;padding:4px 0;padding-bottom:calc(4px + var(--safe));z-index:1000}
+.nav-i{display:flex;flex-direction:column;align-items:center;gap:1px;padding:3px 5px;border:none;background:none;color:var(--tx3);font-size:8px;font-family:inherit;cursor:pointer;border-radius:6px;transition:all .2s;min-width:46px}
+.nav-ic{font-size:19px;line-height:1;transition:transform .2s}
+.nav-i.active{color:var(--red)}
+.nav-i.active .nav-ic{transform:scale(1.15)}
 
-        /* ===== BOTTOM NAV ===== */
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-            width: 100%; max-width: 480px;
-            background: rgba(10,10,26,0.95);
-            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-            border-top: 1px solid var(--border);
-            display: flex; justify-content: space-around;
-            padding: 5px 0; padding-bottom: calc(5px + var(--safe-bottom));
-            z-index: 1000;
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center; gap: 1px;
-            padding: 4px 6px; border: none; background: none;
-            color: var(--muted); font-size: 9px; font-family: inherit;
-            cursor: pointer; border-radius: 8px; transition: all 0.2s; min-width: 50px;
-        }
-        .nav-icon { font-size: 20px; line-height: 1; transition: transform 0.2s; }
-        .nav-item.active { color: var(--accent); }
-        .nav-item.active .nav-icon { transform: scale(1.15); }
+/* STITLE */
+.st{font-size:14px;font-weight:700;margin:14px 0 6px;display:flex;align-items:center;gap:5px}
+.st .all{margin-left:auto;font-size:10px;color:var(--red);font-weight:500;cursor:pointer}
 
-        /* ===== SECTION TITLE ===== */
-        .stitle {
-            font-size: 15px; font-weight: 700; margin: 16px 0 8px;
-            display: flex; align-items: center; gap: 6px;
-        }
-        .stitle .see-all { margin-left:auto; font-size:11px; color:var(--accent); font-weight:500; cursor:pointer; }
+/* CARDS */
+.crd{background:var(--card);border-radius:12px;padding:12px;margin-bottom:6px;border:1px solid var(--brd);transition:all .12s;cursor:pointer;overflow:hidden}
+.crd:active{transform:scale(.98);background:var(--card2)}
+.crd-t{font-size:13px;font-weight:600;margin-bottom:2px}
+.crd-s{font-size:11px;color:var(--tx2);line-height:1.3}
 
-        /* ===== CARD ===== */
-        .card {
-            background: var(--card); border-radius: 14px; padding: 14px;
-            margin-bottom: 8px; border: 1px solid var(--border);
-            transition: all 0.15s; cursor: pointer;
-            position: relative; overflow: hidden;
-        }
-        .card:active { transform: scale(0.98); background: var(--card-hover); }
-        .card::after {
-            content: ''; position: absolute; inset: 0;
-            background: radial-gradient(circle at var(--ripple-x,50%) var(--ripple-y,50%), rgba(255,255,255,0.08), transparent 60%);
-            opacity: 0; transition: opacity 0.3s;
-        }
-        .card:active::after { opacity: 1; }
-        .card-title { font-size: 14px; font-weight: 600; margin-bottom: 3px; }
-        .card-sub { font-size: 12px; color: var(--text2); line-height: 1.4; }
+/* ADD BTN */
+.abtn{width:100%;padding:10px;border-radius:10px;border:2px dashed rgba(255,34,85,.18);background:transparent;color:var(--red);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:4px;transition:all .15s}
+.abtn:active{background:rgba(255,34,85,.05);transform:scale(.98)}
 
-        /* ===== ADD BTN ===== */
-        .add-btn {
-            width: 100%; padding: 11px; border-radius: 12px;
-            border: 2px dashed rgba(255,51,102,0.2); background: transparent;
-            color: var(--accent); font-size: 13px; font-weight: 500;
-            cursor: pointer; font-family: inherit;
-            display: flex; align-items: center; justify-content: center; gap: 5px;
-            transition: all 0.2s;
-        }
-        .add-btn:active { background: rgba(255,51,102,0.06); transform: scale(0.98); }
+/* QUOTE */
+.qw{background:linear-gradient(135deg,#12082a,#20083a);border-radius:14px;padding:14px;margin-bottom:8px;border:1px solid rgba(170,100,255,.1);position:relative;overflow:hidden}
+.qw::before{content:'';position:absolute;top:-40%;right:-20%;width:180px;height:180px;background:radial-gradient(circle,rgba(170,100,255,.08),transparent);pointer-events:none}
+.qt{font-size:12px;font-weight:500;line-height:1.5;font-style:italic;position:relative}
+.qa{font-size:10px;color:var(--prp);margin-top:5px;font-weight:600}
+.qr-btn{position:absolute;top:8px;right:8px;background:rgba(255,255,255,.05);border:none;border-radius:6px;width:26px;height:26px;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;color:var(--tx3)}
 
-        /* ===== QUOTE WIDGET ===== */
-        .quote-w {
-            background: linear-gradient(135deg, #1a0a2e 0%, #2d1048 50%, #1a0a2e 100%);
-            border-radius: 16px; padding: 16px; margin-bottom: 10px;
-            border: 1px solid rgba(179,136,255,0.15);
-            position: relative; overflow: hidden;
-        }
-        .quote-w::before {
-            content: ''; position: absolute; top:-50%; right:-30%;
-            width: 200px; height: 200px;
-            background: radial-gradient(circle, rgba(179,136,255,0.1), transparent);
-            pointer-events: none;
-        }
-        .quote-w .qt { font-size: 13px; font-weight: 500; line-height: 1.5; font-style: italic; position:relative; }
-        .quote-w .qa { font-size: 11px; color: var(--purple); margin-top: 6px; font-weight: 600; }
-        .quote-w .qr {
-            position:absolute; top:10px; right:10px;
-            background: rgba(255,255,255,0.06); border:none; border-radius:8px;
-            width:28px; height:28px; cursor:pointer; font-size:14px;
-            display:flex; align-items:center; justify-content:center; color:var(--text2);
-        }
+/* STATS */
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px}
+.sc{background:var(--card);border-radius:10px;padding:8px;border:1px solid var(--brd);text-align:center}
+.sv{font-size:20px;font-weight:800}
+.sl{font-size:8px;color:var(--tx3);margin-top:1px;text-transform:uppercase;letter-spacing:.4px}
 
-        /* ===== STATS ===== */
-        .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:10px; }
-        .stat-card {
-            background: var(--card); border-radius: 12px; padding: 10px;
-            border: 1px solid var(--border); text-align: center;
-            position: relative; overflow: hidden;
-        }
-        .stat-val { font-size: 22px; font-weight: 800; }
-        .stat-lbl { font-size: 9px; color: var(--muted); margin-top: 1px; text-transform: uppercase; letter-spacing: 0.5px; }
+/* TAGS */
+.tg{display:inline-block;padding:2px 6px;border-radius:4px;font-size:8px;font-weight:700}
+.tg-health{background:rgba(0,221,102,.1);color:var(--grn)}
+.tg-finance{background:rgba(255,204,0,.1);color:var(--ylw)}
+.tg-relationship{background:rgba(255,34,85,.1);color:var(--red)}
+.tg-career{background:rgba(51,136,255,.1);color:var(--blu)}
+.tg-growth{background:rgba(170,102,255,.1);color:var(--prp)}
+.tg-other{background:rgba(255,255,255,.04);color:var(--tx2)}
 
-        /* ===== CATEGORY TAGS ===== */
-        .ctag { display:inline-block; padding:2px 7px; border-radius:5px; font-size:9px; font-weight:700; letter-spacing:0.3px; }
-        .ct-health { background:rgba(0,230,118,0.12); color:var(--green); }
-        .ct-finance { background:rgba(255,215,64,0.12); color:var(--yellow); }
-        .ct-relationship { background:rgba(255,51,102,0.12); color:var(--accent); }
-        .ct-career { background:rgba(68,138,255,0.12); color:var(--blue); }
-        .ct-growth { background:rgba(179,136,255,0.12); color:var(--purple); }
-        .ct-other { background:rgba(255,255,255,0.06); color:var(--text2); }
+/* HABIT */
+.hi{display:flex;align-items:center;gap:8px;padding:10px;background:var(--card);border-radius:10px;border:1px solid var(--brd);margin-bottom:4px;transition:all .12s}
+.hi:active{transform:scale(.98)}
+.hc{width:26px;height:26px;border-radius:50%;border:2px solid var(--tx3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0;font-size:12px}
+.hc.dn{background:var(--grn);border-color:var(--grn);color:var(--bg)}
+.hn{flex:1;font-size:12px;font-weight:500}
+.hk{font-size:9px;color:var(--ylw);font-weight:700}
+.hx{font-size:8px;color:var(--cyn);font-weight:600}
 
-        /* ===== GOAL PROGRESS ===== */
-        .gprog { width:100%; height:5px; background:var(--bg); border-radius:3px; margin-top:8px; overflow:hidden; }
-        .gprog-bar { height:100%; border-radius:3px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width 0.6s ease; }
-        .gmeta { display:flex; justify-content:space-between; margin-top:3px; font-size:10px; color:var(--muted); }
+/* GOAL PROG */
+.gp{width:100%;height:4px;background:var(--bg);border-radius:2px;margin-top:6px;overflow:hidden}
+.gpb{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--red),var(--red2));transition:width .5s ease}
+.gm{display:flex;justify-content:space-between;margin-top:2px;font-size:9px;color:var(--tx3)}
 
-        /* ===== HABIT ITEMS ===== */
-        .habit-item {
-            display:flex; align-items:center; gap:10px;
-            padding:11px; background:var(--card); border-radius:12px;
-            border:1px solid var(--border); margin-bottom:5px;
-            transition: all 0.15s;
-        }
-        .habit-item:active { transform: scale(0.98); }
-        .hcheck {
-            width:28px; height:28px; border-radius:50%;
-            border:2px solid var(--muted);
-            display:flex; align-items:center; justify-content:center;
-            cursor:pointer; transition:all 0.25s; flex-shrink:0; font-size:13px;
-        }
-        .hcheck.done {
-            background:var(--green); border-color:var(--green); color:var(--bg);
-            animation: pulse 0.3s ease;
-        }
-        .hname { flex:1; font-size:13px; font-weight:500; }
-        .hstreak { font-size:10px; color:var(--yellow); font-weight:700; }
-        .hxp { font-size:9px; color:var(--cyan); font-weight:600; }
+/* AFF */
+.af{background:linear-gradient(135deg,#10062a,#1e083a);border-radius:12px;padding:12px;margin-bottom:5px;border:1px solid rgba(170,100,255,.08);position:relative;overflow:hidden}
+.aft{font-size:12px;font-weight:500;line-height:1.4;position:relative;padding-left:10px}
+.aft::before{content:'\201C';font-size:24px;color:var(--prp);position:absolute;top:-4px;left:-2px;opacity:.3}
+.afa{display:flex;gap:4px;margin-top:6px;position:relative}
+.afa button{padding:3px 8px;border-radius:5px;border:none;font-size:9px;font-family:inherit;cursor:pointer;background:rgba(255,255,255,.04);color:var(--tx2)}
 
-        /* ===== AFFIRMATION ===== */
-        .aff-card {
-            background: linear-gradient(135deg, #16082e, #240e42);
-            border-radius: 14px; padding: 14px; margin-bottom: 6px;
-            border: 1px solid rgba(179,136,255,0.12);
-            position: relative; overflow: hidden;
-        }
-        .aff-card::before {
-            content:''; position:absolute; top:-50%; right:-50%; width:100%; height:100%;
-            background:radial-gradient(circle,rgba(179,136,255,0.06),transparent); pointer-events:none;
-        }
-        .aff-text { font-size:13px; font-weight:500; line-height:1.5; position:relative; padding-left:12px; }
-        .aff-text::before { content:'\201C'; font-size:28px; color:var(--purple); position:absolute; top:-6px; left:-2px; opacity:0.4; }
-        .aff-actions { display:flex; gap:5px; margin-top:8px; position:relative; }
-        .aff-actions button {
-            padding:4px 9px; border-radius:6px; border:none;
-            font-size:10px; font-family:inherit; cursor:pointer;
-            background:rgba(255,255,255,0.05); color:var(--text2);
-        }
+/* ROUTINE */
+.ri{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--card);border-radius:10px;margin-bottom:4px;border:1px solid var(--brd)}
+.rt{font-size:11px;font-weight:700;min-width:40px}
+.rt.mrn{color:var(--ylw)}.rt.day{color:var(--org)}.rt.evn{color:var(--prp)}.rt.nit{color:var(--blu)}
+.rd{flex:1;font-size:12px}
+.tgl{width:38px;height:22px;border-radius:11px;background:var(--tx3);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.tgl.on{background:var(--grn)}
+.tgl::after{content:'';position:absolute;width:18px;height:18px;border-radius:50%;background:#fff;top:2px;left:2px;transition:transform .2s}
+.tgl.on::after{transform:translateX(16px)}
 
-        /* ===== ROUTINE ===== */
-        .rut-item {
-            display:flex; align-items:center; gap:10px;
-            padding:10px 12px; background:var(--card); border-radius:12px;
-            margin-bottom:5px; border:1px solid var(--border);
-        }
-        .rut-time { font-size:12px; font-weight:700; min-width:44px; }
-        .rut-time.morning { color: var(--yellow); }
-        .rut-time.day { color: var(--orange); }
-        .rut-time.evening { color: var(--purple); }
-        .rut-time.night { color: var(--blue); }
-        .rut-desc { flex:1; font-size:13px; }
-        .rut-toggle {
-            width:40px; height:24px; border-radius:12px;
-            background:var(--muted); position:relative;
-            cursor:pointer; transition:background 0.2s; flex-shrink:0;
-        }
-        .rut-toggle.on { background:var(--green); }
-        .rut-toggle::after {
-            content:''; position:absolute; width:20px; height:20px;
-            border-radius:50%; background:white; top:2px; left:2px;
-            transition:transform 0.2s;
-        }
-        .rut-toggle.on::after { transform:translateX(16px); }
+/* REMINDER */
+.rmi{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--card);border-radius:10px;margin-bottom:4px;border:1px solid var(--brd)}
+.rm-i{flex:1}.rm-t{font-size:12px;font-weight:500}.rm-t2{font-size:9px;color:var(--tx3)}
 
-        /* ===== REMINDER ===== */
-        .rem-item {
-            display:flex; align-items:center; gap:10px;
-            padding:10px 12px; background:var(--card); border-radius:12px;
-            margin-bottom:5px; border:1px solid var(--border);
-        }
-        .rem-bell { font-size:16px; }
-        .rem-info { flex:1; }
-        .rem-title { font-size:13px; font-weight:500; }
-        .rem-time { font-size:10px; color:var(--muted); }
+/* JOURNAL */
+.je{padding:10px;background:var(--card);border-radius:10px;margin-bottom:5px;border:1px solid var(--brd)}
+.jd{font-size:9px;color:var(--tx3);margin-bottom:2px}
+.jt{font-size:12px;line-height:1.3;color:var(--tx2)}
 
-        /* ===== JOURNAL ===== */
-        .journ-entry {
-            padding:11px; background:var(--card); border-radius:12px;
-            margin-bottom:6px; border:1px solid var(--border);
-        }
-        .journ-date { font-size:10px; color:var(--muted); margin-bottom:3px; }
-        .journ-text { font-size:13px; line-height:1.4; color:var(--text2); }
+/* DAILY BONUS */
+.db{background:linear-gradient(135deg,#1a0808,#2a1010);border:1px solid rgba(255,34,85,.15);border-radius:12px;padding:10px;margin-bottom:8px;display:flex;align-items:center;gap:8px;cursor:pointer;animation:breathe 3s infinite}
+.db:active{transform:scale(.97)}
+.db-i{font-size:24px;animation:pulse 2s infinite}
+.db-t{flex:1}.db-tt{font-size:12px;font-weight:600;color:var(--red)}.db-ts{font-size:10px;color:var(--tx2)}
+.db-b{padding:5px 12px;border-radius:6px;border:none;background:var(--red);color:#fff;font-size:10px;font-weight:700;font-family:inherit;cursor:pointer}
 
-        /* ===== REVIEW MODAL ===== */
-        .review-header {
-            text-align: center; padding: 10px 0 16px;
-        }
-        .review-header .emoji { font-size: 48px; margin-bottom: 8px; }
-        .review-header h2 { font-size: 20px; font-weight: 700; }
-        .review-header p { font-size: 13px; color: var(--text2); margin-top: 4px; }
-        .review-section { margin-bottom: 14px; }
-        .review-section label {
-            display: block; font-size: 12px; color: var(--text2);
-            margin-bottom: 5px; font-weight: 600;
-        }
-        .review-section textarea {
-            width:100%; padding:10px 12px; border-radius:10px;
-            border:1px solid var(--border); background:var(--bg);
-            color:var(--text); font-size:13px; font-family:inherit;
-            outline:none; min-height:60px; resize:none;
-        }
-        .review-section textarea:focus { border-color: var(--accent); }
-        .review-section input[type="text"] {
-            width:100%; padding:10px 12px; border-radius:10px;
-            border:1px solid var(--border); background:var(--bg);
-            color:var(--text); font-size:13px; font-family:inherit; outline:none;
-        }
+/* ACHIEVEMENTS */
+.ag{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:8px}
+.ai{text-align:center;padding:8px 2px;border-radius:8px;background:var(--card);border:1px solid var(--brd)}
+.ai.lk{opacity:.25}.ai.ul{border-color:rgba(255,204,0,.2);background:rgba(255,204,0,.03)}
+.ai-i{font-size:20px;margin-bottom:1px}.ai-n{font-size:7px;color:var(--tx2);line-height:1.1}
 
-        /* ===== ANALYTICS ===== */
-        .aperiod { display:flex; gap:5px; margin-bottom:12px; }
-        .aperiod-btn {
-            flex:1; padding:7px; border-radius:8px; border:1px solid var(--border);
-            background:var(--card); color:var(--text2);
-            font-size:11px; font-weight:600; font-family:inherit; cursor:pointer;
-            transition:all 0.15s;
-        }
-        .aperiod-btn.active { background:var(--accent); color:white; border-color:var(--accent); }
-        .achart { margin-bottom:14px; }
-        .achart-title { font-size:12px; font-weight:600; margin-bottom:6px; color:var(--text2); }
-        .abars { display:flex; align-items:flex-end; gap:3px; height:80px; }
-        .abar-col { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; }
-        .abar {
-            width:100%; border-radius:3px 3px 0 0;
-            background:linear-gradient(to top, var(--accent), var(--accent2));
-            min-height:3px; transition:height 0.6s ease;
-        }
-        .abar-val { font-size:8px; color:var(--text2); font-weight:600; }
-        .abar-lbl { font-size:8px; color:var(--muted); }
-        .acard {
-            background:var(--card); border-radius:12px; padding:12px;
-            border:1px solid var(--border); margin-bottom:8px;
-        }
-        .arow {
-            display:flex; justify-content:space-between; align-items:center;
-            padding:6px 0; border-bottom:1px solid var(--border);
-        }
-        .arow:last-child { border-bottom:none; }
-        .arow-l { font-size:12px; color:var(--text2); }
-        .arow-v { font-size:13px; font-weight:700; }
+/* REVIEW */
+.rv-h{text-align:center;padding:8px 0 12px}
+.rv-h .e{font-size:40px;margin-bottom:6px}
+.rv-h h2{font-size:18px;font-weight:700}
+.rv-h p{font-size:12px;color:var(--tx2);margin-top:3px}
+.rv-s{margin-bottom:10px}
+.rv-s label{display:block;font-size:11px;color:var(--tx2);margin-bottom:4px;font-weight:600}
+.rv-s textarea,.rv-s input[type=text]{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--brd);background:var(--bg);color:var(--tx);font-size:13px;font-family:inherit;outline:none}
+.rv-s textarea{min-height:50px;resize:none}
+.rv-s textarea:focus,.rv-s input:focus{border-color:var(--red)}
 
-        /* ===== MODAL ===== */
-        .modal-overlay {
-            display:none; position:fixed; inset:0;
-            background:rgba(0,0,0,0.65); z-index:2000;
-            justify-content:center; align-items:flex-end;
-        }
-        .modal-overlay.active { display:flex; animation: fadeIn 0.2s ease; }
-        .modal {
-            background:var(--bg2); border-radius:20px 20px 0 0;
-            padding:14px; padding-bottom:calc(14px + var(--safe-bottom));
-            width:100%; max-width:480px; max-height:88vh;
-            overflow-y:auto; animation:slideUp 0.3s ease;
-        }
-        .mhandle { width:36px; height:4px; background:var(--muted); border-radius:2px; margin:0 auto 12px; }
-        .modal h2 { font-size:17px; font-weight:700; margin-bottom:12px; }
-        .fg { margin-bottom:10px; }
-        .fg label { display:block; font-size:11px; color:var(--text2); margin-bottom:4px; font-weight:600; }
-        .fg input, .fg textarea, .fg select {
-            width:100%; padding:10px 12px; border-radius:10px;
-            border:1px solid var(--border); background:var(--bg);
-            color:var(--text); font-size:14px; font-family:inherit;
-            outline:none; transition:border 0.2s;
-        }
-        .fg input:focus, .fg textarea:focus { border-color:var(--accent); }
-        .fg textarea { min-height:64px; resize:vertical; }
-        .mactions { display:flex; gap:8px; margin-top:12px; }
-        .btn {
-            flex:1; padding:12px; border-radius:10px; border:none;
-            font-size:14px; font-weight:600; font-family:inherit; cursor:pointer;
-            transition:all 0.15s;
-        }
-        .btn:active { transform:scale(0.97); }
-        .btn-p { background:var(--accent); color:white; }
-        .btn-s { background:var(--card); color:var(--text2); }
-        .btn-d { background:rgba(255,51,102,0.1); color:var(--accent); }
+/* ANALYTICS */
+.ap{display:flex;gap:4px;margin-bottom:10px}
+.apb{flex:1;padding:6px;border-radius:6px;border:1px solid var(--brd);background:var(--card);color:var(--tx2);font-size:10px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .12s}
+.apb.act{background:var(--red);color:#fff;border-color:var(--red)}
+.ac{background:var(--card);border-radius:10px;padding:10px;border:1px solid var(--brd);margin-bottom:6px}
+.ac-t{font-size:11px;font-weight:600;margin-bottom:4px;color:var(--tx2)}
+.abr{display:flex;align-items:flex-end;gap:2px;height:70px}
+.abc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.ab{width:100%;border-radius:2px 2px 0 0;background:linear-gradient(to top,var(--red),var(--red2));min-height:2px;transition:height .5s ease}
+.abv{font-size:7px;color:var(--tx2);font-weight:600}
+.abl{font-size:7px;color:var(--tx3)}
+.ar{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--brd)}
+.ar:last-child{border-bottom:none}
+.arl{font-size:11px;color:var(--tx2)}.arv{font-size:12px;font-weight:700}
 
-        /* ===== SETTINGS ITEM ===== */
-        .sitem {
-            display:flex; align-items:center; gap:10px;
-            padding:12px; background:var(--card); border-radius:10px;
-            margin-bottom:5px; border:1px solid var(--border); cursor:pointer;
-            transition:all 0.15s;
-        }
-        .sitem:active { transform:scale(0.98); }
-        .sicon { font-size:20px; }
-        .slabel { flex:1; font-size:13px; font-weight:500; }
-        .shint { font-size:10px; color:var(--muted); }
+/* MODAL */
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;justify-content:center;align-items:flex-end}
+.mo.act{display:flex;animation:fadeUp .2s ease}
+.ml{background:var(--bg2);border-radius:18px 18px 0 0;padding:12px;padding-bottom:calc(12px + var(--safe));width:100%;max-width:480px;max-height:88vh;overflow-y:auto}
+.mh{width:32px;height:3px;background:var(--tx3);border-radius:2px;margin:0 auto 10px}
+.ml h2{font-size:16px;font-weight:700;margin-bottom:10px}
+.fg{margin-bottom:8px}
+.fg label{display:block;font-size:10px;color:var(--tx2);margin-bottom:3px;font-weight:600}
+.fg input,.fg textarea,.fg select{width:100%;padding:9px 10px;border-radius:8px;border:1px solid var(--brd);background:var(--bg);color:var(--tx);font-size:13px;font-family:inherit;outline:none}
+.fg input:focus,.fg textarea:focus{border-color:var(--red)}
+.fg textarea{min-height:56px;resize:vertical}
+.ma{display:flex;gap:6px;margin-top:10px}
+.bt{flex:1;padding:10px;border-radius:8px;border:none;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .12s}
+.bt:active{transform:scale(.97)}
+.bt-p{background:var(--red);color:#fff}
+.bt-s{background:var(--card);color:var(--tx2)}
 
-        /* ===== EMPTY ===== */
-        .empty { text-align:center; padding:24px 14px; color:var(--muted); }
-        .empty .e { font-size:36px; margin-bottom:8px; }
-        .empty p { font-size:12px; line-height:1.4; }
+/* SETTINGS */
+.si{display:flex;align-items:center;gap:8px;padding:10px;background:var(--card);border-radius:8px;margin-bottom:4px;border:1px solid var(--brd);cursor:pointer;transition:all .12s}
+.si:active{transform:scale(.98)}
+.si-i{font-size:18px}.si-l{flex:1;font-size:12px;font-weight:500}.si-h{font-size:9px;color:var(--tx3)}
 
-        /* ===== CONFETTI ===== */
-        .confetti-piece {
-            position:fixed; width:8px; height:8px; border-radius:2px;
-            z-index:9999; pointer-events:none;
-            animation: confettiFall 2.5s ease-in forwards;
-        }
+/* EMPTY */
+.emp{text-align:center;padding:20px 12px;color:var(--tx3)}
+.emp .e{font-size:32px;margin-bottom:6px}
+.emp p{font-size:11px;line-height:1.3}
 
-        /* ===== XP POPUP ===== */
-        .xp-popup {
-            position:fixed; z-index:9998; pointer-events:none;
-            font-size:16px; font-weight:800; color:var(--cyan);
-            animation: xpGain 1s ease-out forwards;
-            text-shadow: 0 0 10px rgba(24,255,255,0.5);
-        }
+.db2{padding:2px 6px;border-radius:4px;border:none;background:rgba(255,34,85,.08);color:var(--red);font-size:9px;font-family:inherit;cursor:pointer}
 
-        /* ===== LEVEL UP OVERLAY ===== */
-        .levelup-overlay {
-            display:none; position:fixed; inset:0;
-            background:rgba(0,0,0,0.8); z-index:10000;
-            justify-content:center; align-items:center;
-            flex-direction: column;
-        }
-        .levelup-overlay.show { display:flex; animation:fadeIn 0.3s ease; }
-        .levelup-text {
-            font-size: 48px; font-weight: 900;
-            background: linear-gradient(135deg, var(--yellow), var(--orange), var(--accent));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            animation: levelUp 0.6s ease;
-        }
-        .levelup-sub { font-size:16px; color:var(--text2); margin-top:8px; animation:fadeUp 0.6s ease 0.3s both; }
-        .levelup-close {
-            margin-top:20px; padding:12px 40px; border-radius:12px;
-            border:none; background:var(--accent); color:white;
-            font-size:14px; font-weight:600; font-family:inherit; cursor:pointer;
-            animation:fadeUp 0.6s ease 0.5s both;
-        }
+/* XP POPUP */
+.xpp{position:fixed;z-index:9998;pointer-events:none;font-size:15px;font-weight:800;color:var(--cyn);animation:xpPop 1s ease-out forwards;text-shadow:0 0 8px rgba(0,204,204,.5)}
+/* CONFETTI */
+.cfp{position:fixed;border-radius:2px;z-index:9999;pointer-events:none;animation:confetti 2.5s ease-in forwards}
+/* LEVEL UP */
+.luo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10000;justify-content:center;align-items:center;flex-direction:column}
+.luo.act{display:flex}
+.lu-t{font-size:42px;font-weight:900;background:linear-gradient(135deg,var(--ylw),var(--org),var(--red));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:lvlUp .6s ease}
+.lu-s{font-size:14px;color:var(--tx2);margin-top:6px;animation:fadeUp .5s ease .3s both}
+.lu-b{margin-top:16px;padding:10px 36px;border-radius:10px;border:none;background:var(--red);color:#fff;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;animation:fadeUp .5s ease .5s both}
+/* NOTIF */
+.ntf{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;padding:12px;padding-top:calc(8px + env(safe-area-inset-top,0px));background:linear-gradient(135deg,var(--red),#cc1144);color:#fff;z-index:3000;display:none;text-align:center;font-size:12px;font-weight:600}
+.ntf.act{display:block;animation:fadeUp .3s ease}
 
-        /* ===== DAILY BONUS ===== */
-        .daily-bonus {
-            background: linear-gradient(135deg, #1a0a0a, #2a1010);
-            border: 1px solid rgba(255,51,102,0.2);
-            border-radius: 14px; padding: 12px; margin-bottom: 10px;
-            display: flex; align-items: center; gap: 10px;
-            cursor: pointer; transition: all 0.15s;
-        }
-        .daily-bonus:active { transform: scale(0.98); }
-        .daily-bonus .db-icon { font-size: 28px; animation: pulse 2s infinite; }
-        .daily-bonus .db-text { flex:1; }
-        .daily-bonus .db-title { font-size:13px; font-weight:600; color:var(--accent); }
-        .daily-bonus .db-sub { font-size:11px; color:var(--text2); }
-        .daily-bonus .db-claim {
-            padding:6px 14px; border-radius:8px; border:none;
-            background:var(--accent); color:white; font-size:11px;
-            font-weight:700; font-family:inherit; cursor:pointer;
-        }
-        .daily-bonus .db-claim.claimed {
-            background: rgba(0,230,118,0.15); color:var(--green);
-        }
+/* STEPS */
+.sli{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--brd);font-size:11px}
+.sli:last-child{border-bottom:none}
+.sck{width:18px;height:18px;border-radius:4px;border:2px solid var(--tx3);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0;font-size:9px}
+.sck.dn{background:var(--grn);border-color:var(--grn);color:var(--bg)}
+.stx{flex:1}.stx.dt{text-decoration:line-through;opacity:.4}
+.sdl{color:var(--tx3);cursor:pointer;font-size:12px}
+.qas{display:flex;gap:4px;margin-top:4px}
+.qas input{flex:1;padding:6px 8px;border-radius:6px;border:1px solid var(--brd);background:var(--bg);color:var(--tx);font-size:11px;font-family:inherit;outline:none}
+.qas button{padding:6px 10px;border-radius:6px;border:none;background:var(--red);color:#fff;font-size:11px;font-family:inherit;cursor:pointer}
 
-        /* ===== STEPS ===== */
-        .steps-list { margin-top:5px; }
-        .step-item {
-            display:flex; align-items:center; gap:7px;
-            padding:6px 0; border-bottom:1px solid var(--border); font-size:12px;
-        }
-        .step-item:last-child { border-bottom:none; }
-        .scheck {
-            width:20px; height:20px; border-radius:5px;
-            border:2px solid var(--muted);
-            display:flex; align-items:center; justify-content:center;
-            cursor:pointer; transition:all 0.2s; flex-shrink:0; font-size:10px;
-        }
-        .scheck.done { background:var(--green); border-color:var(--green); color:var(--bg); }
-        .stext { flex:1; }
-        .stext.done-t { text-decoration:line-through; opacity:0.4; }
-        .sdel { color:var(--muted); cursor:pointer; font-size:13px; }
-        .qadd { display:flex; gap:5px; margin-top:5px; }
-        .qadd input {
-            flex:1; padding:7px 10px; border-radius:7px;
-            border:1px solid var(--border); background:var(--bg);
-            color:var(--text); font-size:12px; font-family:inherit; outline:none;
-        }
-        .qadd input:focus { border-color:var(--accent); }
-        .qadd button {
-            padding:7px 12px; border-radius:7px; border:none;
-            background:var(--accent); color:white; font-size:12px; font-family:inherit; cursor:pointer;
-        }
+.ovq{font-style:italic;color:var(--tx2);font-size:11px;padding:8px;background:var(--card);border-radius:8px;border-left:2px solid var(--prp);margin-bottom:6px;line-height:1.3}
 
-        /* ===== ACHIEVEMENTS ===== */
-        .ach-grid { display:grid; grid-template-columns: repeat(4,1fr); gap:8px; margin-bottom:12px; }
-        .ach-item {
-            text-align:center; padding:10px 4px; border-radius:10px;
-            background:var(--card); border:1px solid var(--border);
-            transition: all 0.2s;
-        }
-        .ach-item.locked { opacity:0.3; }
-        .ach-item.unlocked { border-color: rgba(255,215,64,0.3); background: rgba(255,215,64,0.05); }
-        .ach-item .ach-icon { font-size:24px; margin-bottom:2px; }
-        .ach-item .ach-name { font-size:8px; color:var(--text2); line-height:1.2; }
-
-        .del-btn {
-            padding:3px 8px; border-radius:5px; border:none;
-            background:rgba(255,51,102,0.1); color:var(--accent);
-            font-size:10px; font-family:inherit; cursor:pointer;
-        }
-
-        /* ===== OVERVIEW QUOTE ===== */
-        .ov-quote {
-            font-style:italic; color:var(--text2); font-size:12px;
-            padding:10px; background:var(--card); border-radius:10px;
-            border-left:3px solid var(--purple); margin-bottom:8px; line-height:1.4;
-        }
-
-        /* ===== NOTIF BANNER ===== */
-        .notif {
-            position:fixed; top:0; left:50%; transform:translateX(-50%);
-            width:100%; max-width:480px;
-            padding:14px; padding-top:calc(10px + env(safe-area-inset-top, 0px));
-            background:linear-gradient(135deg, var(--accent), #cc2244);
-            color:white; z-index:3000; display:none;
-            text-align:center; font-size:13px; font-weight:600;
-        }
-        .notif.show { display:block; animation:fadeUp 0.3s ease; }
-
-        ::-webkit-scrollbar { width:0; }
-    </style>
+::-webkit-scrollbar{width:0}
+</style>
 </head>
 <body>
-
-<div class="notif" id="notif"></div>
-
-<!-- LEVEL UP OVERLAY -->
-<div class="levelup-overlay" id="levelupOverlay">
-    <div class="levelup-text" id="levelupText">УРОВЕНЬ 2!</div>
-    <div class="levelup-sub" id="levelupSub">Ты становишься сильнее 💪</div>
-    <button class="levelup-close" onclick="document.getElementById('levelupOverlay').classList.remove('show')">Продолжить</button>
-</div>
+<div class="ntf" id="ntf"></div>
+<div class="luo" id="luOv"><div class="lu-t" id="luT">LEVEL 2!</div><div class="lu-s" id="luS">Ты становишься сильнее</div><button class="lu-b" onclick="document.getElementById('luOv').classList.remove('act')">Продолжить</button></div>
 
 <div class="app">
-    <!-- HEADER -->
-    <div class="app-header">
-        <div class="header-row">
-            <div>
-                <h1>⚡ Моя Жизнь</h1>
-                <div class="header-date" id="hDate"></div>
-            </div>
-            <div style="display:flex;gap:6px">
-                <button class="header-btn" onclick="openReview()" title="Обзор дня">🌅</button>
-                <button class="header-btn" onclick="openSettings()" title="Настройки">⚙️</button>
-            </div>
-        </div>
-        <div class="xp-bar-container">
-            <div class="xp-level" id="xpLevel">Ур.1</div>
-            <div class="xp-bar"><div class="xp-bar-fill" id="xpBarFill" style="width:0%"></div></div>
-            <div class="xp-text" id="xpText">0 XP</div>
-        </div>
-    </div>
-
-    <!-- HOME -->
-    <div class="page active" id="page-home"><div id="homeContent"></div></div>
-    <!-- GOALS -->
-    <div class="page" id="page-goals">
-        <div class="stitle"><span>🎯</span> Мои цели</div>
-        <div id="goalsList"></div>
-        <button class="add-btn" onclick="openGoalModal()">+ Добавить цель</button>
-    </div>
-    <!-- HABITS -->
-    <div class="page" id="page-habits">
-        <div class="stitle"><span>✅</span> Привычки</div>
-        <div id="habitsList"></div>
-        <div style="margin-top:8px"><button class="add-btn" onclick="openHabitModal()">+ Добавить привычку</button></div>
-    </div>
-    <!-- MIND -->
-    <div class="page" id="page-mind">
-        <div class="stitle"><span>🧠</span> Самопрограммирование</div>
-        <div id="affList"></div>
-        <button class="add-btn" onclick="openAffModal()">+ Добавить установку</button>
-        <div class="stitle"><span>⏰</span> Напоминания</div>
-        <div id="remList"></div>
-        <button class="add-btn" onclick="openRemModal()" style="margin-top:8px">+ Добавить напоминание</button>
-        <div class="stitle"><span>📔</span> Дневник мыслей</div>
-        <div id="journList"></div>
-        <button class="add-btn" onclick="openJournModal()" style="margin-top:8px">+ Записать мысль</button>
-    </div>
-    <!-- ANALYTICS -->
-    <div class="page" id="page-analytics">
-        <div class="stitle" style="margin-top:6px"><span>📊</span> Аналитика</div>
-        <div class="aperiod">
-            <button class="aperiod-btn active" onclick="setPeriod('week',this)">Неделя</button>
-            <button class="aperiod-btn" onclick="setPeriod('month',this)">Месяц</button>
-        </div>
-        <div id="analyticsContent"></div>
-    </div>
-
-    <!-- BOTTOM NAV -->
-    <div class="bottom-nav">
-        <button class="nav-item active" onclick="switchPage('home')" data-page="home"><span class="nav-icon">🏠</span><span>Главная</span></button>
-        <button class="nav-item" onclick="switchPage('goals')" data-page="goals"><span class="nav-icon">🎯</span><span>Цели</span></button>
-        <button class="nav-item" onclick="switchPage('habits')" data-page="habits"><span class="nav-icon">✅</span><span>Привычки</span></button>
-        <button class="nav-item" onclick="switchPage('mind')" data-page="mind"><span class="nav-icon">🧠</span><span>Разум</span></button>
-        <button class="nav-item" onclick="switchPage('analytics')" data-page="analytics"><span class="nav-icon">📊</span><span>Стата</span></button>
-    </div>
+<div class="hdr">
+<div class="hdr-row">
+<div><h1>⚡ Моя Жизнь</h1><div class="hdr-date" id="hDate"></div></div>
+<div style="display:flex;gap:5px"><button class="hdr-btn" onclick="openReview()">🌅</button><button class="hdr-btn" onclick="openSettings()">⚙️</button></div>
+</div>
+<div class="xp-wrap"><div class="xp-lvl" id="xLvl">Ур.1</div><div class="xp-track"><div class="xp-fill" id="xBar" style="width:0%"></div></div><div class="xp-txt" id="xTxt">0 XP</div></div>
 </div>
 
-<!-- MODAL -->
-<div class="modal-overlay" id="mOverlay" onclick="closeModal(event)">
-    <div class="modal" id="mContent"><div class="mhandle"></div><div id="mBody"></div></div>
+<div class="page active" id="pg-home"><div id="homeC"></div></div>
+<div class="page" id="pg-goals"><div class="st"><span>🎯</span> Мои цели</div><div id="goalsC"></div><button class="abtn" onclick="openGoalM()">+ Добавить цель</button></div>
+<div class="page" id="pg-habits"><div class="st"><span>✅</span> Привычки</div><div id="habitsC"></div><div style="margin-top:6px"><button class="abtn" onclick="openHabitM()">+ Добавить привычку</button></div></div>
+<div class="page" id="pg-mind">
+<div class="st"><span>🧠</span> Установки</div><div id="affC"></div><button class="abtn" onclick="openAffM()">+ Добавить установку</button>
+<div class="st"><span>⏰</span> Напоминания</div><div id="remC"></div><button class="abtn" onclick="openRemM()" style="margin-top:6px">+ Напоминание</button>
+<div class="st"><span>📔</span> Дневник</div><div id="journC"></div><button class="abtn" onclick="openJournM()" style="margin-top:6px">+ Записать мысль</button>
 </div>
-<input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+<div class="page" id="pg-stats"><div class="st" style="margin-top:4px"><span>📊</span> Статистика</div><div class="ap"><button class="apb act" id="pw" onclick="setPer('week')">Неделя</button><button class="apb" id="pm" onclick="setPer('month')">Месяц</button></div><div id="statsC"></div></div>
+
+<div class="nav">
+<button class="nav-i active" onclick="goPage('home')" data-p="home"><span class="nav-ic">🏠</span><span>Главная</span></button>
+<button class="nav-i" onclick="goPage('goals')" data-p="goals"><span class="nav-ic">🎯</span><span>Цели</span></button>
+<button class="nav-i" onclick="goPage('habits')" data-p="habits"><span class="nav-ic">✅</span><span>Привычки</span></button>
+<button class="nav-i" onclick="goPage('mind')" data-p="mind"><span class="nav-ic">🧠</span><span>Разум</span></button>
+<button class="nav-i" onclick="goPage('stats')" data-p="stats"><span class="nav-ic">📊</span><span>Стата</span></button>
+</div>
+</div>
+
+<div class="mo" id="mOv" onclick="cModal(event)">
+<div class="ml"><div class="mh"></div><div id="mBd"></div></div>
+</div>
+<input type="file" id="impF" accept=".json" style="display:none" onchange="impData(event)">
 
 <script>
-// ===== QUOTES =====
-const QUOTES=[
-    {t:"Дисциплина — это мост между целями и достижениями.",a:"Джим Рон"},
-    {t:"Мы — то, что мы постоянно делаем. Отличие — не действие, а привычка.",a:"Аристотель"},
-    {t:"Единственный способ делать великие дела — любить то, что делаешь.",a:"Стив Джобс"},
-    {t:"Не бойся идти медленно, бойся стоять на месте.",a:"Китайская пословица"},
-    {t:"Сила воли — это мышца. Чем больше тренируешь, тем сильнее.",a:"Рой Баумайстер"},
-    {t:"Ты не можешь изменить направление ветра, но можешь настроить паруса.",a:"Джимми Дин"},
-    {t:"Лучшее время посадить дерево было 20 лет назад. Второе лучшее — сейчас.",a:"Китайская пословица"},
-    {t:"Успех — это сумма маленьких усилий, повторяемых изо дня в день.",a:"Роберт Кольер"},
-    {t:"Мотивация начинает тебя. Привычка заставляет продолжать.",a:"Джим Рон"},
-    {t:"Каждое утро мы рождаемся заново. Что мы делаем сегодня — самое важное.",a:"Будда"},
-    {t:"Твоя жизнь не станет лучше случайно. Она станет лучше, если ты изменишься.",a:"Джим Рон"},
-    {t:"Не считай дни — делай дни значимыми.",a:"Мохаммед Али"},
-    {t:"Самая большая слава — не в том, чтобы никогда не падать, а в том, чтобы подниматься каждый раз.",a:"Нельсон Мандела"},
-    {t:"Трудности подготавливают обычных людей к необычной судьбе.",a:"К.С. Льюис"},
-    {t:"Делай что можешь, с тем что имеешь, там где ты есть.",a:"Теодор Рузвельт"},
-    {t:"Секрет успеха — начать.",a:"Марк Твен"},
-    {t:"Путь в тысячу миль начинается с одного шага.",a:"Лао-цзы"},
-    {t:"Ваше будущее создаётся тем, что вы делаете сегодня, а не завтра.",a:"Роберт Кийосаки"},
-    {t:"Когда кажется, что весь мир против тебя, помни: самолёт взлетает против ветра.",a:"Генри Форд"},
-    {t:"Характер — это то, что ты делаешь, когда никто не смотрит.",a:"Дж.К. Линг"},
-    {t:"Не важно, как медленно ты идёшь, главное — не останавливайся.",a:"Конфуций"},
-    {t:"Повторение — мать учения и отец действия.",a:"Зиг Зиглар"},
-    {t:"Каждый день — это новая возможность изменить свою жизнь.",a:"Неизвестный"},
-    {t:"Невозможно — это всего лишь мнение.",a:"Мохаммед Али"},
-    {t:"Ваше время ограничено. Не тратьте его, живя чужой жизнью.",a:"Стив Джобс"},
-    {t:"Слабые дают обещания, сильные — выполняют.",a:"Неизвестный"},
-    {t:"Если ты можешь мечтать — ты можешь это сделать.",a:"Уолт Дисней"},
-    {t:"Победа — это ещё не всё, но желание победить — это.",a:"Винс Ломбарди"},
-    {t:"Боль, которую ты чувствуешь сегодня, — это сила, которую ты почувствуешь завтра.",a:"Неизвестный"},
-    {t:"Будь тем изменением, которое хочешь увидеть в мире.",a:"Махатма Ганди"},
-    {t:"Сегодня — самый лучший день, чтобы начать.",a:"Неизвестный"},
+// ========== QUOTES ==========
+var QUOTES=[
+{t:"Дисциплина — мост между целями и достижениями.",a:"Джим Рон"},
+{t:"Мы — то, что постоянно делаем. Отличие — привычка.",a:"Аристотель"},
+{t:"Единственный способ делать великие дела — любить то, что делаешь.",a:"Стив Джобс"},
+{t:"Не бойся идти медленно, бойся стоять на месте.",a:"Китайская пословица"},
+{t:"Ты не можешь изменить ветер, но можешь настроить паруса.",a:"Джимми Дин"},
+{t:"Лучшее время посадить дерево было 20 лет назад. Теперь — сейчас.",a:"Китайская пословица"},
+{t:"Успех — сумма маленьких усилий, повторяемых изо дня в день.",a:"Роберт Кольер"},
+{t:"Мотивация начинает. Привычка заставляет продолжать.",a:"Джим Рон"},
+{t:"Каждое утро мы рождаемся заново. Что делаем сегодня — самое важное.",a:"Будда"},
+{t:"Твоя жизнь не станет лучше случайно. Она станет лучше, если ты изменишься.",a:"Джим Рон"},
+{t:"Не считай дни — делай дни значимыми.",a:"Мохаммед Али"},
+{t:"Самая большая слава — подниматься каждый раз, когда падаешь.",a:"Нельсон Мандела"},
+{t:"Делай что можешь, с тем что имеешь, там где ты есть.",a:"Теодор Рузвельт"},
+{t:"Секрет успеха — начать.",a:"Марк Твен"},
+{t:"Путь в тысячу миль начинается с одного шага.",a:"Лао-цзы"},
+{t:"Ваше будущее создаётся тем, что вы делаете сегодня.",a:"Роберт Кийосаки"},
+{t:"Когда мир против тебя — помни, самолёт взлетает против ветра.",a:"Генри Форд"},
+{t:"Не важно как медленно идёшь — главное не останавливайся.",a:"Конфуций"},
+{t:"Невозможно — это всего лишь мнение.",a:"Мохаммед Али"},
+{t:"Если можешь мечтать — можешь это сделать.",a:"Уолт Дисней"},
+{t:"Сегодня — лучший день чтобы начать.",a:"Неизвестный"},
+{t:"Дискомфорт — знак роста. Двигайся туда, где страшно.",a:"Неизвестный"},
+{t:"Слабые дают обещания. Сильные — выполняют.",a:"Неизвестный"},
+{t:"Каждый день — новая возможность изменить жизнь.",a:"Неизвестный"},
+{t:"Боль сегодня — сила завтра.",a:"Неизвестный"},
+{t:"Первая победа — над собой. Всё остальное — следствие.",a:"Платон"},
+{t:"Характер — то, что делаешь, когда никто не смотрит.",a:"Дж.К. Линг"},
+{t:"Привычки формируют характер, а характер — судьбу.",a:"Джон Драйден"},
+{t:"Будь изменением, которое хочешь увидеть.",a:"Махатма Ганди"},
+{t:"Не завтра. Не потом. Сейчас.",a:"Неизвестный"}
 ];
 
-// ===== ACHIEVEMENTS =====
-const ACHIEVEMENTS = [
-    {id:'first_goal', icon:'🎯', name:'Первая цель', desc:'Создай первую цель'},
-    {id:'first_habit', icon:'✅', name:'Первая привычка', desc:'Добавь первую привычку'},
-    {id:'first_aff', icon:'🧠', name:'Программист', desc:'Напиши первую установку'},
-    {id:'first_journal', icon:'📔', name:'Дневник', desc:'Запиши первую мысль'},
-    {id:'first_routine', icon:'📅', name:'Режим', desc:'Создай распорядок дня'},
-    {id:'streak3', icon:'🔥', name:'3 дня подряд', desc:'Серия привычек 3+ дня'},
-    {id:'streak7', icon:'⚡', name:'Неделя!', desc:'Серия привычек 7+ дней'},
-    {id:'streak30', icon:'💎', name:'Месяц!', desc:'Серия привычек 30+ дней'},
-    {id:'goals5', icon:'🏆', name:'Целеустремлённый', desc:'Создай 5 целей'},
-    {id:'journal10', icon:'✍️', name:'Писатель', desc:'10 записей в дневнике'},
-    {id:'xp100', icon:'⭐', name:'100 XP', desc:'Набери 100 очков'},
-    {id:'xp500', icon:'🌟', name:'500 XP', desc:'Набери 500 очков'},
+// ========== ACHIEVEMENTS ==========
+var ACHS=[
+{id:"fg",i:"🎯",n:"Первая цель"},
+{id:"fh",i:"✅",n:"Первая привычка"},
+{id:"fa",i:"🧠",n:"Программист"},
+{id:"fj",i:"📔",n:"Дневник"},
+{id:"fr",i:"📅",n:"Режим"},
+{id:"s3",i:"🔥",n:"3 дня подряд"},
+{id:"s7",i:"⚡",n:"Неделя!"},
+{id:"s30",i:"💎",n:"Месяц!"},
+{id:"g5",i:"🏆",n:"5 целей"},
+{id:"j10",i:"✍️",n:"Писатель"},
+{id:"x1",i:"⭐",n:"100 XP"},
+{id:"x5",i:"🌟",n:"500 XP"}
 ];
 
-// ===== XP SYSTEM =====
-const XP_PER = {habit:15, step:10, journal:20, routine:5, goal:25, affirmation:10, review:30, dailyBonus:50};
-const XP_LEVEL = [0,50,120,220,350,520,730,1000,1350,1800,2400,3200,4200,5500,7000,9000,11500,14500,18000,22000,27000];
+// ========== XP SYSTEM ==========
+var XPR={habit:15,step:10,journal:20,routine:5,goal:25,affirmation:10,review:30,daily:50};
+var XPLV=[0,50,120,220,350,520,730,1000,1350,1800,2400,3200,4200,5500,7000,9000,11500,14500,18000,22000,27000];
 
-function getXPData() {
-    try { const r=localStorage.getItem('mylife_xp'); if(r) return JSON.parse(r); } catch(e){}
-    return {total:0, today:0, lastDate:'', achievements:[], dailyBonusDate:''};
-}
-function saveXPData(x) { localStorage.setItem('mylife_xp', JSON.stringify(x)); }
-let xpData = getXPData();
+function gXP(){try{var r=localStorage.getItem("ml_xp");if(r)return JSON.parse(r)}catch(e){}return{total:0,today:0,lastDate:"",achs:[],dailyDate:""}}
+function sXP(x){localStorage.setItem("ml_xp",JSON.stringify(x))}
+var xpD=gXP();
 
-function getLevel(total) {
-    let lvl=1;
-    for(let i=0;i<XP_LEVEL.length;i++) { if(total>=XP_LEVEL[i]) lvl=i+1; }
-    return lvl;
-}
-function getLevelProgress(total) {
-    const lvl = getLevel(total);
-    const curr = XP_LEVEL[lvl-1]||0;
-    const next = XP_LEVEL[lvl]||XP_LEVEL[XP_LEVEL.length-1]+5000;
-    return {level:lvl, curr: total-curr, need: next-curr, pct: Math.round((total-curr)/(next-curr)*100)};
-}
+function getLv(t){var l=1;for(var i=0;i<XPLV.length;i++){if(t>=XPLV[i])l=i+1}return l}
+function getLvP(t){var l=getLv(t);var c=XPLV[l-1]||0;var n=XPLV[l]||(XPLV[XPLV.length-1]+5000);return{level:l,curr:t-c,need:n-c,pct:Math.round((t-c)/(n-c)*100)}}
 
-function addXP(amount, x, y) {
-    const oldLvl = getLevel(xpData.total);
-    xpData.total += amount;
-    const today = getToday();
-    if(xpData.lastDate !== today) { xpData.today = 0; xpData.lastDate = today; }
-    xpData.today += amount;
-    saveXPData(xpData);
-    renderXPBar();
-    showXPPopup(amount, x, y);
-    const newLvl = getLevel(xpData.total);
-    if(newLvl > oldLvl) {
-        setTimeout(()=> showLevelUp(newLvl), 800);
-    }
-    checkAchievements();
+function addXP(amt,px,py){
+    var oldLv=getLv(xpD.total);
+    xpD.total+=amt;
+    var td=today();
+    if(xpD.lastDate!==td){xpD.today=0;xpD.lastDate=td}
+    xpD.today+=amt;
+    sXP(xpD);
+    renderXP();
+    showXPPop(amt,px,py);
+    var newLv=getLv(xpD.total);
+    if(newLv>oldLv){setTimeout(function(){showLvlUp(newLv)},800)}
+    checkAchs();
 }
 
-function renderXPBar() {
-    const p = getLevelProgress(xpData.total);
-    document.getElementById('xpLevel').textContent = 'Ур.' + p.level;
-    document.getElementById('xpBarFill').style.width = p.pct + '%';
-    document.getElementById('xpText').textContent = xpData.total + ' XP';
+function renderXP(){
+    var p=getLvP(xpD.total);
+    document.getElementById("xLvl").textContent="Ур."+p.level;
+    document.getElementById("xBar").style.width=p.pct+"%";
+    document.getElementById("xTxt").textContent=xpD.total+" XP";
 }
 
-function showXPPopup(amount, x, y) {
-    const el = document.createElement('div');
-    el.className = 'xp-popup';
-    el.textContent = '+' + amount + ' XP';
-    el.style.left = (x||window.innerWidth/2) + 'px';
-    el.style.top = (y||200) + 'px';
+function showXPPop(a,x,y){
+    var el=document.createElement("div");
+    el.className="xpp";
+    el.textContent="+"+a+" XP";
+    el.style.left=(x||(window.innerWidth/2))+"px";
+    el.style.top=(y||180)+"px";
     document.body.appendChild(el);
-    setTimeout(()=>el.remove(), 1200);
+    setTimeout(function(){el.remove()},1200);
 }
 
-function showLevelUp(level) {
-    document.getElementById('levelupText').textContent = 'УРОВЕНЬ ' + level + '!';
-    const msgs = ['Ты становишься сильнее 💪','Дисциплина — твоя суперсила ⚡','Новая высота! 🏔️','Растешь на глазах! 🚀','Невероятно! 🔥','Неудержимый! 💎'];
-    document.getElementById('levelupSub').textContent = msgs[Math.floor(Math.random()*msgs.length)];
-    document.getElementById('levelupOverlay').classList.add('show');
-    spawnConfetti();
+function showLvlUp(lv){
+    document.getElementById("luT").textContent="УРОВЕНЬ "+lv+"!";
+    var ms=["Ты становишься сильнее 💪","Дисциплина — суперсила ⚡","Новая высота! 🏔️","Растешь! 🚀","Невероятно! 🔥","Неудержимый! 💎"];
+    document.getElementById("luS").textContent=ms[Math.floor(Math.random()*ms.length)];
+    document.getElementById("luOv").classList.add("act");
+    spawnConf();
 }
 
-function spawnConfetti() {
-    const colors = ['#ff3366','#00e676','#ffd740','#448aff','#b388ff','#ff9100','#18ffff'];
-    for(let i=0;i<40;i++) {
-        const c = document.createElement('div');
-        c.className = 'confetti-piece';
-        c.style.left = Math.random()*100 + 'vw';
-        c.style.background = colors[Math.floor(Math.random()*colors.length)];
-        c.style.animationDelay = Math.random()*0.5 + 's';
-        c.style.animationDuration = (2+Math.random()*1.5) + 's';
-        c.style.width = (5+Math.random()*8)+'px';
-        c.style.height = (5+Math.random()*8)+'px';
+function spawnConf(){
+    var colors=["#ff2255","#00dd66","#ffcc00","#3388ff","#aa66ff","#ff8800","#00cccc"];
+    for(var i=0;i<35;i++){
+        var c=document.createElement("div");
+        c.className="cfp";
+        c.style.left=Math.random()*100+"vw";
+        c.style.background=colors[Math.floor(Math.random()*colors.length)];
+        c.style.animationDelay=Math.random()*0.5+"s";
+        c.style.animationDuration=(2+Math.random()*1.5)+"s";
+        c.style.width=(4+Math.random()*7)+"px";
+        c.style.height=(4+Math.random()*7)+"px";
         document.body.appendChild(c);
-        setTimeout(()=>c.remove(), 4000);
+        setTimeout(function(el){el.remove()},4000,c);
     }
 }
 
-function checkAchievements() {
-    const u = xpData.achievements;
-    function unlock(id) { if(!u.includes(id)){u.push(id);saveXPData(xpData);showNotif('🏆 Достижение разблокировано!');} }
-    if(appData.goals.length>=1) unlock('first_goal');
-    if(appData.habits.length>=1) unlock('first_habit');
-    if(appData.affirmations.length>=1) unlock('first_aff');
-    if(appData.journal.length>=1) unlock('first_journal');
-    if(appData.routine.length>=1) unlock('first_routine');
-    if(appData.goals.length>=5) unlock('goals5');
-    if(appData.journal.length>=10) unlock('journal10');
-    if(xpData.total>=100) unlock('xp100');
-    if(xpData.total>=500) unlock('xp500');
-    let maxStreak=0;
-    appData.habits.forEach(h=>{
-        let s=0;if(h.doneDates&&h.doneDates.length){const sorted=[...h.doneDates].sort().reverse();const d=new Date();
-        for(let i=0;i<365;i++){const ds=d.toISOString().split('T')[0];if(sorted.includes(ds)){s++;d.setDate(d.getDate()-1);}else{if(i===0){d.setDate(d.getDate()-1);continue;}break;}}
-        maxStreak=Math.max(maxStreak,s);}
-    });
-    if(maxStreak>=3) unlock('streak3');
-    if(maxStreak>=7) unlock('streak7');
-    if(maxStreak>=30) unlock('streak30');
+function checkAchs(){
+    var u=xpD.achs;
+    function ul(id){if(u.indexOf(id)<0){u.push(id);sXP(xpD);showNtf("🏆 Достижение!")}}
+    if(D.goals.length>=1)ul("fg");
+    if(D.habits.length>=1)ul("fh");
+    if(D.affirms.length>=1)ul("fa");
+    if(D.journal.length>=1)ul("fj");
+    if(D.routine.length>=1)ul("fr");
+    if(D.goals.length>=5)ul("g5");
+    if(D.journal.length>=10)ul("j10");
+    if(xpD.total>=100)ul("x1");
+    if(xpD.total>=500)ul("x5");
+    var ms=0;
+    D.habits.forEach(function(h){var s=getStr(h);if(s>ms)ms=s});
+    if(ms>=3)ul("s3");
+    if(ms>=7)ul("s7");
+    if(ms>=30)ul("s30");
 }
 
-// ===== DATA =====
-const DB='mylife_app_data';
-function load(){try{const r=localStorage.getItem(DB);if(r)return JSON.parse(r);}catch(e){}return{goals:[],habits:[],affirmations:[],journal:[],routine:[],reminders:[]};}
-function save(d){localStorage.setItem(DB,JSON.stringify(d));}
-let D=load();if(!D.reminders)D.reminders=[];
+// ========== DATA ==========
+function loadD(){try{var r=localStorage.getItem("ml_data");if(r)return JSON.parse(r)}catch(e){}return{goals:[],habits:[],affirms:[],journal:[],routine:[],reminders:[]}}
+function saveD(d){localStorage.setItem("ml_data",JSON.stringify(d))}
+var D=loadD();
 
-function getToday(){return new Date().toISOString().split('T')[0];}
-function uid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5);}
-function fmtDate(ds){const d=new Date(ds);const days=['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];const m=['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];return`${days[d.getDay()]}, ${d.getDate()} ${m[d.getMonth()]}`;}
-function fmtFull(ds){const d=new Date(ds);const days=['Воскресенье','Понедельник','Вторник','Среда','Четверг','Пятница','Суббота'];const m=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];return`${days[d.getDay()]}, ${d.getDate()} ${m[d.getMonth()]} ${d.getFullYear()}`;}
-function dayLabel(ds){if(ds===getToday())return'Сегодня';const y=new Date(Date.now()-864e5).toISOString().split('T')[0];if(ds===y)return'Вчера';return fmtDate(ds);}
-function catLabel(c){return{health:'💪 Здоровье',finance:'💰 Финансы',relationship:'❤️ Отношения',career:'💼 Карьера',growth:'📚 Развитие',other:'📌 Другое'}[c]||'📌 Другое';}
-function getStreak(h){let s=0;if(!h.doneDates||!h.doneDates.length)return 0;const sorted=[...h.doneDates].sort().reverse();const d=new Date();for(let i=0;i<365;i++){const ds=d.toISOString().split('T')[0];if(sorted.includes(ds)){s++;d.setDate(d.getDate()-1);}else{if(i===0){d.setDate(d.getDate()-1);continue;}break;}}return s;}
-function getTimeClass(t){if(!t)return'';const h=parseInt(t);if(h>=5&&h<12)return'morning';if(h>=12&&h<17)return'day';if(h>=17&&h<21)return'evening';return'night';}
+function today(){return new Date().toISOString().split("T")[0]}
+function uid(){return Date.now().toString(36)+Math.random().toString(36).substr(2,5)}
+function fmtD(s){var d=new Date(s);var w=["Вс","Пн","Вт","Ср","Чт","Пт","Сб"];var m=["янв","фев","мар","апр","мая","июн","июл","авг","сен","окт","ноя","дек"];return w[d.getDay()]+", "+d.getDate()+" "+m[d.getMonth()]}
+function fmtDF(s){var d=new Date(s);var w=["Воскресенье","Понедельник","Вторник","Среда","Четверг","Пятница","Суббота"];var m=["января","февраля","марта","апреля","мая","июня","июля","августа","сентября","октября","ноября","декабря"];return w[d.getDay()]+", "+d.getDate()+" "+m[d.getMonth()]+" "+d.getFullYear()}
+function dayL(s){if(s===today())return"Сегодня";var y=new Date(Date.now()-864e5).toISOString().split("T")[0];if(s===y)return"Вчера";return fmtD(s)}
+function catL(c){var m={health:"💪",finance:"💰",relationship:"❤️",career:"💼",growth:"📚",other:"📌"};return m[c]||"📌"}
+function catN(c){var m={health:"Здоровье",finance:"Финансы",relationship:"Отношения",career:"Карьера",growth:"Развитие",other:"Другое"};return m[c]||"Другое"}
+function getStr(h){if(!h.doneDates||!h.doneDates.length)return 0;var sorted=h.doneDates.slice().sort().reverse();var d=new Date();var s=0;for(var i=0;i<365;i++){var ds=d.toISOString().split("T")[0];if(sorted.indexOf(ds)>=0){s++;d.setDate(d.getDate()-1)}else{if(i===0){d.setDate(d.getDate()-1);continue}break}}return s}
+function timeC(t){if(!t)return"";var h=parseInt(t);if(h>=5&&h<12)return"mrn";if(h>=12&&h<17)return"day";if(h>=17&&h<21)return"evn";return"nit"}
 
-// ===== NAV =====
-function switchPage(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));document.querySelector(`.nav-item[data-page="${p}"]`).classList.add('active');renderAll();}
-document.getElementById('hDate').textContent=fmtFull(getToday());
+// ========== NAV ==========
+function goPage(p){
+    var pages=document.querySelectorAll(".page");
+    for(var i=0;i<pages.length;i++)pages[i].classList.remove("active");
+    document.getElementById("pg-"+p).classList.add("active");
+    var navs=document.querySelectorAll(".nav-i");
+    for(var i=0;i<navs.length;i++)navs[i].classList.remove("active");
+    document.querySelector('.nav-i[data-p="'+p+'"]').classList.add("active");
+    renderAll();
+}
+document.getElementById("hDate").textContent=fmtDF(today());
 
-// ===== MODAL =====
-function openM(h){document.getElementById('mBody').innerHTML=h;document.getElementById('mOverlay').classList.add('active');}
-function closeModal(e){if(e&&e.target!==document.getElementById('mOverlay'))return;document.getElementById('mOverlay').classList.remove('active');}
-function closeM(){document.getElementById('mOverlay').classList.remove('active');}
-function showNotif(t){const b=document.getElementById('notif');b.textContent=t;b.classList.add('show');setTimeout(()=>b.classList.remove('show'),2500);}
+// ========== MODAL ==========
+function openM(h){document.getElementById("mBd").innerHTML=h;document.getElementById("mOv").classList.add("act")}
+function cModal(e){if(e&&e.target!==document.getElementById("mOv"))return;document.getElementById("mOv").classList.remove("act")}
+function closeM(){document.getElementById("mOv").classList.remove("act")}
+function showNtf(t){var b=document.getElementById("ntf");b.textContent=t;b.classList.add("act");setTimeout(function(){b.classList.remove("act")},2500)}
 
-// ===== RENDER HOME =====
+// ========== RENDER HOME ==========
 function renderHome(){
-    const today=getToday();
-    const doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/864e5);
-    const q=QUOTES[doy%QUOTES.length];
-    const tJ=D.journal.filter(j=>j.date===today);
-    const hToday=D.habits.filter(h=>h.doneDates&&h.doneDates.includes(today)).length;
-    const hTotal=D.habits.length;
-    const cSteps=D.goals.reduce((a,g)=>a+(g.steps||[]).filter(s=>s.done).length,0);
-    const tSteps=D.goals.reduce((a,g)=>a+(g.steps||[]).length,0);
-    const rut=[...D.routine].sort((a,b)=>(a.time||'').localeCompare(b.time||''));
-    const rutDone=rut.filter(r=>r.doneDates&&r.doneDates.includes(today)).length;
-    let dAff='';if(D.affirmations.length)dAff=D.affirmations[doy%D.affirmations.length].text;
-    const totalI=hTotal+rut.length;const doneI=hToday+rutDone;const pct=totalI>0?Math.round(doneI/totalI*100):0;
-    const dailyClaimed=xpData.dailyBonusDate===today;
+    var td=today();
+    var doy=Math.floor((new Date()-new Date(new Date().getFullYear(),0,0))/864e5);
+    var q=QUOTES[doy%QUOTES.length];
+    var tJ=D.journal.filter(function(j){return j.date===td});
+    var hDone=D.habits.filter(function(h){return h.doneDates&&h.doneDates.indexOf(td)>=0}).length;
+    var hTot=D.habits.length;
+    var cSt=D.goals.reduce(function(a,g){return a+(g.steps||[]).filter(function(s){return s.done}).length},0);
+    var tSt=D.goals.reduce(function(a,g){return a+(g.steps||[]).length},0);
+    var rut=D.routine.slice().sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});
+    var rDone=rut.filter(function(r){return r.doneDates&&r.doneDates.indexOf(td)>=0}).length;
+    var dAff="";if(D.affirms.length)dAff=D.affirms[doy%D.affirms.length].text;
+    var tI=hTot+rut.length;var dI=hDone+rDone;var pct=tI>0?Math.round(dI/tI*100):0;
+    var dbClaimed=xpD.dailyDate===td;
 
-    let h=`
-    <div class="quote-w">
-        <button class="qr" onclick="refreshQ()">🔄</button>
-        <div class="qt" id="hQuote">${q.t}</div>
-        <div class="qa">— ${q.a}</div>
-    </div>`;
+    var h="";
+    h+='<div class="qw">';
+    h+='<button class="qr-btn" onclick="refQ()">🔄</button>';
+    h+='<div class="qt" id="hQ">'+q.t+'</div>';
+    h+='<div class="qa" id="hA">— '+q.a+'</div>';
+    h+='</div>';
 
-    // Daily bonus
-    if(!dailyClaimed) {
-        h+=`<div class="daily-bonus" onclick="claimDailyBonus(event)">
-            <div class="db-icon">🎁</div>
-            <div class="db-text"><div class="db-title">Ежедневный бонус!</div><div class="db-sub">Забери +${XP_PER.dailyBonus} XP за новый день</div></div>
-            <button class="db-claim">Забрать</button>
-        </div>`;
+    if(!dbClaimed){
+        h+='<div class="db" onclick="claimDB(event)">';
+        h+='<div class="db-i">🎁</div>';
+        h+='<div class="db-t"><div class="db-tt">Ежедневный бонус!</div><div class="db-ts">Забери +'+XPR.daily+' XP</div></div>';
+        h+='<button class="db-b">Забрать</button>';
+        h+='</div>';
     }
 
-    h+=`<div class="stats-grid">
-        <div class="stat-card"><div class="stat-val" style="color:var(--green)">${hToday}/${hTotal}</div><div class="stat-lbl">Привычки</div></div>
-        <div class="stat-card"><div class="stat-val" style="color:var(--blue)">${cSteps}/${tSteps}</div><div class="stat-lbl">Шаги</div></div>
-        <div class="stat-card"><div class="stat-val" style="color:var(--accent)">${rutDone}/${rut.length}</div><div class="stat-lbl">Режим</div></div>
-        <div class="stat-card"><div class="stat-val" style="color:var(--purple)">${pct}%</div><div class="stat-lbl">День</div></div>
-    </div>`;
+    h+='<div class="sg">';
+    h+='<div class="sc"><div class="sv" style="color:var(--grn)">'+hDone+"/"+hTot+'</div><div class="sl">Привычки</div></div>';
+    h+='<div class="sc"><div class="sv" style="color:var(--blu)">'+cSt+"/"+tSt+'</div><div class="sl">Шаги</div></div>';
+    h+='<div class="sc"><div class="sv" style="color:var(--red)">'+rDone+"/"+rut.length+'</div><div class="sl">Режим</div></div>';
+    h+='<div class="sc"><div class="sv" style="color:var(--prp)">'+pct+'%</div><div class="sl">День</div></div>';
+    h+='</div>';
 
-    if(dAff){h+=`<div class="stitle"><span>💡</span> Установка дня</div><div class="ov-quote">${dAff}</div>`;}
+    if(dAff){
+        h+='<div class="st"><span>💡</span> Установка дня</div>';
+        h+='<div class="ovq">'+dAff+'</div>';
+    }
 
-    // Achievements preview
-    const unlocked=xpData.achievements||[];
-    if(unlocked.length>0){
-        h+=`<div class="stitle"><span>🏆</span> Достижения <span class="see-all" onclick="showAllAchievements()">все →</span></div>`;
-        h+=`<div class="ach-grid">`;
-        ACHIEVEMENTS.slice(0,4).forEach(a=>{
-            const u=unlocked.includes(a.id);
-            h+=`<div class="ach-item ${u?'unlocked':'locked'}"><div class="ach-icon">${a.icon}</div><div class="ach-name">${a.name}</div></div>`;
+    var ul=xpD.achs||[];
+    if(ul.length>0){
+        h+='<div class="st"><span>🏆</span> Достижения <span class="all" onclick="showAchs()">все →</span></div>';
+        h+='<div class="ag">';
+        for(var i=0;i<4&&i<ACHS.length;i++){
+            var un=ul.indexOf(ACHS[i].id)>=0;
+            h+='<div class="ai '+(un?"ul":"lk")+'"><div class="ai-i">'+ACHS[i].i+'</div><div class="ai-n">'+ACHS[i].n+'</div></div>';
+        }
+        h+='</div>';
+    }
+
+    var aRem=D.reminders.filter(function(r){return r.active});
+    if(aRem.length){
+        h+='<div class="st"><span>⏰</span> Напоминания</div>';
+        aRem.slice(0,3).forEach(function(r){
+            h+='<div class="rmi"><span style="font-size:14px">🔔</span><div class="rm-i"><div class="rm-t">'+r.text+'</div><div class="rm-t2">'+(r.time||"")+'</div></div></div>';
         });
-        h+=`</div>`;
     }
 
-    const activeRem=D.reminders.filter(r=>r.active);
-    if(activeRem.length){h+=`<div class="stitle"><span>⏰</span> Напоминания</div>`;activeRem.slice(0,3).forEach(r=>{h+=`<div class="rem-item"><span class="rem-bell">🔔</span><div class="rem-info"><div class="rem-title">${r.text}</div><div class="rem-time">${r.time||''}</div></div></div>`;});}
+    if(rut.length){
+        h+='<div class="st"><span>📅</span> Режим дня</div>';
+        rut.forEach(function(r){
+            var dn=r.doneDates&&r.doneDates.indexOf(td)>=0;
+            h+='<div class="ri" style="'+(dn?"opacity:.5":"")+'">';
+            h+='<div class="rt '+timeC(r.time)+'">'+(r.time||"—")+'</div>';
+            h+='<div class="rd" style="'+(dn?"text-decoration:line-through":"")+'">'+r.title+'</div>';
+            h+='<div class="tgl '+(dn?"on":"")+'" onclick="togRut(\''+r.id+'\')"></div>';
+            h+='</div>';
+        });
+    }
 
-    if(rut.length){h+=`<div class="stitle"><span>📅</span> Режим дня</div>`;rut.forEach(r=>{const done=r.doneDates&&r.doneDates.includes(today);h+=`<div class="rut-item" style="${done?'opacity:0.5':''}"><div class="rut-time ${getTimeClass(r.time)}">${r.time||'—'}</div><div class="rut-desc" style="${done?'text-decoration:line-through':''}">${r.title}</div><div class="rut-toggle ${done?'on':''}" onclick="toggleRut('${r.id}')"></div></div>`;});}
+    if(tJ.length){
+        h+='<div class="st"><span>📔</span> Мысли сегодня</div>';
+        tJ.forEach(function(j){
+            h+='<div class="je"><div class="jd">'+(j.mood||"")+" "+(j.time||"")+'</div><div class="jt">'+j.text+'</div></div>';
+        });
+    }
 
-    if(tJ.length){h+=`<div class="stitle"><span>📔</span> Мысли сегодня</div>`;tJ.forEach(j=>{h+=`<div class="journ-entry"><div class="journ-date">${j.mood||''} ${j.time||''}</div><div class="journ-text">${j.text}</div></div>`;});}
+    if(!D.goals.length&&!D.habits.length&&!D.affirms.length&&!D.routine.length){
+        h+='<div class="emp"><div class="e">🚀</div><p>Добро пожаловать!<br>Начни настраивать свою жизнь.</p></div>';
+    }
 
-    if(!D.goals.length&&!D.habits.length&&!D.affirmations.length&&!D.routine.length){
-        h+=`<div class="empty"><div class="e">🚀</div><p>Добро пожаловать!<br>Начни настраивать свою жизнь.</p></div>`;}
-
-    document.getElementById('homeContent').innerHTML=h;
+    document.getElementById("homeC").innerHTML=h;
 }
 
-function refreshQ(){const q=QUOTES[Math.floor(Math.random()*QUOTES.length)];const el=document.getElementById('hQuote');if(el){el.textContent=q.t;el.parentElement.querySelector('.qa').textContent='— '+q.a;}}
+function refQ(){var q=QUOTES[Math.floor(Math.random()*QUOTES.length)];var el=document.getElementById("hQ");if(el){el.textContent=q.t;document.getElementById("hA").textContent="— "+q.a}}
 
-function claimDailyBonus(e){
-    const today=getToday();
-    if(xpData.dailyBonusDate===today)return;
-    xpData.dailyBonusDate=today;saveXPData(xpData);
-    const rect=e.target.closest('.daily-bonus').getBoundingClientRect();
-    addXP(XP_PER.dailyBonus, rect.left+rect.width/2, rect.top);
+function claimDB(e){
+    var td=today();
+    if(xpD.dailyDate===td)return;
+    xpD.dailyDate=td;sXP(xpD);
+    var rect=e.target.closest(".db").getBoundingClientRect();
+    addXP(XPR.daily,rect.left+rect.width/2,rect.top);
     renderAll();
 }
 
-function showAllAchievements(){
-    const u=xpData.achievements||[];
-    let h='<h2>🏆 Достижения</h2><div class="ach-grid">';
-    ACHIEVEMENTS.forEach(a=>{
-        const un=u.includes(a.id);
-        h+=`<div class="ach-item ${un?'unlocked':'locked'}"><div class="ach-icon">${a.icon}</div><div class="ach-name">${a.name}</div></div>`;
+function showAchs(){
+    var ul=xpD.achs||[];
+    var h='<h2>🏆 Достижения ('+ul.length+"/"+ACHS.length+')</h2><div class="ag">';
+    ACHS.forEach(function(a){
+        var un=ul.indexOf(a.id)>=0;
+        h+='<div class="ai '+(un?"ul":"lk")+'"><div class="ai-i">'+a.i+'</div><div class="ai-n">'+a.n+'</div></div>';
     });
-    h+=`</div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Закрыть</button></div>`;
+    h+='</div><div class="ma"><button class="bt bt-s" onclick="closeM()">Закрыть</button></div>';
     openM(h);
 }
 
-// ===== RENDER GOALS =====
+// ========== RENDER GOALS ==========
 function renderGoals(){
-    const el=document.getElementById('goalsList');
-    if(!D.goals.length){el.innerHTML=`<div class="empty"><div class="e">🎯</div><p>Пока нет целей.<br>Добавь свою первую!</p></div>`;return;}
-    let h='';D.goals.forEach(g=>{const s=g.steps||[];const d=s.filter(x=>x.done).length;const t=s.length;const p=t>0?Math.round(d/t*100):0;const cc='ct-'+(g.category||'other');
-    h+=`<div class="card" onclick="openGoalDetail('${g.id}')"><div style="display:flex;justify-content:space-between;align-items:start"><div><span class="ctag ${cc}">${catLabel(g.category).split(' ')[0]}</span><div class="card-title" style="margin-top:3px">${g.title}</div></div><button class="del-btn" onclick="event.stopPropagation();delGoal('${g.id}')">✕</button></div>${g.description?`<div class="card-sub">${g.description}</div>`:''}${t?`<div class="gprog"><div class="gprog-bar" style="width:${p}%"></div></div><div class="gmeta"><span>${d}/${t}</span><span>${p}%</span></div>`:''}</div>`;});
+    var el=document.getElementById("goalsC");
+    if(!D.goals.length){el.innerHTML='<div class="emp"><div class="e">🎯</div><p>Пока нет целей.<br>Добавь первую!</p></div>';return}
+    var h="";
+    D.goals.forEach(function(g){
+        var s=g.steps||[];var d=s.filter(function(x){return x.done}).length;var t=s.length;
+        var p=t>0?Math.round(d/t*100):0;
+        h+='<div class="crd" onclick="openGD(\''+g.id+'\')">';
+        h+='<div style="display:flex;justify-content:space-between;align-items:start">';
+        h+='<div><span class="tg tg-'+(g.category||"other")+'">'+catL(g.category)+" "+catN(g.category)+'</span>';
+        h+='<div class="crd-t" style="margin-top:2px">'+g.title+'</div></div>';
+        h+='<button class="db2" onclick="event.stopPropagation();delGoal(\''+g.id+'\')">✕</button>';
+        h+='</div>';
+        if(g.description)h+='<div class="crd-s">'+g.description+'</div>';
+        if(t>0)h+='<div class="gp"><div class="gpb" style="width:'+p+'%"></div></div><div class="gm"><span>'+d+"/"+t+'</span><span>'+p+'%</span></div>';
+        h+='</div>';
+    });
     el.innerHTML=h;
 }
 
-// ===== RENDER HABITS =====
+// ========== RENDER HABITS ==========
 function renderHabits(){
-    const el=document.getElementById('habitsList');const today=getToday();
-    if(!D.habits.length){el.innerHTML=`<div class="empty"><div class="e">✅</div><p>Нет привычек.<br>Добавь для отслеживания!</p></div>`;return;}
-    let h='';D.habits.forEach(hb=>{const done=hb.doneDates&&hb.doneDates.includes(today);const s=getStreak(hb);
-    h+=`<div class="habit-item"><div class="hcheck ${done?'done':''}" onclick="toggleHabit('${hb.id}',event)">${done?'✓':''}</div><div class="hname">${hb.title}</div>${s>0?`<div class="hstreak">🔥${s}</div>`:''}<div class="hxp">+${XP_PER.habit}</div><button class="del-btn" onclick="delHabit('${hb.id}')">✕</button></div>`;});
+    var el=document.getElementById("habitsC");var td=today();
+    if(!D.habits.length){el.innerHTML='<div class="emp"><div class="e">✅</div><p>Нет привычек.</p></div>';return}
+    var h="";
+    D.habits.forEach(function(hb){
+        var dn=hb.doneDates&&hb.doneDates.indexOf(td)>=0;
+        var s=getStr(hb);
+        h+='<div class="hi">';
+        h+='<div class="hc '+(dn?"dn":"")+'" onclick="togHab(\''+hb.id+'\',event)">'+(dn?"✓":"")+'</div>';
+        h+='<div class="hn">'+hb.title+'</div>';
+        if(s>0)h+='<div class="hk">🔥'+s+'</div>';
+        h+='<div class="hx">+'+XPR.habit+'</div>';
+        h+='<button class="db2" onclick="delHab(\''+hb.id+'\')">✕</button>';
+        h+='</div>';
+    });
     el.innerHTML=h;
 }
 
-// ===== RENDER AFFIRMATIONS =====
+// ========== RENDER AFFIRMS ==========
 function renderAff(){
-    const el=document.getElementById('affList');
-    if(!D.affirmations.length){el.innerHTML=`<div class="empty"><div class="e">🧠</div><p>Нет установок.<br>Запрограммируй разум!</p></div>`;return;}
-    let h='';D.affirmations.forEach(a=>{h+=`<div class="aff-card"><div class="aff-text">${a.text}</div><div class="aff-actions"><button onclick="delAff('${a.id}')">🗑</button></div></div>`;});
+    var el=document.getElementById("affC");
+    if(!D.affirms.length){el.innerHTML='<div class="emp"><div class="e">🧠</div><p>Запрограммируй разум!</p></div>';return}
+    var h="";
+    D.affirms.forEach(function(a){
+        h+='<div class="af"><div class="aft">'+a.text+'</div><div class="afa"><button onclick="delAff(\''+a.id+'\')">🗑 Удалить</button></div></div>';
+    });
     el.innerHTML=h;
 }
 
-// ===== RENDER REMINDERS =====
+// ========== RENDER REMINDERS ==========
 function renderRem(){
-    const el=document.getElementById('remList');
-    if(!D.reminders.length){el.innerHTML=`<div class="empty" style="padding:16px"><div class="e">⏰</div><p>Нет напоминаний</p></div>`;return;}
-    let h='';D.reminders.forEach(r=>{h+=`<div class="rem-item"><span class="rem-bell">${r.active?'🔔':'🔕'}</span><div class="rem-info"><div class="rem-title">${r.text}</div><div class="rem-time">${r.daily?'Каждый день':'Один раз'} ${r.time?'в '+r.time:''}</div></div><div class="rut-toggle ${r.active?'on':''}" onclick="toggleRem('${r.id}')"></div><button class="del-btn" onclick="delRem('${r.id}')">✕</button></div>`;});
+    var el=document.getElementById("remC");
+    if(!D.reminders.length){el.innerHTML='<div class="emp" style="padding:14px"><div class="e">⏰</div><p>Нет напоминаний</p></div>';return}
+    var h="";
+    D.reminders.forEach(function(r){
+        h+='<div class="rmi">';
+        h+='<span style="font-size:14px">'+(r.active?"🔔":"🔕")+'</span>';
+        h+='<div class="rm-i"><div class="rm-t">'+r.text+'</div><div class="rm-t2">'+(r.daily?"Каждый день":"Один раз")+(r.time?" в "+r.time:"")+'</div></div>';
+        h+='<div class="tgl '+(r.active?"on":"")+'" onclick="togRem(\''+r.id+'\')"></div>';
+        h+='<button class="db2" onclick="delRem(\''+r.id+'\')">✕</button>';
+        h+='</div>';
+    });
     el.innerHTML=h;
 }
 
-// ===== RENDER JOURNAL =====
+// ========== RENDER JOURNAL ==========
 function renderJourn(){
-    const el=document.getElementById('journList');
-    const sorted=[...D.journal].sort((a,b)=>(b.date+(b.time||'')).localeCompare(a.date+(a.time||'')));
-    if(!sorted.length){el.innerHTML=`<div class="empty" style="padding:16px"><div class="e">📔</div><p>Пока пусто.<br>Запиши мысли!</p></div>`;return;}
-    let h='';sorted.slice(0,12).forEach(j=>{h+=`<div class="journ-entry"><div style="display:flex;justify-content:space-between;align-items:center"><div class="journ-date">${j.mood||''} ${dayLabel(j.date)} ${j.time||''}</div><button class="del-btn" onclick="delJourn('${j.id}')">✕</button></div><div class="journ-text">${j.text}</div></div>`;});
+    var el=document.getElementById("journC");
+    var sorted=D.journal.slice().sort(function(a,b){return(b.date+(b.time||"")).localeCompare(a.date+(a.time||""))});
+    if(!sorted.length){el.innerHTML='<div class="emp" style="padding:14px"><div class="e">📔</div><p>Запиши мысли!</p></div>';return}
+    var h="";
+    sorted.slice(0,10).forEach(function(j){
+        h+='<div class="je">';
+        h+='<div style="display:flex;justify-content:space-between;align-items:center">';
+        h+='<div class="jd">'+(j.mood||"")+" "+dayL(j.date)+" "+(j.time||"")+'</div>';
+        h+='<button class="db2" onclick="delJourn(\''+j.id+'\')">✕</button>';
+        h+='</div>';
+        h+='<div class="jt">'+j.text+'</div></div>';
+    });
     el.innerHTML=h;
 }
 
-// ===== RENDER ANALYTICS =====
-let aPeriod='week';
-function setPeriod(p,b){aPeriod=p;document.querySelectorAll('.aperiod-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderAnalytics();}
+// ========== RENDER ANALYTICS ==========
+var aPer="week";
+function setPer(p){
+    aPer=p;
+    document.getElementById("pw").className="apb"+(p==="week"?" act":"");
+    document.getElementById("pm").className="apb"+(p==="month"?" act":"");
+    renderStats();
+}
 
-function renderAnalytics(){
-    const el=document.getElementById('analyticsContent');
-    const days=aPeriod==='week'?7:30;const today=new Date();const dates=[];
-    for(let i=days-1;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);dates.push(d.toISOString().split('T')[0]);}
+function renderStats(){
+    var el=document.getElementById("statsC");
+    var days=aPer==="week"?7:30;
+    var td=new Date();var dates=[];
+    for(var i=days-1;i>=0;i--){var d=new Date(td);d.setDate(d.getDate()-i);dates.push(d.toISOString().split("T")[0])}
 
-    const habitD=dates.map(d=>({date:d,done:D.habits.filter(h=>h.doneDates&&h.doneDates.includes(d)).length,total:D.habits.length}));
-    const hAvg=D.habits.length?Math.round(habitD.reduce((a,d)=>a+d.done,0)/(habitD.length*D.habits.length)*100):0;
-    const rutD=dates.map(d=>({date:d,done:D.routine.filter(r=>r.doneDates&&r.doneDates.includes(d)).length,total:D.routine.length}));
-    const rAvg=D.routine.length?Math.round(rutD.reduce((a,d)=>a+d.done,0)/(rutD.length*D.routine.length)*100):0;
-    const jCount=dates.reduce((a,d)=>a+D.journal.filter(j=>j.date===d).length,0);
-    const tS=D.goals.reduce((a,g)=>a+(g.steps||[]).length,0);const dS=D.goals.reduce((a,g)=>a+(g.steps||[]).filter(s=>s.done).length,0);
-    const gPct=tS>0?Math.round(dS/tS*100):0;
+    var hD=dates.map(function(d){return{date:d,done:D.habits.filter(function(h){return h.doneDates&&h.doneDates.indexOf(d)>=0}).length,total:D.habits.length}});
+    var hAvg=D.habits.length?Math.round(hD.reduce(function(a,d){return a+d.done},0)/(hD.length*D.habits.length)*100):0;
+    var rD=dates.map(function(d){return{date:d,done:D.routine.filter(function(r){return r.doneDates&&r.doneDates.indexOf(d)>=0}).length,total:D.routine.length}});
+    var rAvg=D.routine.length?Math.round(rD.reduce(function(a,d){return a+d.done},0)/(rD.length*D.routine.length)*100):0;
+    var jC=dates.reduce(function(a,d){return a+D.journal.filter(function(j){return j.date===d}).length},0);
+    var tS=D.goals.reduce(function(a,g){return a+(g.steps||[]).length},0);
+    var dS=D.goals.reduce(function(a,g){return a+(g.steps||[]).filter(function(s){return s.done}).length},0);
+    var gP=tS>0?Math.round(dS/tS*100):0;
 
-    const cData=aPeriod==='week'?habitD:habitD.filter((_,i)=>i%Math.ceil(days/7)===0||i===days-1).slice(-7);
-    let hChart='';cData.forEach(d=>{const p=d.total>0?(d.done/d.total*100):0;const lbl=aPeriod==='week'?['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][new Date(d.date+'T12:00').getDay()]:fmtDate(d.date);
-    hChart+=`<div class="abar-col"><div class="abar-val">${d.done}/${d.total}</div><div class="abar" style="height:${Math.max(p,3)}%"></div><div class="abar-lbl">${lbl}</div></div>`;});
+    var cD=aPer==="week"?hD:hD.filter(function(_,i){return i%Math.ceil(days/7)===0||i===days-1}).slice(-7);
+    var hCh="";
+    cD.forEach(function(d){
+        var p=d.total>0?(d.done/d.total*100):0;
+        var lb=aPer==="week"?["Вс","Пн","Вт","Ср","Чт","Пт","Сб"][new Date(d.date+"T12:00").getDay()]:fmtD(d.date);
+        hCh+='<div class="abc"><div class="abv">'+d.done+"/"+d.total+'</div><div class="ab" style="height:'+Math.max(p,2)+'%"></div><div class="abl">'+lb+'</div></div>';
+    });
 
-    const rcData=aPeriod==='week'?rutD:rutD.filter((_,i)=>i%Math.ceil(days/7)===0||i===days-1).slice(-7);
-    let rChart='';rcData.forEach(d=>{const p=d.total>0?(d.done/d.total*100):0;const lbl=aPeriod==='week'?['Вс','Пн','Вт','Ср','Чт','Пт','Сб'][new Date(d.date+'T12:00').getDay()]:fmtDate(d.date);
-    rChart+=`<div class="abar-col"><div class="abar-val">${d.done}/${d.total}</div><div class="abar" style="height:${Math.max(p,3)}%;background:linear-gradient(to top,var(--green),var(--cyan))"></div><div class="abar-lbl">${lbl}</div></div>`;});
+    var rcD=aPer==="week"?rD:rD.filter(function(_,i){return i%Math.ceil(days/7)===0||i===days-1}).slice(-7);
+    var rCh="";
+    rcD.forEach(function(d){
+        var p=d.total>0?(d.done/d.total*100):0;
+        var lb=aPer==="week"?["Вс","Пн","Вт","Ср","Чт","Пт","Сб"][new Date(d.date+"T12:00").getDay()]:fmtD(d.date);
+        rCh+='<div class="abc"><div class="abv">'+d.done+"/"+d.total+'</div><div class="ab" style="height:'+Math.max(p,2)+'%;background:linear-gradient(to top,var(--grn),var(--cyn))"></div><div class="abl">'+lb+'</div></div>';
+    });
 
-    const streaks=D.habits.map(h=>({t:h.title,s:getStreak(h)})).sort((a,b)=>b.s-a.s);
+    var streaks=D.habits.map(function(h){return{t:h.title,s:getStr(h)}}).sort(function(a,b){return b.s-a.s});
 
-    let h=`<div class="acard"><div style="font-size:13px;font-weight:700;margin-bottom:8px">📋 Прогресс</div>
-        <div class="arow"><div class="arow-l">🎯 Цели</div><div class="arow-v" style="color:var(--accent)">${dS}/${tS} (${gPct}%)</div></div>
-        <div class="arow"><div class="arow-l">✅ Привычки (ср.)</div><div class="arow-v" style="color:var(--green)">${hAvg}%</div></div>
-        <div class="arow"><div class="arow-l">📅 Режим (ср.)</div><div class="arow-v" style="color:var(--blue)">${rAvg}%</div></div>
-        <div class="arow"><div class="arow-l">📔 Записей</div><div class="arow-v" style="color:var(--purple)">${jCount}</div></div>
-        <div class="arow"><div class="arow-l">⭐ Всего XP</div><div class="arow-v" style="color:var(--cyan)">${xpData.total}</div></div>
-    </div>`;
+    var h="";
+    h+='<div class="ac"><div style="font-size:12px;font-weight:700;margin-bottom:6px">📋 Прогресс</div>';
+    h+='<div class="ar"><div class="arl">🎯 Цели</div><div class="arv" style="color:var(--red)">'+dS+"/"+tS+" ("+gP+"%)</div></div>";
+    h+='<div class="ar"><div class="arl">✅ Привычки</div><div class="arv" style="color:var(--grn)">'+hAvg+"%</div></div>";
+    h+='<div class="ar"><div class="arl">📅 Режим</div><div class="arv" style="color:var(--blu)">'+rAvg+"%</div></div>";
+    h+='<div class="ar"><div class="arl">📔 Записей</div><div class="arv" style="color:var(--prp)">'+jC+"</div></div>";
+    h+='<div class="ar"><div class="arl">⭐ Всего XP</div><div class="arv" style="color:var(--cyn)">'+xpD.total+"</div></div>";
+    h+="</div>";
 
-    if(D.habits.length){h+=`<div class="achart"><div class="achart-title">✅ Привычки</div><div class="abars">${hChart}</div></div>`;}
-    if(D.routine.length){h+=`<div class="achart"><div class="achart-title">📅 Режим</div><div class="abars">${rChart}</div></div>`;}
-    if(streaks.some(x=>x.s>0)){h+=`<div class="acard"><div style="font-size:13px;font-weight:700;margin-bottom:6px">🔥 Серии</div>`;streaks.filter(x=>x.s>0).forEach(x=>{h+=`<div class="arow"><div class="arow-l">${x.t}</div><div class="arow-v" style="color:var(--yellow)">🔥 ${x.s} дн.</div></div>`;});h+=`</div>`;}
+    if(D.habits.length){h+='<div class="ac"><div class="ac-t">✅ Привычки</div><div class="abr">'+hCh+"</div></div>"}
+    if(D.routine.length){h+='<div class="ac"><div class="ac-t">📅 Режим</div><div class="abr">'+rCh+"</div></div>"}
 
-    const moods=D.journal.filter(j=>j.mood).map(j=>j.mood);
-    if(moods.length){const mc={};moods.forEach(m=>mc[m]=(mc[m]||0)+1);const top=Object.entries(mc).sort((a,b)=>b[1]-a[1])[0];
-    h+=`<div class="acard"><div style="font-size:13px;font-weight:700;margin-bottom:6px">🎭 Настроение</div><div class="arow"><div class="arow-l">Частое</div><div class="arow-v">${top[0]} (×${top[1]})</div></div></div>`;}
+    if(streaks.some(function(x){return x.s>0})){
+        h+='<div class="ac"><div style="font-size:12px;font-weight:700;margin-bottom:4px">🔥 Серии</div>';
+        streaks.filter(function(x){return x.s>0}).forEach(function(x){
+            h+='<div class="ar"><div class="arl">'+x.t+'</div><div class="arv" style="color:var(--ylw)">🔥 '+x.s+"</div></div>";
+        });
+        h+="</div>";
+    }
+
+    var moods=D.journal.filter(function(j){return j.mood}).map(function(j){return j.mood});
+    if(moods.length){
+        var mc={};moods.forEach(function(m){mc[m]=(mc[m]||0)+1});
+        var top=Object.keys(mc).sort(function(a,b){return mc[b]-mc[a]})[0];
+        h+='<div class="ac"><div style="font-size:12px;font-weight:700;margin-bottom:4px">🎭 Настроение</div>';
+        h+='<div class="ar"><div class="arl">Частое</div><div class="arv">'+top+" (×"+mc[top]+")</div></div></div>";
+    }
 
     el.innerHTML=h;
 }
 
-// ===== REVIEW =====
+// ========== REVIEW ==========
 function openReview(){
-    const today=getToday();const hour=new Date().getHours();
-    const isMorning=hour<14;
-    const existing=D.journal.find(j=>j.date===today&&j.isReview);
-    const data=existing?JSON.parse(existing.reviewData||'{}'):{};
+    var td=today();var hr=new Date().getHours();var isM=hr<14;
+    var ex=D.journal.filter(function(j){return j.date===td&&j.isRev})[0];
+    var rd=ex?JSON.parse(ex.revData||"{}"):{};
 
-    openM(`<div class="review-header">
-        <div class="emoji">${isMorning?'🌅':'🌙'}</div>
-        <h2>${isMorning?'Утренний обзор':'Вечерний обзор'}</h2>
-        <p>${isMorning?'Настрой свой день правильно':'Оцени прошедший день'}</p>
-    </div>
-    ${isMorning?`
-        <div class="review-section"><label>🙏 За что я благодарен сегодня?</label><textarea id="rvGrateful" placeholder="3 вещи...">${data.grateful||''}</textarea></div>
-        <div class="review-section"><label>🎯 Главная задача дня</label><input type="text" id="rvMain" placeholder="Одно самое важное дело" value="${data.main||''}"></div>
-        <div class="review-section"><label>💡 Моя установка на сегодня</label><textarea id="rvAff" placeholder="Кем я буду сегодня?">${data.affirmation||''}</textarea></div>
-    `:`
-        <div class="review-section"><label>⭐ Что прошло хорошо?</label><textarea id="rvGood" placeholder="Поблагодари себя">${data.good||''}</textarea></div>
-        <div class="review-section"><label>🔄 Что можно улучшить?</label><textarea id="rvImprove" placeholder="Без самоосуждения — только рост">${data.improve||''}</textarea></div>
-        <div class="review-section"><label>💪 Чем я горжусь сегодня?</label><textarea id="rvProud" placeholder="Даже мелочи важны">${data.proud||''}</textarea></div>
-    `}
-    <div class="mactions">
-        <button class="btn btn-s" onclick="closeM()">Пропустить</button>
-        <button class="btn btn-p" onclick="saveReview()">Сохранить +${XP_PER.review} XP</button>
-    </div>`);
+    var h='<div class="rv-h">';
+    h+='<div class="e">'+(isM?"🌅":"🌙")+'</div>';
+    h+='<h2>'+(isM?"Утренний обзор":"Вечерний обзор")+'</h2>';
+    h+='<p>'+(isM?"Настрой свой день":"Оцени прошедший день")+'</p></div>';
+
+    if(isM){
+        h+='<div class="rv-s"><label>🙏 За что я благодарен?</label><textarea id="rvG" placeholder="3 вещи...">'+(rd.grateful||"")+'</textarea></div>';
+        h+='<div class="rv-s"><label>🎯 Главная задача дня</label><input type="text" id="rvM" placeholder="Одно самое важное дело" value="'+(rd.main||"")+'"></div>';
+        h+='<div class="rv-s"><label>💡 Установка на сегодня</label><textarea id="rvA" placeholder="Кем я буду сегодня?">'+(rd.affirmation||"")+'</textarea></div>';
+    }else{
+        h+='<div class="rv-s"><label>⭐ Что прошло хорошо?</label><textarea id="rvGd" placeholder="Поблагодари себя">'+(rd.good||"")+'</textarea></div>';
+        h+='<div class="rv-s"><label>🔄 Что улучшить?</label><textarea id="rvIm" placeholder="Без осуждения — только рост">'+(rd.improve||"")+'</textarea></div>';
+        h+='<div class="rv-s"><label>💪 Чем горжусь?</label><textarea id="rvPr" placeholder="Даже мелочи важны">'+(rd.proud||"")+'</textarea></div>';
+    }
+
+    h+='<div class="ma">';
+    h+='<button class="bt bt-s" onclick="closeM()">Пропустить</button>';
+    h+='<button class="bt bt-p" onclick="saveRev()">Сохранить +'+XPR.review+" XP</button></div>";
+    openM(h);
 }
 
-function saveReview(){
-    const today=getToday();const hour=new Date().getHours();const isMorning=hour<14;
-    let rd={};
-    if(isMorning){rd={grateful:document.getElementById('rvGrateful').value,main:document.getElementById('rvMain').value,affirmation:document.getElementById('rvAff').value};}
-    else{rd={good:document.getElementById('rvGood').value,improve:document.getElementById('rvImprove').value,proud:document.getElementById('rvProud').value};}
-
-    const existing=D.journal.find(j=>j.date===today&&j.isReview);
-    if(existing){existing.text=isMorning?'🌅 Утренний обзор':'🌙 Вечерний обзор';existing.reviewData=JSON.stringify(rd);}
-    else{D.journal.push({id:uid(),text:isMorning?'🌅 Утренний обзор':'🌙 Вечерний обзор',mood:'',date:today,time:new Date().getHours().toString().padStart(2,'0')+':'+new Date().getMinutes().toString().padStart(2,'0'),isReview:true,reviewData:JSON.stringify(rd)});}
-    save(D);
-    addXP(XP_PER.review, window.innerWidth/2, 200);
-    closeM();renderAll();showNotif(isMorning?'🌅 Утро настроено!':'🌙 Вечерний обзор сохранён!');
+function saveRev(){
+    var td=today();var hr=new Date().getHours();var isM=hr<14;
+    var rd={};
+    if(isM){
+        rd.grateful=document.getElementById("rvG").value;
+        rd.main=document.getElementById("rvM").value;
+        rd.affirmation=document.getElementById("rvA").value;
+    }else{
+        rd.good=document.getElementById("rvGd").value;
+        rd.improve=document.getElementById("rvIm").value;
+        rd.proud=document.getElementById("rvPr").value;
+    }
+    var ex=D.journal.filter(function(j){return j.date===td&&j.isRev})[0];
+    if(ex){ex.text=isM?"🌅 Утренний обзор":"🌙 Вечерний обзор";ex.revData=JSON.stringify(rd)}
+    else{D.journal.push({id:uid(),text:isM?"🌅 Утренний обзор":"🌙 Вечерний обзор",mood:"",date:td,time:new Date().getHours().toString().padStart(2,"0")+":"+new Date().getMinutes().toString().padStart(2,"0"),isRev:true,revData:JSON.stringify(rd)})}
+    saveD(D);
+    addXP(XPR.review,window.innerWidth/2,200);
+    closeM();renderAll();
+    showNtf(isM?"🌅 Утро настроено!":"🌙 Обзор сохранён!");
 }
 
-// ===== ACTIONS =====
+// ========== ACTIONS ==========
+
 // Goals
-function openGoalModal(){openM(`<h2>Новая цель</h2><div class="fg"><label>Название</label><input type="text" id="gTitle" placeholder="Что ты хочешь достичь?"></div><div class="fg"><label>Описание</label><textarea id="gDesc" placeholder="Почему это важно?"></textarea></div><div class="fg"><label>Категория</label><select id="gCat"><option value="health">💪 Здоровье</option><option value="finance">💰 Финансы</option><option value="relationship">❤️ Отношения</option><option value="career">💼 Карьера</option><option value="growth">📚 Развитие</option><option value="other">📌 Другое</option></select></div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Отмена</button><button class="btn btn-p" onclick="addGoal()">Создать (+${XP_PER.goal}XP)</button></div>`);}
-function addGoal(){const t=document.getElementById('gTitle').value.trim();if(!t)return;D.goals.push({id:uid(),title:t,description:document.getElementById('gDesc').value.trim(),category:document.getElementById('gCat').value,steps:[],createdAt:getToday()});save(D);closeM();renderAll();addXP(XP_PER.goal,window.innerWidth/2,300);showNotif('🎯 Цель создана!');}
-function delGoal(id){if(!confirm('Удалить цель?'))return;D.goals=D.goals.filter(g=>g.id!==id);save(D);renderAll();}
-function openGoalDetail(id){const g=D.goals.find(x=>x.id===id);if(!g)return;let sh='';(g.steps||[]).forEach((s,i)=>{sh+=`<div class="step-item"><div class="scheck ${s.done?'done':''}" onclick="togStep('${id}',${i},event)">${s.done?'✓':''}</div><div class="stext ${s.done?'done-t':''}">${s.text}</div><div class="sdel" onclick="delStep('${id}',${i})">✕</div></div>`;});
-openM(`<h2>${g.title}</h2>${g.description?`<p style="color:var(--text2);font-size:12px;margin-bottom:8px">${g.description}</p>`:''}<div class="stitle" style="margin-top:0"><span>📋</span> Шаги</div><div class="steps-list">${sh}</div><div class="qadd"><input type="text" id="nsText" placeholder="Новый шаг..."><button onclick="addStep('${id}')">+</button></div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Закрыть</button></div>`);}
-function addStep(gid){const t=document.getElementById('nsText').value.trim();if(!t)return;const g=D.goals.find(x=>x.id===gid);if(!g.steps)g.steps=[];g.steps.push({text:t,done:false});save(D);openGoalDetail(gid);renderAll();}
-function togStep(gid,i,e){const g=D.goals.find(x=>x.id===gid);g.steps[i].done=!g.steps[i].done;save(D);if(g.steps[i].done){const rect=e.target.getBoundingClientRect();addXP(XP_PER.step,rect.left+rect.width/2,rect.top);}openGoalDetail(gid);renderAll();}
-function delStep(gid,i){const g=D.goals.find(x=>x.id===gid);g.steps.splice(i,1);save(D);openGoalDetail(gid);renderAll();}
+function openGoalM(){
+    openM('<h2>Новая цель</h2>'+
+    '<div class="fg"><label>Название</label><input type="text" id="gT" placeholder="Что хочешь достичь?"></div>'+
+    '<div class="fg"><label>Описание</label><textarea id="gD" placeholder="Почему это важно?"></textarea></div>'+
+    '<div class="fg"><label>Категория</label><select id="gC">'+
+    '<option value="health">💪 Здоровье</option><option value="finance">💰 Финансы</option>'+
+    '<option value="relationship">❤️ Отношения</option><option value="career">💼 Карьера</option>'+
+    '<option value="growth">📚 Развитие</option><option value="other">📌 Другое</option></select></div>'+
+    '<div class="ma"><button class="bt bt-s" onclick="closeM()">Отмена</button>'+
+    '<button class="bt bt-p" onclick="addGoal()">Создать +'+XPR.goal+'XP</button></div>');
+}
+function addGoal(){
+    var t=document.getElementById("gT").value.trim();if(!t)return;
+    D.goals.push({id:uid(),title:t,description:document.getElementById("gD").value.trim(),category:document.getElementById("gC").value,steps:[],createdAt:today()});
+    saveD(D);closeM();renderAll();addXP(XPR.goal,window.innerWidth/2,300);showNtf("🎯 Цель создана!");
+}
+function delGoal(id){if(!confirm("Удалить цель?"))return;D.goals=D.goals.filter(function(g){return g.id!==id});saveD(D);renderAll()}
+
+function openGD(id){
+    var g=D.goals.filter(function(x){return x.id===id})[0];if(!g)return;
+    var sh="";
+    (g.steps||[]).forEach(function(s,i){
+        sh+='<div class="sli">';
+        sh+='<div class="sck '+(s.done?"dn":"")+'" onclick="togStep(\''+id+"',"+i+',event)">'+(s.done?"✓":"")+"</div>";
+        sh+='<div class="stx '+(s.done?"dt":"")+'">'+s.text+'</div>';
+        sh+='<div class="sdl" onclick="delStep(\''+id+"',"+i+')">✕</div>';
+        sh+="</div>";
+    });
+    openM('<h2>'+g.title+'</h2>'+
+    (g.description?'<p style="color:var(--tx2);font-size:11px;margin-bottom:6px">'+g.description+"</p>":"")+
+    '<div class="st" style="margin-top:0"><span>📋</span> Шаги</div>'+
+    '<div>'+sh+'</div>'+
+    '<div class="qas"><input type="text" id="nsT" placeholder="Новый шаг..."><button onclick="addStep(\''+id+"')\">+</button></div>"+
+    '<div class="ma"><button class="bt bt-s" onclick="closeM()">Закрыть</button></div>');
+}
+function addStep(gid){
+    var t=document.getElementById("nsT").value.trim();if(!t)return;
+    var g=D.goals.filter(function(x){return x.id===gid})[0];
+    if(!g.steps)g.steps=[];
+    g.steps.push({text:t,done:false});saveD(D);openGD(gid);renderAll();
+}
+function togStep(gid,i,e){
+    var g=D.goals.filter(function(x){return x.id===gid})[0];
+    g.steps[i].done=!g.steps[i].done;saveD(D);
+    if(g.steps[i].done){var r=e.target.getBoundingClientRect();addXP(XPR.step,r.left+r.width/2,r.top)}
+    openGD(gid);renderAll();
+}
+function delStep(gid,i){
+    var g=D.goals.filter(function(x){return x.id===gid})[0];
+    g.steps.splice(i,1);saveD(D);openGD(gid);renderAll();
+}
 
 // Habits
-function openHabitModal(){openM(`<h2>Новая привычка</h2><div class="fg"><label>Название</label><input type="text" id="hTitle" placeholder="Например: Медитация 10 мин"></div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Отмена</button><button class="btn btn-p" onclick="addHabit()">Добавить</button></div>`);}
-function addHabit(){const t=document.getElementById('hTitle').value.trim();if(!t)return;D.habits.push({id:uid(),title:t,doneDates:[]});save(D);closeM();renderAll();addXP(XP_PER.habit,window.innerWidth/2,300);showNotif('✅ Привычка добавлена!');}
-function toggleHabit(id,e){const today=getToday(),h=D.habits.find(x=>x.id===id);if(!h.doneDates)h.doneDates=[];const i=h.doneDates.indexOf(today);if(i>=0)h.doneDates.splice(i,1);else{h.doneDates.push(today);const rect=e.target.getBoundingClientRect();addXP(XP_PER.habit,rect.left+rect.width/2,rect.top);spawnConfetti();}save(D);renderAll();checkAchievements();}
-function delHabit(id){if(!confirm('Удалить?'))return;D.habits=D.habits.filter(x=>x.id!==id);save(D);renderAll();}
+function openHabitM(){
+    openM('<h2>Новая привычка</h2>'+
+    '<div class="fg"><label>Название</label><input type="text" id="hT" placeholder="Например: Медитация 10 мин"></div>'+
+    '<div class="ma"><button class="bt bt-s" onclick="closeM()">Отмена</button>'+
+    '<button class="bt bt-p" onclick="addHab()">Добавить</button></div>');
+}
+function addHab(){
+    var t=document.getElementById("hT").value.trim();if(!t)return;
+    D.habits.push({id:uid(),title:t,doneDates:[]});
+    saveD(D);closeM();renderAll();addXP(XPR.habit,window.innerWidth/2,300);showNtf("✅ Привычка добавлена!");
+}
+function togHab(id,e){
+    var td=today();var h=D.habits.filter(function(x){return x.id===id})[0];
+    if(!h.doneDates)h.doneDates=[];
+    var i=h.doneDates.indexOf(td);
+    if(i>=0){h.doneDates.splice(i,1)}
+    else{h.doneDates.push(td);var r=e.target.getBoundingClientRect();addXP(XPR.habit,r.left+r.width/2,r.top);spawnConf()}
+    saveD(D);renderAll();checkAchs();
+}
+function delHab(id){if(!confirm("Удалить?"))return;D.habits=D.habits.filter(function(x){return x.id!==id});saveD(D);renderAll()}
 
-// Affirmations
-function openAffModal(){openM(`<h2>Новая установка</h2><div class="fg"><label>Текст</label><textarea id="aText" placeholder="Я — человек, который..."></textarea></div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Отмена</button><button class="btn btn-p" onclick="addAff()">Добавить (+${XP_PER.affirmation}XP)</button></div>`);}
-function addAff(){const t=document.getElementById('aText').value.trim();if(!t)return;D.affirmations.push({id:uid(),text:t});save(D);closeM();renderAll();addXP(XP_PER.affirmation,window.innerWidth/2,300);showNotif('🧠 Установка добавлена!');}
-function delAff(id){D.affirmations=D.affirmations.filter(x=>x.id!==id);save(D);renderAll();}
+// Affirms
+function openAffM(){
+    openM('<h2>Новая установка</h2>'+
+    '<div class="fg"><label>Текст</label><textarea id="aT" placeholder="Я — человек, который..."></textarea></div>'+
+    '<div class="ma"><button class="bt bt-s" onclick="closeM()">Отмена</button>'+
+    '<button class="bt bt-p" onclick="addAff()">Добавить +'+XPR.affirmation+"XP</button></div>");
+}
+function addAff(){
+    var t=document.getElementById("aT").value.trim();if(!t)return;
+    D.affirms.push({id:uid(),text:t});
+    saveD(D);closeM();renderAll();addXP(XPR.affirmation,window.innerWidth/2,300);showNtf("🧠 Установка добавлена!");
+}
+function delAff(id){D.affirms=D.affirms.filter(function(x){return x.id!==id});saveD(D);renderAll()}
 
 // Reminders
-function openRemModal(){openM(`<h2>Напоминание</h2><div class="fg"><label>Текст</label><input type="text" id="rText" placeholder="О чём напомнить?"></div><div class="fg"><label>Время</label><input type="time" id="rTime"></div><div class="fg"><label><input type="checkbox" id="rDaily" checked> Каждый день</label></div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Отмена</button><button class="btn btn-p" onclick="addRem()">Добавить</button></div>`);}
-function addRem(){const t=document.getElementById('rText').value.trim();if(!t)return;D.reminders.push({id:uid(),text:t,time:document.getElementById('rTime').value,daily:document.getElementById('rDaily').checked,active:true,lastFired:''});save(D);closeM();renderAll();showNotif('⏰ Напоминание!');requestNotif();}
-function toggleRem(id){const r=D.reminders.find(x=>x.id===id);r.active=!r.active;save(D);renderAll();}
-function delRem(id){D.reminders=D.reminders.filter(x=>x.id!==id);save(D);renderAll();}
+function openRemM(){
+    openM('<h2>Напоминание</h2>'+
+    '<div class="fg"><label>Текст</label><input type="text" id="rmT" placeholder="О чём напомнить?"></div>'+
+    '<div class="fg"><label>Время</label><input type="time" id="rmTm"></div>'+
+    '<div class="fg"><label><input type="checkbox" id="rmD" checked> Каждый день</label></div>'+
+    '<div class="ma"><button class="bt bt-s" onclick="closeM()">Отмена</button>'+
+    '<button class="bt bt-p" onclick="addRem()">Добавить</button></div>');
+}
+function addRem(){
+    var t=document.getElementById("rmT").value.trim();if(!t)return;
+    D.reminders.push({id:uid(),text:t,time:document.getElementById("rmTm").value,daily:document.getElementById("rmD").checked,active:true,lastFired:""});
+    saveD(D);closeM();renderAll();showNtf("⏰ Напоминание!");reqNotif();
+}
+function togRem(id){var r=D.reminders.filter(function(x){return x.id===id})[0];r.active=!r.active;saveD(D);renderAll()}
+function delRem(id){D.reminders=D.reminders.filter(function(x){return x.id!==id});saveD(D);renderAll()}
 
 // Journal
-let selMood='';
-function openJournModal(){selMood='';openM(`<h2>Записать мысль</h2><div class="fg"><label>Настроение</label><div style="display:flex;gap:6px;font-size:24px;margin-bottom:4px" id="moodP"><span onclick="pickM('😊')" data-m="😊" style="cursor:pointer;opacity:0.4">😊</span><span onclick="pickM('😐')" data-m="😐" style="cursor:pointer;opacity:0.4">😐</span><span onclick="pickM('😔')" data-m="😔" style="cursor:pointer;opacity:0.4">😔</span><span onclick="pickM('🔥')" data-m="🔥" style="cursor:pointer;opacity:0.4">🔥</span><span onclick="pickM('💪')" data-m="💪" style="cursor:pointer;opacity:0.4">💪</span><span onclick="pickM('🤔')" data-m="🤔" style="cursor:pointer;opacity:0.4">🤔</span></div></div><div class="fg"><label>Мысль</label><textarea id="jText" placeholder="Что на уме?"></textarea></div><div class="mactions"><button class="btn btn-s" onclick="closeM()">Отмена</button><button class="btn btn-p" onclick="addJourn()">Записать (+${XP_PER.journal}XP)</button></div>`);}
-function pickM(m){selMood=m;document.querySelectorAll('#moodP span').forEach(s=>{s.style.opacity=s.dataset.m===m?'1':'0.4';s.style.transform=s.dataset.m===m?'scale(1.2)':'scale(1)';});}
-function addJourn(){const t=document.getElementById('jText').value.trim();if(!t)return;const now=new Date();D.journal.push({id:uid(),text:t,mood:selMood,date:getToday(),time:now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')});selMood='';save(D);closeM();renderAll();addXP(XP_PER.journal,window.innerWidth/2,300);showNotif('📔 Записано!');}
-function delJourn(id){D.journal=D.journal.filter(x=>x.id!==id);save(D);renderAll();}
+var selMood="";
+function openJournM(){
+    selMood="";
+    openM('<h2>Записать мысль</h2>'+
+    '<div class="fg"><label>Настроение</label><div style="display:flex;gap:5px;font-size:22px;margin-bottom:4px" id="mP"></div></div>'+
+    '<div class="fg"><label>Мысль</label><textarea id="jT" placeholder="Что на уме?"></textarea></div>'+
+    '<div class="ma"><button class="bt bt-s" onclick="closeM()">Отмена</button>'+
+    '<button class="bt bt-p" onclick="addJourn()">Записать +'+XPR.journal+"XP</button></div>");
+    var moods=["😊","😐","😔","🔥","💪","🤔"];
+    var mp=document.getElementById("mP");var h="";
+    moods.forEach(function(m){h+='<span onclick="pickM(\''+m+'\')" data-m="'+m+'" style="cursor:pointer;opacity:.4;font-size:22px">'+m+"</span>"});
+    mp.innerHTML=h;
+}
+function pickM(m){
+    selMood=m;
+    var spans=document.querySelectorAll("#mP span");
+    for(var i=0;i<spans.length;i++){
+        spans[i].style.opacity=spans[i].getAttribute("data-m")===m?"1":"0.4";
+        spans[i].style.transform=spans[i].getAttribute("data-m")===m?"scale(1.2)":"scale(1)";
+    }
+}
+function addJourn(){
+    var t=document.getElementById("jT").value.trim();if(!t)return;
+    var now=new Date();
+    D.journal.push({id:uid(),text:t,mood:selMood,date:today(),time:now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0")});
+    selMood="";saveD(D);closeM();renderAll();addXP(XPR.journal,window.innerWidth/2,300);showNtf("📔 Записано!");
+}
+function delJourn(id){D.journal=D.journal.filter(function(x){return x.id!==id});saveD(D);renderAll()}
 
 // Routine
-function toggleRut(id){const today=getToday(),r=D.routine.find(x=>x.id===id);if(!r.doneDates)r.doneDates=[];const i=r.doneDates.indexOf(today);if(i>=0)r.doneDates.splice(i,1);else{r.doneDates.push(today);addXP(XP_PER.routine,window.innerWidth/2,300);}save(D);renderAll();}
+function togRut(id){
+    var td=today();var r=D.routine.filter(function(x){return x.id===id})[0];
+    if(!r.doneDates)r.doneDates=[];
+    var i=r.doneDates.indexOf(td);
+    if(i>=0)r.doneDates.splice(i,1);
+    else{r.doneDates.push(td);addXP(XPR.routine,window.innerWidth/2,300)}
+    saveD(D);renderAll();
+}
 
-// ===== SETTINGS =====
-function openSettings(){openM(`<h2>⚙️ Настройки</h2>
-    <div class="sitem" onclick="exportData()"><div class="sicon">💾</div><div><div class="slabel">Экспорт бэкапа</div><div class="shint">Скачать JSON</div></div></div>
-    <div class="sitem" onclick="document.getElementById('importFile').click();closeM();"><div class="sicon">📂</div><div><div class="slabel">Импорт данных</div><div class="shint">Восстановить из бэкапа</div></div></div>
-    <div class="sitem" onclick="requestNotif()"><div class="sicon">🔔</div><div><div class="slabel">Уведомления</div><div class="shint">Разрешить push</div></div></div>
-    <div class="sitem" onclick="closeM();openRutMgr()"><div class="sicon">📅</div><div><div class="slabel">Режим дня</div><div class="shint">Редактировать</div></div></div>
-    <div class="sitem" onclick="showAllAchievements()"><div class="sicon">🏆</div><div><div class="slabel">Достижения</div><div class="shint">${(xpData.achievements||[]).length}/${ACHIEVEMENTS.length}</div></div></div>
-    <div class="sitem" onclick="if(confirm('Удалить ВСЕ данные?')){localStorage.clear();D=load();xpData=getXPData();renderAll();renderXPBar();closeM();showNotif('🗑 Данные удалены');}"><div class="sicon">🗑</div><div><div class="slabel" style="color:var(--accent)">Сбросить всё</div><div class="shint">Безвозвратно</div></div></div>
-    <div style="text-align:center;margin-top:12px;font-size:10px;color:var(--muted)">Моя Жизнь v3.0 ⚡ XP: ${xpData.total}</div>`);}
+// Settings
+function openSettings(){
+    var ul=xpD.achs||[];
+    openM('<h2>⚙️ Настройки</h2>'+
+    '<div class="si" onclick="expData()"><div class="si-i">💾</div><div><div class="si-l">Экспорт бэкапа</div><div class="si-h">Скачать JSON</div></div></div>'+
+    '<div class="si" onclick="document.getElementById(\'impF\').click();closeM()"><div class="si-i">📂</div><div><div class="si-l">Импорт данных</div><div class="si-h">Восстановить</div></div></div>'+
+    '<div class="si" onclick="reqNotif()"><div class="si-i">🔔</div><div><div class="si-l">Уведомления</div><div class="si-h">Push</div></div></div>'+
+    '<div class="si" onclick="closeM();openRutMgr()"><div class="si-i">📅</div><div><div class="si-l">Режим дня</div><div class="si-h">Редактировать</div></div></div>'+
+    '<div class="si" onclick="showAchs()"><div class="si-i">🏆</div><div><div class="si-l">Достижения</div><div class="si-h">'+ul.length+"/"+ACHS.length+'</div></div></div>'+
+    '<div class="si" onclick="if(confirm(\'Удалить ВСЕ данные?\')){localStorage.clear();D=loadD();xpD=gXP();renderAll();renderXP();closeM();showNtf(\'Удалено\')}"><div class="si-i">🗑</div><div><div class="si-l" style="color:var(--red)">Сбросить всё</div><div class="si-h">Безвозвратно</div></div></div>'+
+    '<div style="text-align:center;margin-top:10px;font-size:9px;color:var(--tx3)">Моя Жизнь v3.0 ⚡ XP: '+xpD.total+"</div>");
+}
 
-function exportData(){const b=new Blob([JSON.stringify({appData:D,xpData},null,2)],{type:'application/json'});const u=URL.createObjectURL(b);const a=document.createElement('a');a.href=u;a.download=`mylife_${getToday()}.json`;a.click();URL.revokeObjectURL(u);showNotif('💾 Бэкап скачан!');}
-function importData(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(ev){try{const d=JSON.parse(ev.target.result);if(d.appData){D=d.appData;if(!D.reminders)D.reminders=[];if(d.xpData){xpData=d.xpData;saveXPData(xpData);}save(D);renderAll();renderXPBar();showNotif('📂 Восстановлено!');}else showNotif('❌ Неверный формат');}catch(err){showNotif('❌ Ошибка');}};r.readAsText(f);e.target.value='';}
+function expData(){
+    var blob=new Blob([JSON.stringify({appData:D,xpData:xpD},null,2)],{type:"application/json"});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement("a");a.href=url;a.download="mylife_"+today()+".json";a.click();
+    URL.revokeObjectURL(url);showNtf("💾 Бэкап скачан!");
+}
+function impData(e){
+    var f=e.target.files[0];if(!f)return;
+    var r=new FileReader();
+    r.onload=function(ev){
+        try{
+            var d=JSON.parse(ev.target.result);
+            if(d.appData){D=d.appData;if(!D.reminders)D.reminders=[];if(!D.affirms)D.affirms=[];if(d.xpData){xpD=d.xpData;sXP(xpD)}saveD(D);renderAll();renderXP();showNtf("📂 Восстановлено!")}
+            else showNtf("❌ Неверный формат");
+        }catch(err){showNtf("❌ Ошибка")}
+    };
+    r.readAsText(f);e.target.value="";
+}
 
-function openRutMgr(){closeM();const sorted=[...D.routine].sort((a,b)=>(a.time||'').localeCompare(b.time||''));let h='';sorted.forEach(r=>{h+=`<div class="rut-item"><div class="rut-time ${getTimeClass(r.time)}">${r.time||'—'}</div><div class="rut-desc">${r.title}</div><button class="del-btn" onclick="delRut('${r.id}');openRutMgr();">✕</button></div>`;});
-setTimeout(()=>{openM(`<h2>📅 Режим дня</h2><div id="rutMgr">${h||'<div class="empty" style="padding:12px"><p>Пусто</p></div>'}</div><div style="margin-top:8px"><div class="fg"><label>Время</label><input type="time" id="nrTime"></div><div class="fg"><label>Что делаем</label><input type="text" id="nrTitle" placeholder="Например: Пробежка"></div><button class="btn btn-p" style="width:100%" onclick="addRutMgr()">Добавить</button></div><div class="mactions"><button class="btn btn-s" onclick="closeM();renderAll();">Готово</button></div>`;},350);}
-function addRutMgr(){const t=document.getElementById('nrTitle').value.trim();if(!t)return;D.routine.push({id:uid(),title:t,time:document.getElementById('nrTime').value,doneDates:[]});save(D);addXP(XP_PER.routine,window.innerWidth/2,300);openRutMgr();}
-function delRut(id){D.routine=D.routine.filter(x=>x.id!==id);save(D);}
+function openRutMgr(){
+    closeM();
+    var sorted=D.routine.slice().sort(function(a,b){return(a.time||"").localeCompare(b.time||"")});
+    var h="";
+    sorted.forEach(function(r){
+        h+='<div class="ri"><div class="rt '+timeC(r.time)+'">'+(r.time||"—")+'</div><div class="rd">'+r.title+'</div><button class="db2" onclick="delRut(\''+r.id+"');openRutMgr()\">✕</button></div>";
+    });
+    setTimeout(function(){
+        openM('<h2>📅 Режим дня</h2><div id="rutMgr">'+(h||'<div class="emp" style="padding:10px"><p>Пусто</p></div>')+'</div>'+
+        '<div style="margin-top:6px"><div class="fg"><label>Время</label><input type="time" id="nrT"></div>'+
+        '<div class="fg"><label>Что делаем</label><input type="text" id="nrTl" placeholder="Например: Пробежка"></div>'+
+        '<button class="bt bt-p" style="width:100%" onclick="addRutMgr()">Добавить</button></div>'+
+        '<div class="ma"><button class="bt bt-s" onclick="closeM();renderAll()">Готово</button></div>');
+    },350);
+}
+function addRutMgr(){
+    var t=document.getElementById("nrTl").value.trim();if(!t)return;
+    D.routine.push({id:uid(),title:t,time:document.getElementById("nrT").value,doneDates:[]});
+    saveD(D);addXP(XPR.routine,window.innerWidth/2,300);openRutMgr();
+}
+function delRut(id){D.routine=D.routine.filter(function(x){return x.id!==id});saveD(D)}
 
-function requestNotif(){if(!('Notification' in window)){showNotif('❌ Не поддерживается');return;}Notification.requestPermission().then(p=>{showNotif(p==='granted'?'🔔 Включено!':'❌ Отклонено');});}
-setInterval(()=>{if(!('Notification' in window)||Notification.permission!=='granted')return;const now=new Date();const ct=now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');const today=getToday();D.reminders.forEach(r=>{if(!r.active||!r.time||r.time!==ct)return;if(!r.lastFired||r.lastFired!==today+'_'+ct){new Notification('⚡ Моя Жизнь',{body:r.text,tag:r.id});r.lastFired=today+'_'+ct;save(D);}});},60000);
+function reqNotif(){if(!("Notification" in window)){showNtf("Не поддерживается");return}Notification.requestPermission().then(function(p){showNtf(p==="granted"?"🔔 Включено!":"Отклонено")})}
 
-// ===== RENDER ALL =====
-function renderAll(){renderHome();renderGoals();renderHabits();renderAff();renderRem();renderJourn();renderAnalytics();}
-renderAll();renderXPBar();checkAchievements();
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+setInterval(function(){
+    if(!("Notification" in window)||Notification.permission!=="granted")return;
+    var now=new Date();var ct=now.getHours().toString().padStart(2,"0")+":"+now.getMinutes().toString().padStart(2,"0");
+    var td=today();
+    D.reminders.forEach(function(r){
+        if(!r.active||!r.time||r.time!==ct)return;
+        if(!r.lastFired||r.lastFired!==td+"_"+ct){
+            new Notification("⚡ Моя Жизнь",{body:r.text,tag:r.id});
+            r.lastFired=td+"_"+ct;saveD(D);
+        }
+    });
+},60000);
+
+// ========== RENDER ALL ==========
+function renderAll(){renderHome();renderGoals();renderHabits();renderAff();renderRem();renderJourn();renderStats()}
+renderAll();renderXP();checkAchs();
+if("serviceWorker" in navigator)navigator.serviceWorker.register("sw.js").catch(function(){});
 </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9ff440dd6993d596',t:'MTc3OTM3MzU1Nw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
